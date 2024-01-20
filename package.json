@@ -13,11 +13,14 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@stylexjs/nextjs-plugin": "^0.4.1",
+    "@stylexjs/stylex": "^0.4.1",
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@stylexjs/babel-plugin": "^0.4.1",
     "@types/node": "^20.11.4",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
