@@ -1,0 +1,19 @@
+:root {
+  ---Base-White: #fff;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  margin: 0;
+  font-family: Pretendard;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400 700;
+  font-style: normal;
+}
