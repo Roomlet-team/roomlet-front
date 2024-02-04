@@ -23,6 +23,7 @@ figure,
 blockquote,
 dl,
 dd {
+  margin-block-start: 0;
   margin-block-end: 0;
 }
 
@@ -34,7 +35,6 @@ ol[role='list'] {
 
 /* 핵심 body의 기본값을 설정합니다. */
 body {
-  min-height: 100vh;
   line-height: 1.5;
 }
 
