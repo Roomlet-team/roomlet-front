@@ -1,5 +1,14 @@
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff')
+    url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
+  font-weight: 400 700;
+  font-style: normal;
+}
+
 :root {
   ---Base-White: #fff;
+  --gradient-01: linear-gradient(190deg, #384149 17.29%, #000 86.35%);
 }
 
 html {
@@ -13,11 +22,4 @@ body {
 
 button {
   cursor: pointer;
-}
-
-@font-face {
-  font-family: 'Pretendard';
-  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-  font-weight: 400 700;
-  font-style: normal;
 }
