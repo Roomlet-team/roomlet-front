@@ -1,7 +1,7 @@
 import React from 'react';
 import stylex from '@stylexjs/stylex';
-import RoomletLogo from '@asset/logo_roomlet.svg';
-import RoomletTextLogo from '@asset/logo_text_roomlet.svg';
+import RoomletLogo from '@assets/logo_roomlet.svg';
+import RoomletTextLogo from '@assets/logo_text_roomlet.svg';
 import GoogleLogo from '@features/authentication/assets/google_logo.svg';
 import MainLayout from '@src/layouts/MainLayout';
 
@@ -54,6 +54,7 @@ const LogoStyles = stylex.create({
 const SnsLoginStyles = stylex.create({
   content: {
     width: '100%',
+    padding: '0 16px',
     marginBottom: '24px',
   },
   button: {
@@ -74,6 +75,7 @@ const SnsLoginStyles = stylex.create({
 
 const TermsStyles = stylex.create({
   text: {
+    padding: '0 16px',
     color: '#A6A6A6',
     textAlign: 'center',
     fontSize: '1.2rem',
