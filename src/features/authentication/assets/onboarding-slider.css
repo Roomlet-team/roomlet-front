@@ -1,0 +1,28 @@
+/* 슬라이드의 dot 스타일 변경 코드 */
+.onboading .slick-dots {
+  top: 24px;
+}
+
+.onboading .slick-dots li {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 10px;
+  width: 10px;
+  cursor: pointer;
+}
+
+.onboading .slick-dots li button:before {
+  padding: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  color: #6a7681;
+  opacity: 1;
+}
+
+.onboading .slick-dots li.slick-active button:before {
+  opacity: 1;
+  color: var(--Base-White);
+}
