@@ -39,7 +39,7 @@ const OnboardingSlider = () => {
     },
     {
       id: 2,
-      imgUrl: 'https://roomlet-front.s3.ap-northeast-2.amazonaws.com/publzic/images/onboarding/PICTURES.png',
+      imgUrl: 'https://roomlet-front.s3.ap-northeast-2.amazonaws.com/public/images/onboarding/PICTURES.png',
       name: 'onboarding_02',
       title: '스케쥴 관리 간소화',
       description: (
