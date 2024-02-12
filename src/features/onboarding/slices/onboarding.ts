@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface OnboardingState {
-  isHidden: boolean;
+  isOnboardingHidden: boolean;
 }
 
 const initialState: OnboardingState = {
-  isHidden: false,
+  isOnboardingHidden: false,
 };
 
 export const onboardingSlice = createSlice({
@@ -13,7 +13,7 @@ export const onboardingSlice = createSlice({
   initialState,
   reducers: {
     changeHiddenStatus: (state) => {
-      state.isHidden = !state.isHidden;
+      state.isOnboardingHidden = !state.isOnboardingHidden;
     },
   },
 });
