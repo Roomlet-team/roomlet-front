@@ -1,13 +1,15 @@
 import React, { useRef, useState } from 'react';
-import MainLayout from '@src/layouts/MainLayout';
 import stylex from '@stylexjs/stylex';
 import { useRouter } from 'next/router';
 import Slider from 'react-slick';
+import { useDispatch } from 'react-redux';
+import { changeHiddenStatus } from '../../slices/onboarding';
 
 const OnboardingSlider = () => {
   const router = useRouter();
   const [dotIndex, setDotIndex] = useState<number>(0);
   const sliderRef = useRef(null);
+  const dispatch = useDispatch();
   const settings = {
     dots: false,
     arrows: false,
@@ -78,6 +80,7 @@ const OnboardingSlider = () => {
   };
 
   const handleClickRunMeeting = () => {
+    dispatch(changeHiddenStatus());
     router.push('/login');
   };
 
