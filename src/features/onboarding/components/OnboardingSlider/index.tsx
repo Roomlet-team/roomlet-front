@@ -141,7 +141,7 @@ const SliderStyles = stylex.create({
     height: '6px',
     padding: 0,
     borderRadius: isActivate ? '20px' : '50%',
-    background: isActivate ? 'var(---Base-White)' : '#6A7681',
+    background: isActivate ? 'var(--Base-White)' : '#6A7681',
     border: 'none',
   }),
   slideContent: {
@@ -169,7 +169,7 @@ const SliderStyles = stylex.create({
   textContent: {
     width: '100%',
     padding: '46px 35px 140px',
-    background: 'var( ---Base-White)',
+    background: 'var( --Base-White)',
     borderRadius: '16px 16px  0 0',
   },
   title: {
@@ -198,7 +198,7 @@ const SliderStyles = stylex.create({
     marginTop: '54px',
     padding: '12px 44px',
     background: '#4A4A4A',
-    color: 'var(---Base-White)',
+    color: 'var(--Base-White)',
     fontSize: '1.4rem',
     lineHeight: '2rem',
     fontWeight: 500,

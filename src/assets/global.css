@@ -7,7 +7,7 @@
 }
 
 :root {
-  ---Base-White: #fff;
+  --Base-White: #fff;
   --gradient-01: linear-gradient(190deg, #384149 17.29%, #000 86.35%);
 }
 
