@@ -1,5 +1,6 @@
 import React from 'react';
 import stylex from '@stylexjs/stylex';
+import GnbNavLayout from '@src/layouts/GnbNavLayout';
 
 const styles = stylex.create({
   base: {
@@ -15,7 +16,11 @@ const styles = stylex.create({
 const Home = () => {
   console.log('');
 
-  return <div {...stylex.props(styles.base)}>Hello, Next.js</div>;
+  return (
+    <GnbNavLayout>
+      <div {...stylex.props(styles.base)}>Hello, Next.js</div>
+    </GnbNavLayout>
+  );
 };
 
 export default Home;
