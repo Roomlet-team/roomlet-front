@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useRouter } from 'next/router';
 import stylex from '@stylexjs/stylex';
 import MainLayout from './MainLayout';
 import HomeTwoTone from '@src/components/icons/HomeTwoTone';
@@ -22,8 +23,8 @@ type MenuListType = {
 }[];
 
 const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
+  const router = useRouter();
   const { children } = props;
-  const isActive = false; // [ ] isActive에 대한 코드 작성하기
   const menuList: MenuListType = [
     {
       id: 1,
@@ -37,21 +38,21 @@ const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
       name: '캘린더',
       onIcon: <CalendarTwoTone width={24} height={24} />,
       offIcon: <CalendarOutlined width={24} height={24} />,
-      href: '/',
+      href: '/calender',
     },
     {
       id: 1,
       name: '예약리스트',
       onIcon: <ListTwoTone width={24} height={24} />,
       offIcon: <ListOutlined width={24} height={24} />,
-      href: '/',
+      href: '/reservations',
     },
     {
       id: 1,
       name: '마이페이지',
       onIcon: '',
       offIcon: <MypageOutlined width={24} height={24} />,
-      href: '/',
+      href: '/mypage',
     },
   ];
 
@@ -60,12 +61,16 @@ const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
       <main {...stylex.props(Styles.wrapper)}>{children}</main>
       <div {...stylex.props(Styles.gnbNavContent)}>
         <ul {...stylex.props(Styles.gnbNavList)}>
-          {menuList.map((item) => (
-            <li key={item.id} {...stylex.props(Styles.gnbNavItem)}>
-              {isActive ? item.onIcon : item.offIcon}
-              <span>{item.name}</span>
-            </li>
-          ))}
+          {menuList.map((item) => {
+            const isActive = router.asPath === item.href || router.asPath.indexOf(item.href) > -1;
+
+            return (
+              <li key={item.id} {...stylex.props(Styles.gnbNavItem, isActive && Styles.gnbNavItemActive)}>
+                {isActive ? item.onIcon : item.offIcon}
+                <span>{item.name}</span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </MainLayout>
@@ -103,6 +108,11 @@ const Styles = stylex.create({
     fontSize: '12px',
     fontWeight: '500',
     lineHeight: '1',
+    color: `var(--Gray-10)`,
     flexShrink: 0,
+  },
+  gnbNavItemActive: {
+    fontWeight: '500',
+    color: `var(--Blue-900)`,
   },
 });
