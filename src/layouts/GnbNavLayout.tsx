@@ -11,6 +11,7 @@ import ListTwoTone from '@src/components/icons/ListTwoTone';
 import MypageOutlined from '@src/components/icons/MypageOutlined';
 
 type GnbNavLayoutProps = {
+  backgroundColor: string;
   children: React.ReactElement | React.ReactElement[] | string;
 };
 
@@ -24,7 +25,7 @@ type MenuListType = {
 
 const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
   const router = useRouter();
-  const { children } = props;
+  const { backgroundColor, children } = props;
   const menuList: MenuListType = [
     {
       id: 1,
@@ -58,7 +59,7 @@ const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
 
   return (
     <MainLayout>
-      <main {...stylex.props(Styles.wrapper)}>{children}</main>
+      <main {...stylex.props(Styles.wrapper(backgroundColor))}>{children}</main>
       <div {...stylex.props(Styles.gnbNavContent)}>
         <ul {...stylex.props(Styles.gnbNavList)}>
           {menuList.map((item) => {
@@ -80,9 +81,7 @@ const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
 export default GnbNavLayout;
 
 const Styles = stylex.create({
-  wrapper: {
-    paddingBottom: '90px',
-  },
+  wrapper: (backgroundColor) => ({ backgroundColor, height: '100%', paddingBottom: '90px' }),
   gnbNavContent: {
     width: '100%',
     maxWidth: '767px',
