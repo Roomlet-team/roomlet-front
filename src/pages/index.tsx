@@ -29,7 +29,7 @@ const Styles = stylex.create({
   userGreetingSection: {
     width: '100%',
     padding: '0 16px',
-    marginTop: '16px',
+    paddingTop: '16px',
     marginBottom: '32px',
   },
   meetingStatusSection: {
