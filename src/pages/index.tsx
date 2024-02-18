@@ -10,7 +10,9 @@ const Home = () => {
   return (
     <GnbNavLayout backgroundColor="#FAFAFA">
       {/* 프로필 섹션 */}
-      <UserGreeting />
+      <section {...stylex.props(Styles.userGreetingSection)}>
+        <UserGreeting />
+      </section>
       {/* 회의 현황 섹션 */}
       <section {...stylex.props(Styles.meetingStatusSection)}>
         <h2 {...stylex.props(Styles.sectionTitle)}>회의 현황</h2>
@@ -24,6 +26,12 @@ const Home = () => {
 export default Home;
 
 const Styles = stylex.create({
+  userGreetingSection: {
+    width: '100%',
+    padding: '0 16px',
+    marginTop: '16px',
+    marginBottom: '32px',
+  },
   meetingStatusSection: {
     width: '100%',
     padding: '0 16px',

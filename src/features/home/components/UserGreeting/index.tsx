@@ -21,9 +21,7 @@ export default UserGreeting;
 
 const Styles = stylex.create({
   container: {
-    marginBottom: '32px',
     width: '100%',
-    padding: '0 16px',
     display: 'flex',
     gap: '16px',
     alignItems: 'center',
