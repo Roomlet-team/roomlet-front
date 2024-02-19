@@ -3,6 +3,7 @@ import stylex from '@stylexjs/stylex';
 import GnbNavLayout from '@src/layouts/GnbNavLayout';
 import UserGreeting from '@src/features/home/components/UserGreeting';
 import MeetingStatus from '@src/features/home/components/MeetingStatus';
+import TimeLine from '@src/features/home/components/TimeLine';
 
 const Home = () => {
   console.log('');
@@ -19,6 +20,10 @@ const Home = () => {
         <MeetingStatus />
       </section>
       {/* 타임 라인 섹션 */}
+      <section {...stylex.props(Styles.timeLineSection)}>
+        <h2 {...stylex.props(Styles.sectionTitle, Styles.timeLineSectionTitle)}>타임라인</h2>
+        <TimeLine />
+      </section>
     </GnbNavLayout>
   );
 };
@@ -37,11 +42,17 @@ const Styles = stylex.create({
     padding: '0 16px',
     marginBottom: '24px',
   },
+  timeLineSection: {
+    height: '100%',
+  },
   sectionTitle: {
     marginBottom: '16px',
     fontSize: '1.6rem',
     fontWeight: '600',
     lineHeight: '2.4rem',
     color: '#616161',
+  },
+  timeLineSectionTitle: {
+    padding: '0 16px',
   },
 });
