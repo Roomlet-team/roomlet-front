@@ -8,15 +8,17 @@ const TimeLine = () => {
   return (
     <div {...stylex.props(Styles.container)}>
       <div {...stylex.props(Styles.timeAndMeetingDivider)} />
-      <div {...stylex.props(Styles.timeAndMeetingContent)}>
-        <div {...stylex.props(Styles.timeContent)}>
-          <span {...stylex.props(Styles.timeText)}>09:00</span>
-          <div {...stylex.props(Styles.timeDot)} />
-        </div>
-        <div {...stylex.props(Styles.meetingContent)}>
-          <div {...stylex.props(Styles.detailContent)}>
-            <p {...stylex.props(Styles.titleText)}>룸렛 회의</p>
-            <div {...stylex.props(Styles.categoryTag)}>기획</div>
+      <div {...stylex.props(Styles.scrollContainer)}>
+        <div {...stylex.props(Styles.timeAndMeetingContent)}>
+          <div {...stylex.props(Styles.timeContent)}>
+            <span {...stylex.props(Styles.timeText)}>09:00</span>
+            <div {...stylex.props(Styles.timeDot)} />
+          </div>
+          <div {...stylex.props(Styles.meetingContent)}>
+            <div {...stylex.props(Styles.detailContent)}>
+              <p {...stylex.props(Styles.titleText)}>룸렛 회의</p>
+              <div {...stylex.props(Styles.categoryTag)}>기획</div>
+            </div>
           </div>
         </div>
       </div>
@@ -37,6 +39,16 @@ const Styles = stylex.create({
     paddingTop: '30px',
     position: 'relative',
     borderTop: '1px solid #F2F2F2',
+  },
+  scrollContainer: {
+    width: '100%',
+    height: 'calc(100vh - 374px)',
+    paddingTop: '30px',
+    paddingBottom: '70px',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    overflowY: 'auto',
   },
   timeAndMeetingDivider: {
     position: 'absolute',

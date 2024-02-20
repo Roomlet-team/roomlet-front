@@ -19,5 +19,6 @@ const Styles = stylex.create({
     height: '100%',
     margin: '0 auto',
     maxWidth: '767px',
+    overflowY: 'hidden',
   },
 });
