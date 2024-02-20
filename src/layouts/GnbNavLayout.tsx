@@ -39,7 +39,7 @@ const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
       name: '캘린더',
       onIcon: <CalendarTwoTone width={24} height={24} />,
       offIcon: <CalendarOutlined width={24} height={24} />,
-      href: '/calender',
+      href: '/calendar',
     },
     {
       id: 1,
