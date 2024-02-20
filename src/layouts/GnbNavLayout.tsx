@@ -11,7 +11,7 @@ import ListTwoTone from '@src/components/icons/ListTwoTone';
 import MypageOutlined from '@src/components/icons/MypageOutlined';
 
 type GnbNavLayoutProps = {
-  backgroundColor: string;
+  backgroundColor?: string;
   children: React.ReactElement | React.ReactElement[] | string;
 };
 
