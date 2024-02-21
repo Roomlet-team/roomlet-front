@@ -17,19 +17,36 @@ const MonthlyCalendar = () => {
       .format('DD')
   ); // 지난달의 마지막 날
 
+  const getColorDay = (day) => {
+    switch (day) {
+      // 일요일
+      case 0:
+        return 'var(--Red-300)';
+      // 토요일
+      case 6:
+        return 'var(--Blue-300)';
+      default:
+        return '#5F5656';
+    }
+  };
+
   return (
     <div>
       <h1 {...stylex.props(Styles.currentMonthText)}>{dayjs().format('YYYY.MM')}</h1>
-      <table>
+      <table {...stylex.props(Styles.calenderContent)}>
         <thead>
-          <tr>{React.Children.toArray(dayOfTheWeek.map((day) => <th>{day}</th>))}</tr>
+          <tr {...stylex.props(Styles.daysContent)}>
+            {React.Children.toArray(
+              dayOfTheWeek.map((day, idx) => <th {...stylex.props(Styles.dayText(getColorDay(idx)))}>{day}</th>)
+            )}
+          </tr>
         </thead>
         <tbody>
           {React.Children.toArray(
             Array(numOfWeek)
               .fill('')
               .map((_, weekIdx) => (
-                <tr>
+                <tr {...stylex.props(Styles.weekContent)}>
                   {React.Children.toArray(
                     Array(7)
                       .fill('')
@@ -37,15 +54,27 @@ const MonthlyCalendar = () => {
                         const dateValue = weekIdx * 7 - startDay + (dateIdx + 1);
                         // 이번달
                         if (dateValue > 0 && dateValue <= lastDateOfTheMonth) {
-                          return <td>{dateValue}</td>;
+                          return (
+                            <td {...stylex.props(Styles.dateText, Styles.currentMonthDateText(getColorDay(dateIdx)))}>
+                              {dateValue}
+                            </td>
+                          );
                         }
                         // 지난달
                         if (dateValue <= 0) {
-                          return <td>{dateValue + lastDateOfTheLastMonth + 2}</td>;
+                          return (
+                            <td {...stylex.props(Styles.dateText, Styles.notCurrentMonthDateText)}>
+                              {dateValue + lastDateOfTheLastMonth + 2}
+                            </td>
+                          );
                         }
                         // 다음달
                         if (dateValue > lastDateOfTheMonth) {
-                          return <td>{dateValue - lastDateOfTheMonth}</td>;
+                          return (
+                            <td {...stylex.props(Styles.dateText, Styles.notCurrentMonthDateText)}>
+                              {dateValue - lastDateOfTheMonth}
+                            </td>
+                          );
                         }
                       })
                   )}
@@ -68,5 +97,39 @@ const Styles = stylex.create({
     fontWeight: '700',
     lineHeight: '2.6rem',
     color: '#333333',
+  },
+  calenderContent: {
+    width: '100%',
+    fontSize: '1.6rem',
+    fontWeight: '700',
+    lineHeight: '2.4rem',
+    color: '#5F5656',
+  },
+  daysContent: {
+    padding: '16px 20px',
+    display: 'flex',
+    gap: '29px',
+  },
+  dayText: (color) => ({
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    color,
+  }),
+  weekContent: {
+    padding: '16px 20px',
+    display: 'flex',
+    gap: '29px',
+  },
+  dateText: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  currentMonthDateText: (color) => ({
+    color,
+  }),
+  notCurrentMonthDateText: {
+    color: '#E2E2E2',
   },
 });
