@@ -93,3 +93,15 @@ ul {
   padding: 0;
   list-style: none;
 }
+
+button {
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+th,
+tr,
+td {
+  padding: 0;
+}
