@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useState } from 'react';
 import stylex from '@stylexjs/stylex';
 
 const MonthlyCalendar = () => {
+  const [selectDate, setSelectDate] = useState<number>(dayjs().date());
   const dayOfTheWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const currentMonth = dayjs().month();
   const startDay = Number(dayjs().startOf('month').month(currentMonth).day()); // 1일에 해당하는 요일
@@ -30,6 +31,10 @@ const MonthlyCalendar = () => {
     }
   };
 
+  const handleClickDate = (date) => {
+    setSelectDate(date);
+  };
+
   return (
     <div>
       <h1 {...stylex.props(Styles.currentMonthText)}>{dayjs().format('YYYY.MM')}</h1>
@@ -55,24 +60,53 @@ const MonthlyCalendar = () => {
                         // 이번달
                         if (dateValue > 0 && dateValue <= lastDateOfTheMonth) {
                           return (
-                            <td {...stylex.props(Styles.dateText, Styles.currentMonthDateText(getColorDay(dateIdx)))}>
-                              {dateValue}
+                            <td {...stylex.props(Styles.dateContent)}>
+                              <button
+                                type="button"
+                                onClick={() => handleClickDate(dateValue)}
+                                {...stylex.props(
+                                  Styles.currentMonthDateText(getColorDay(dateIdx)),
+                                  dateValue === selectDate && Styles.selectedDate
+                                )}
+                              >
+                                <span {...stylex.props(Styles.dateText)}>{dateValue}</span>
+                              </button>
                             </td>
                           );
                         }
                         // 지난달
                         if (dateValue <= 0) {
                           return (
-                            <td {...stylex.props(Styles.dateText, Styles.notCurrentMonthDateText)}>
-                              {dateValue + lastDateOfTheLastMonth + 2}
+                            <td {...stylex.props(Styles.dateContent)}>
+                              <button
+                                type="button"
+                                onClick={() => handleClickDate(dateValue)}
+                                {...stylex.props(
+                                  Styles.notCurrentMonthDateText,
+                                  Styles.dateBtn,
+                                  dateValue === selectDate && Styles.selectedDate
+                                )}
+                              >
+                                <span {...stylex.props(Styles.dateText)}>{dateValue + lastDateOfTheLastMonth + 2}</span>
+                              </button>
                             </td>
                           );
                         }
                         // 다음달
                         if (dateValue > lastDateOfTheMonth) {
                           return (
-                            <td {...stylex.props(Styles.dateText, Styles.notCurrentMonthDateText)}>
-                              {dateValue - lastDateOfTheMonth}
+                            <td {...stylex.props(Styles.dateContent)}>
+                              <button
+                                type="button"
+                                onClick={() => handleClickDate(dateValue)}
+                                {...stylex.props(
+                                  Styles.notCurrentMonthDateText,
+                                  Styles.dateBtn,
+                                  dateValue === selectDate && Styles.selectedDate
+                                )}
+                              >
+                                <span {...stylex.props(Styles.dateText)}>{dateValue - lastDateOfTheMonth}</span>
+                              </button>
                             </td>
                           );
                         }
@@ -121,7 +155,9 @@ const Styles = stylex.create({
     display: 'flex',
     gap: '29px',
   },
-  dateText: {
+  dateContent: {
+    width: '24px',
+    height: '24px',
     display: 'flex',
     flex: 1,
     justifyContent: 'center',
@@ -131,5 +167,26 @@ const Styles = stylex.create({
   }),
   notCurrentMonthDateText: {
     color: '#E2E2E2',
+  },
+  dateText: {
+    paddingTop: '1px',
+  },
+  dateBtn: {
+    background: 'none',
+    border: 'none',
+  },
+  selectedDate: {
+    width: '24px',
+    height: '24px',
+    display: 'flex',
+    flexShrink: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: `var(--Base-White)`,
+    backgroundColor: '#191616',
+    borderRadius: '50%',
+    fontSize: '1.4rem',
+    lineHeight: '1rem',
+    fontWeight: '600',
   },
 });
