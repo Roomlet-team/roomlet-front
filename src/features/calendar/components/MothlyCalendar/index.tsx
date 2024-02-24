@@ -142,24 +142,24 @@ const Styles = stylex.create({
   daysContent: {
     padding: '16px 20px',
     display: 'flex',
-    gap: '29px',
+    justifyContent: 'space-between',
   },
   dayText: (color) => ({
+    width: '24px',
+    height: '24px',
     display: 'flex',
-    flex: 1,
     justifyContent: 'center',
     color,
   }),
   weekContent: {
     padding: '16px 20px',
     display: 'flex',
-    gap: '29px',
+    justifyContent: 'space-between',
   },
   dateContent: {
     width: '24px',
     height: '24px',
     display: 'flex',
-    flex: 1,
     justifyContent: 'center',
   },
   currentMonthDateText: (color) => ({
@@ -172,6 +172,8 @@ const Styles = stylex.create({
     paddingTop: '1px',
   },
   dateBtn: {
+    width: '24px',
+    height: '24px',
     background: 'none',
     border: 'none',
   },
