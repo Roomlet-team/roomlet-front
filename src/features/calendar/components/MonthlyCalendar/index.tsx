@@ -1,22 +1,24 @@
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 
 const MonthlyCalendar = () => {
+  const [monthList, setMonthList] = useState<string[]>(['2024-02']);
   const [selectDate, setSelectDate] = useState<number>(dayjs().date());
   const dayOfTheWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-  const currentMonth = dayjs().month();
-  const startDay = Number(dayjs().startOf('month').month(currentMonth).day()); // 1일에 해당하는 요일
-  //   const endDay = Number(dayjs().endOf('month').month(currentMonth).day()); // 마지막날에 해당하는 요일
-  const lastDateOfTheMonth = Number(dayjs().month(currentMonth).endOf('month').format('DD')); // 이번달의 마지막 날
-  const numOfWeek = Math.floor(lastDateOfTheMonth / 7) + (startDay > 4 ? 2 : 1); // 1일이 금요일부터 시작되면 한 주를 더 해준다.
-  // 지난달
-  const lastDateOfTheLastMonth = Number(
-    dayjs()
-      .endOf('month')
-      .month(currentMonth - 1 === -1 ? 11 : currentMonth - 1)
-      .format('DD')
-  ); // 지난달의 마지막 날
+  const getCurrentMonth = (ym) => dayjs(ym).month();
+  const getStartDay = (ym) => Number(dayjs(ym).startOf('month').month(getCurrentMonth(ym)).day()); // 1일에 해당하는 요일
+  //   const endDay = Number(dayjs('2024-03').endOf('month').month(currentMonth).day()); // 마지막날에 해당하는 요일
+  const getLastDateOfTheMonth = (ym) => Number(dayjs('2024-03').month(getCurrentMonth(ym)).endOf('month').format('DD')); // 이번달의 마지막 날
+  const getNumOfWeek = (ym) => Math.floor(getLastDateOfTheMonth(ym) / 7) + (getStartDay(ym) > 4 ? 2 : 1); // 1일이 금요일부터 시작되면 한 주를 더 해준다.
+  const getLastDateOfTheLastMonth = (ym) =>
+    Number(
+      dayjs(ym)
+        .subtract(1, 'month')
+        .endOf('month')
+        .month(0 - 1 === -1 ? 11 : 0)
+        .format('DD')
+    ); // 지난달의 마지막 날
 
   const getColorDay = (day) => {
     switch (day) {
@@ -35,88 +37,102 @@ const MonthlyCalendar = () => {
     setSelectDate(date);
   };
 
+  useEffect(() => {
+    setMonthList(['2024-01', ...monthList, '2024-03']);
+  }, []);
+
   return (
-    <div>
-      <h1 {...stylex.props(Styles.currentMonthText)}>{dayjs().format('YYYY.MM')}</h1>
-      <table {...stylex.props(Styles.calenderContent)}>
-        <thead>
-          <tr {...stylex.props(Styles.daysContent)}>
-            {React.Children.toArray(
-              dayOfTheWeek.map((day, idx) => <th {...stylex.props(Styles.dayText(getColorDay(idx)))}>{day}</th>)
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {React.Children.toArray(
-            Array(numOfWeek)
-              .fill('')
-              .map((_, weekIdx) => (
-                <tr {...stylex.props(Styles.weekContent)}>
+    <div {...stylex.props(Styles.scrollWrapper)}>
+      {monthList.map((ym) => (
+        <div {...stylex.props(Styles.scrollContent)}>
+          <div {...stylex.props(Styles.monthlyContent)}>
+            <h1 {...stylex.props(Styles.currentMonthText)}>{dayjs(ym).format('YYYY.MM')}</h1>
+            <table {...stylex.props(Styles.calenderContent)}>
+              <thead>
+                <tr {...stylex.props(Styles.daysContent)}>
                   {React.Children.toArray(
-                    Array(7)
-                      .fill('')
-                      .map((_, dateIdx) => {
-                        const dateValue = weekIdx * 7 - startDay + (dateIdx + 1);
-                        // 이번달
-                        if (dateValue > 0 && dateValue <= lastDateOfTheMonth) {
-                          return (
-                            <td {...stylex.props(Styles.dateContent)}>
-                              <button
-                                type="button"
-                                onClick={() => handleClickDate(dateValue)}
-                                {...stylex.props(
-                                  Styles.currentMonthDateText(getColorDay(dateIdx)),
-                                  dateValue === selectDate && Styles.selectedDate
-                                )}
-                              >
-                                <span {...stylex.props(Styles.dateText)}>{dateValue}</span>
-                              </button>
-                            </td>
-                          );
-                        }
-                        // 지난달
-                        if (dateValue <= 0) {
-                          return (
-                            <td {...stylex.props(Styles.dateContent)}>
-                              <button
-                                type="button"
-                                onClick={() => handleClickDate(dateValue)}
-                                {...stylex.props(
-                                  Styles.notCurrentMonthDateText,
-                                  Styles.dateBtn,
-                                  dateValue === selectDate && Styles.selectedDate
-                                )}
-                              >
-                                <span {...stylex.props(Styles.dateText)}>{dateValue + lastDateOfTheLastMonth + 2}</span>
-                              </button>
-                            </td>
-                          );
-                        }
-                        // 다음달
-                        if (dateValue > lastDateOfTheMonth) {
-                          return (
-                            <td {...stylex.props(Styles.dateContent)}>
-                              <button
-                                type="button"
-                                onClick={() => handleClickDate(dateValue)}
-                                {...stylex.props(
-                                  Styles.notCurrentMonthDateText,
-                                  Styles.dateBtn,
-                                  dateValue === selectDate && Styles.selectedDate
-                                )}
-                              >
-                                <span {...stylex.props(Styles.dateText)}>{dateValue - lastDateOfTheMonth}</span>
-                              </button>
-                            </td>
-                          );
-                        }
-                      })
+                    dayOfTheWeek.map((day, idx) => <th {...stylex.props(Styles.dayText(getColorDay(idx)))}>{day}</th>)
                   )}
                 </tr>
-              ))
-          )}
-        </tbody>
-      </table>
+              </thead>
+              <tbody>
+                {React.Children.toArray(
+                  Array(getNumOfWeek(ym))
+                    .fill('')
+                    .map((_, weekIdx) => (
+                      <tr {...stylex.props(Styles.weekContent)}>
+                        {React.Children.toArray(
+                          Array(7)
+                            .fill('')
+                            .map((_, dateIdx) => {
+                              const dateValue = weekIdx * 7 - getStartDay(ym) + (dateIdx + 1);
+                              // 이번달
+                              if (dateValue > 0 && dateValue <= getLastDateOfTheMonth(ym)) {
+                                return (
+                                  <td {...stylex.props(Styles.dateContent)}>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleClickDate(dateValue)}
+                                      {...stylex.props(
+                                        Styles.currentMonthDateText(getColorDay(dateIdx)),
+                                        dateValue === selectDate && Styles.selectedDate
+                                      )}
+                                    >
+                                      <span {...stylex.props(Styles.dateText)}>{dateValue}</span>
+                                    </button>
+                                  </td>
+                                );
+                              }
+                              // 지난달
+                              if (dateValue <= 0) {
+                                return (
+                                  <td {...stylex.props(Styles.dateContent)}>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleClickDate(dateValue)}
+                                      {...stylex.props(
+                                        Styles.notCurrentMonthDateText,
+                                        Styles.dateBtn,
+                                        dateValue === selectDate && Styles.selectedDate
+                                      )}
+                                    >
+                                      <span {...stylex.props(Styles.dateText)}>
+                                        {dateValue + getLastDateOfTheLastMonth(ym)}
+                                      </span>
+                                    </button>
+                                  </td>
+                                );
+                              }
+                              // 다음달
+                              if (dateValue > getLastDateOfTheMonth(ym)) {
+                                return (
+                                  <td {...stylex.props(Styles.dateContent)}>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleClickDate(dateValue)}
+                                      {...stylex.props(
+                                        Styles.notCurrentMonthDateText,
+                                        Styles.dateBtn,
+                                        dateValue === selectDate && Styles.selectedDate
+                                      )}
+                                    >
+                                      <span {...stylex.props(Styles.dateText)}>
+                                        {dateValue - getLastDateOfTheMonth(ym)}
+                                      </span>
+                                    </button>
+                                  </td>
+                                );
+                              }
+                            })
+                        )}
+                      </tr>
+                    ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
@@ -124,7 +140,17 @@ const MonthlyCalendar = () => {
 export default MonthlyCalendar;
 
 const Styles = stylex.create({
-  wrapper: (backgroundColor) => ({ backgroundColor, height: '100%', paddingBottom: '90px' }),
+  scrollWrapper: {
+    display: 'flex',
+    overflow: 'auto',
+    scrollSnapType: 'x mandatory',
+    '::-webkit-scrollbar': {
+      // 스크롤바 보이지 않게 설정
+      backgroundColor: 'rgba(0,0,0,0)',
+    },
+  },
+  scrollContent: { width: '100%', height: 'auto', display: 'flex', flexShrink: 0, scrollSnapAlign: 'start' },
+  monthlyContent: { width: '100%', height: '100%' },
   currentMonthText: {
     padding: '16px 20px',
     fontSize: '2rem',
