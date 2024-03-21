@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import stylex from '@stylexjs/stylex';
 import MainLayout from './MainLayout';
 import HomeTwoTone from '@src/components/icons/HomeTwoTone';
@@ -57,18 +58,31 @@ const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
     },
   ];
 
+  // 현재 접속한 페이지가 mainPath(메인 메뉴)의 하위 페이지인지 체크
+  const checkSameMainPath = (mainPath) => {
+    const pathName = router.pathname;
+
+    return (
+      pathName.indexOf(mainPath) === 0 && (pathName.length === mainPath.length || pathName[mainPath.length] === '/')
+    );
+  };
+
   return (
     <MainLayout>
       <main {...stylex.props(Styles.wrapper(backgroundColor))}>{children}</main>
       <div {...stylex.props(Styles.gnbNavContent)}>
         <ul {...stylex.props(Styles.gnbNavList)}>
           {menuList.map((item) => {
-            const isActive = router.asPath === item.href || router.asPath.indexOf(item.href) > -1;
+            const isActive = checkSameMainPath(item.href);
 
             return (
-              <li key={item.id} {...stylex.props(Styles.gnbNavItem, isActive && Styles.gnbNavItemActive)}>
-                {isActive ? item.onIcon : item.offIcon}
-                <span>{item.name}</span>
+              <li key={item.id} {...stylex.props(Styles.gnbNavItem)}>
+                <Link href={item.href} passHref legacyBehavior>
+                  <a href="alternative" {...stylex.props(Styles.gnbNavItemLink, isActive && Styles.gnbNavItemActive)}>
+                    {isActive ? item.onIcon : item.offIcon}
+                    <span>{item.name}</span>
+                  </a>
+                </Link>
               </li>
             );
           })}
@@ -97,17 +111,22 @@ const Styles = stylex.create({
     gap: '8px',
     justifyContent: 'space-between',
   },
-  gnbNavItem: {
-    padding: '0 11px',
+  gnbNavItemLink: {
     display: 'flex',
     gap: '8px',
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    textDecoration: 'unset',
     fontSize: '12px',
     fontWeight: '500',
     lineHeight: '1',
     color: `var(--Gray-10)`,
+  },
+  gnbNavItem: {
+    padding: '0 11px',
+    display: 'flex',
+    flex: 1,
     flexShrink: 0,
   },
   gnbNavItemActive: {
