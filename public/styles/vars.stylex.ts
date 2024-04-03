@@ -25,3 +25,156 @@ export const colors = stylex.defineVars({
 export const BackgroundColor = stylex.defineVars({
   gradientBlackBg: 'linear-gradient(219deg, #384149 0%, #000 100%);',
 });
+
+export const Typography = stylex.defineVars({
+  // Title
+  TitleLargeBold: {
+    fontWeight: '700',
+    fontSize: '2.4rem',
+    lineHeight: '3.4rem',
+  },
+  TitleLargeSemiBold: {
+    fontWeight: '600',
+    fontSize: '2.4rem',
+    lineHeight: '3.4rem',
+  },
+  TitleLargeMedium: {
+    fontWeight: '500',
+    fontSize: '2.4rem',
+    lineHeight: '3.4rem',
+  },
+  TitleLargeRegular: {
+    fontWeight: '400',
+    fontSize: '2.4rem',
+    lineHeight: '3.4rem',
+  },
+  TitleRegularSemiBold: {
+    fontWeight: '600',
+    fontSize: '2.2rem',
+    lineHeight: '2.6rem',
+  },
+  TitleSmallBold: {
+    fontWeight: '700',
+    fontSize: '2rem',
+    lineHeight: '2.4rem',
+  },
+  TitleSmallSemiBold: {
+    fontWeight: '600',
+    fontSize: '2rem',
+    lineHeight: '2.4rem',
+  },
+  TitleSmallSemiBold32: {
+    fontWeight: '600',
+    fontSize: '2rem',
+    lineHeight: '3.2rem',
+  },
+  // Subtitle
+  SubtitleLargeBold32: {
+    fontWeight: '700',
+    fontSize: '1.7rem',
+    lineHeight: '3.2rem',
+  },
+  SubtitleLargeSemiBold: {
+    fontWeight: '600',
+    fontSize: '1.7rem',
+    lineHeight: '2.4rem',
+  },
+  SubtitleRegularBold: {
+    fontWeight: '700',
+    fontSize: '1.6rem',
+    lineHeight: '2.4rem',
+  },
+  SubtitleRegularSemiBold: {
+    fontWeight: '600',
+    fontSize: '1.6rem',
+    lineHeight: '2.4rem',
+  },
+  SubtitleSmallSemiBold: {
+    fontWeight: '600',
+    fontSize: '1.4rem',
+    lineHeight: '2.2rem',
+  },
+  // Text
+  TextXLargeSemiBold: {
+    fontWeight: '600',
+    fontSize: '3.2rem',
+    lineHeight: '3.8rem',
+  },
+  TextLargeMedium: {
+    fontWeight: '500',
+    fontSize: '2rem',
+    lineHeight: '2.4rem',
+  },
+  TextRegularBold: {
+    fontWeight: '700',
+    fontSize: '1.8rem',
+    lineHeight: '2.6rem',
+  },
+  TextRegularMedium: {
+    fontWeight: '500',
+    fontSize: '1.8rem',
+    lineHeight: '2.6rem',
+  },
+  TextSmallMedium: {
+    fontWeight: '500',
+    fontSize: '1.6rem',
+    lineHeight: '2.4rem',
+  },
+  TextSmallRegular: {
+    fontWeight: '400',
+    fontSize: '1.6rem',
+    lineHeight: '2.4rem',
+  },
+  TextSmallRegular32: {
+    fontWeight: '400',
+    fontSize: '1.6rem',
+    lineHeight: '3.2rem',
+  },
+  // Caption
+  CaptionLargeSemiBold: {
+    fontWeight: '600',
+    fontSize: '1.5rem',
+    lineHeight: '2.4rem',
+  },
+  CaptionLargeRegular: {
+    fontWeight: '400',
+    fontSize: '1.5rem',
+    lineHeight: '2.4rem',
+  },
+  CaptionRegularMedium: {
+    fontWeight: '500',
+    fontSize: '1.4rem',
+    lineHeight: '2rem',
+  },
+  CaptionRegularRegular: {
+    fontWeight: '400',
+    fontSize: '1.4rem',
+    lineHeight: '2rem',
+  },
+  // Tag
+  TagLargeSemiBold: {
+    fontWeight: '600',
+    fontSize: '1.3rem',
+    lineHeight: '1.4rem',
+  },
+  TagLargeMedium: {
+    fontWeight: '500',
+    fontSize: '1.3rem',
+    lineHeight: '1.4rem',
+  },
+  TagLargeRegular: {
+    fontWeight: '400',
+    fontSize: '1.3rem',
+    lineHeight: '1.4rem',
+  },
+  TagRegularRegular: {
+    fontWeight: '400',
+    fontSize: '1.2rem',
+    lineHeight: '1.6rem',
+  },
+  TagSmallMedium: {
+    fontWeight: '500',
+    fontSize: '1rem',
+    lineHeight: '1rem',
+  },
+});
