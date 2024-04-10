@@ -31,51 +31,21 @@ export const Typography = stylex.create({
   TitleLargeBold: {
     fontWeight: '700',
     fontSize: '2.4rem',
-    lineHeight: '3.4rem',
+    lineHeight: '4rem',
   },
-  TitleLargeSemiBold: {
-    fontWeight: '600',
-    fontSize: '2.4rem',
-    lineHeight: '3.4rem',
-  },
-  TitleLargeMedium: {
-    fontWeight: '500',
-    fontSize: '2.4rem',
-    lineHeight: '3.4rem',
-  },
-  TitleLargeRegular: {
-    fontWeight: '400',
-    fontSize: '2.4rem',
-    lineHeight: '3.4rem',
-  },
-  TitleRegularSemiBold: {
-    fontWeight: '600',
-    fontSize: '2.2rem',
-    lineHeight: '2.6rem',
-  },
-  TitleSmallBold: {
+  TitleRegularBold: {
     fontWeight: '700',
     fontSize: '2rem',
-    lineHeight: '2.4rem',
+    lineHeight: '2.6rem',
   },
   TitleSmallSemiBold: {
     fontWeight: '600',
-    fontSize: '2rem',
-    lineHeight: '2.4rem',
-  },
-  TitleSmallSemiBold32: {
-    fontWeight: '600',
-    fontSize: '2rem',
-    lineHeight: '3.2rem',
+    fontSize: '1.8rem',
+    lineHeight: '2.6rem',
   },
   // Subtitle
-  SubtitleLargeBold32: {
+  SubtitleLargeBold: {
     fontWeight: '700',
-    fontSize: '1.7rem',
-    lineHeight: '3.2rem',
-  },
-  SubtitleLargeSemiBold: {
-    fontWeight: '600',
     fontSize: '1.7rem',
     lineHeight: '2.4rem',
   },
@@ -89,29 +59,24 @@ export const Typography = stylex.create({
     fontSize: '1.6rem',
     lineHeight: '2.4rem',
   },
-  SubtitleSmallSemiBold: {
-    fontWeight: '600',
+  SubtitleSmallBold: {
+    fontWeight: '700',
     fontSize: '1.4rem',
-    lineHeight: '2.2rem',
+    lineHeight: '2rem',
   },
   // Text
-  TextXLargeSemiBold: {
-    fontWeight: '600',
-    fontSize: '3.2rem',
-    lineHeight: '3.8rem',
+  TextXLargeBold: {
+    fontWeight: '700',
+    fontSize: '2.8rem',
+    lineHeight: '3.4rem',
   },
-  TextLargeMedium: {
+  TextLargeBold: {
     fontWeight: '500',
-    fontSize: '2rem',
-    lineHeight: '2.4rem',
+    fontSize: '2.4rem',
+    lineHeight: '3.2rem',
   },
   TextRegularBold: {
     fontWeight: '700',
-    fontSize: '1.8rem',
-    lineHeight: '2.6rem',
-  },
-  TextRegularMedium: {
-    fontWeight: '500',
     fontSize: '1.8rem',
     lineHeight: '2.6rem',
   },
@@ -125,52 +90,27 @@ export const Typography = stylex.create({
     fontSize: '1.6rem',
     lineHeight: '2.4rem',
   },
-  TextSmallRegular32: {
-    fontWeight: '400',
-    fontSize: '1.6rem',
-    lineHeight: '3.2rem',
-  },
   // Caption
-  CaptionLargeSemiBold: {
-    fontWeight: '600',
-    fontSize: '1.5rem',
-    lineHeight: '2.4rem',
-  },
   CaptionLargeRegular: {
     fontWeight: '400',
-    fontSize: '1.5rem',
-    lineHeight: '2.4rem',
-  },
-  CaptionRegularMedium: {
-    fontWeight: '500',
-    fontSize: '1.4rem',
-    lineHeight: '2rem',
+    fontSize: '1.3rem',
+    lineHeight: '1.8rem',
   },
   CaptionRegularRegular: {
     fontWeight: '400',
-    fontSize: '1.4rem',
-    lineHeight: '2rem',
+    fontSize: '1.2rem',
+    lineHeight: '1.6rem',
   },
   // Tag
-  TagLargeSemiBold: {
-    fontWeight: '600',
-    fontSize: '1.3rem',
-    lineHeight: '1.4rem',
-  },
   TagLargeMedium: {
     fontWeight: '500',
     fontSize: '1.3rem',
-    lineHeight: '1.4rem',
+    lineHeight: '1.8rem',
   },
-  TagLargeRegular: {
-    fontWeight: '400',
-    fontSize: '1.3rem',
-    lineHeight: '1.4rem',
-  },
-  TagRegularRegular: {
+  TagRegularMedium: {
     fontWeight: '400',
     fontSize: '1.2rem',
-    lineHeight: '1.6rem',
+    lineHeight: '100%',
   },
   TagSmallMedium: {
     fontWeight: '500',
