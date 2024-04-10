@@ -112,9 +112,15 @@ export const Typography = stylex.create({
     fontSize: '1.2rem',
     lineHeight: '100%',
   },
-  TagSmallMedium: {
+  // Nav
+  NavLargeMedium: {
     fontWeight: '500',
-    fontSize: '1rem',
-    lineHeight: '1rem',
+    fontSize: '1.2rem',
+    lineHeight: '100%',
+  },
+  NavLargeRegular: {
+    fontWeight: '400',
+    fontSize: '1.2rem',
+    lineHeight: '100%',
   },
 });
