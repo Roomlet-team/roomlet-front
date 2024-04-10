@@ -26,7 +26,7 @@ export const BackgroundColor = stylex.defineVars({
   gradientBlackBg: 'linear-gradient(219deg, #384149 0%, #000 100%);',
 });
 
-export const Typography = stylex.defineVars({
+export const Typography = stylex.create({
   // Title
   TitleLargeBold: {
     fontWeight: '700',
