@@ -90,6 +90,27 @@ export const Typography = stylex.create({
     fontSize: '1.6rem',
     lineHeight: '2.4rem',
   },
+  // SubText
+  SubTextLargeSemiBold: {
+    fontWeight: '600',
+    fontSize: '1.4rem',
+    lineHeight: '2rem',
+  },
+  SubTextLargeMedium: {
+    fontWeight: '500',
+    fontSize: '1.4rem',
+    lineHeight: '2rem',
+  },
+  SubTextLargeRegular: {
+    fontWeight: '400',
+    fontSize: '1.4rem',
+    lineHeight: '2rem',
+  },
+  SubTextRegularSemiBold: {
+    fontWeight: '600',
+    fontSize: '1.2rem',
+    lineHeight: '1.8rem',
+  },
   // Caption
   CaptionLargeRegular: {
     fontWeight: '400',
