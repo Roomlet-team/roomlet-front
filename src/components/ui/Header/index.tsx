@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
 import stylex from '@stylexjs/stylex';
-import { Typography } from '@public/styles/vars.stylex';
+import { Typography } from '../../../../public/styles/vars.stylex';
 import ArrowHeadOutlined from '@src/components/icons/ArrowHeadOutlined';
 
 type HeaderProps = {
