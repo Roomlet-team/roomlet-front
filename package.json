@@ -13,9 +13,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@ant-design/cssinjs": "^1.20.0",
     "@reduxjs/toolkit": "^2.1.0",
     "@stylexjs/nextjs-plugin": "^0.4.1",
     "@stylexjs/stylex": "^0.4.1",
+    "antd": "^5.16.4",
     "dayjs": "^1.11.10",
     "next": "^14.0.4",
     "react": "^18.2.0",
