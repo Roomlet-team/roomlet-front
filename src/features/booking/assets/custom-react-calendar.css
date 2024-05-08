@@ -1,0 +1,173 @@
+.mini-calendar.react-calendar {
+  width: 350px;
+  max-width: 100%;
+  background: white;
+  border: 1px solid #a0a096;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.125em;
+}
+
+.mini-calendar.react-calendar--doubleView {
+  width: 700px;
+}
+
+.mini-calendar.react-calendar--doubleView .mini-calendar.react-calendar__viewContainer {
+  display: flex;
+  margin: -0.5em;
+}
+
+.mini-calendar.react-calendar--doubleView .mini-calendar.react-calendar__viewContainer > * {
+  width: 50%;
+  margin: 0.5em;
+}
+
+.mini-calendar.react-calendar,
+.mini-calendar.react-calendar *,
+.mini-calendar.react-calendar *:before,
+.mini-calendar.react-calendar *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.mini-calendar.react-calendar button {
+  margin: 0;
+  border: 0;
+  outline: none;
+}
+
+.mini-calendar.react-calendar button:enabled:hover {
+  cursor: pointer;
+}
+
+.mini-calendar.react-calendar__navigation {
+  display: flex;
+  height: 44px;
+  margin-bottom: 1em;
+}
+
+.mini-calendar.react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+}
+
+.mini-calendar.react-calendar__navigation button:disabled {
+  background-color: #f0f0f0;
+}
+
+.mini-calendar.react-calendar__navigation button:enabled:hover,
+.mini-calendar.react-calendar__navigation button:enabled:focus {
+  background-color: #e6e6e6;
+}
+
+.mini-calendar.react-calendar__month-view__weekdays {
+  text-align: center;
+  font: inherit;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+
+.mini-calendar.react-calendar__month-view__weekdays__weekday {
+  flex: none !important;
+  padding: 0.5em;
+}
+
+.react-calendar__month-view__weekdays {
+  background: none;
+  abbr {
+    /*월,화,수... 글자 부분*/
+    color: black;
+    font-size: 1.4rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+}
+
+.mini-calendar.react-calendar__month-view__weekNumbers .react-calendar__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-size: 0.75em;
+  font-weight: bold;
+}
+
+.mini-calendar.react-calendar__month-view__days__day--weekend {
+  color: #d10000;
+}
+
+.mini-calendar.react-calendar__month-view__days__day--neighboringMonth,
+.mini-calendar.react-calendar__decade-view__years__year--neighboringDecade,
+.mini-calendar.react-calendar__century-view__decades__decade--neighboringCentury {
+  color: #e2e2e2;
+}
+
+.mini-calendar.react-calendar__year-view .mini-calendar.react-calendar__tile,
+.mini-calendar.react-calendar__decade-view .mini-calendar.react-calendar__tile,
+.mini-calendar.react-calendar__century-view .mini-calendar.react-calendar__tile {
+  padding: 2em 0.5em;
+}
+
+.mini-calendar.react-calendar__tile {
+  flex: none !important; /* flex가 디폴트로 약 14%로 설정되어 있음 */
+  width: 22px;
+  height: 22px;
+  max-width: 100%;
+  margin: 12px 16px;
+  /* padding: 10px 6.6667px; */
+  background: none;
+  text-align: center;
+  line-height: 16px;
+  font: inherit;
+  font-size: 0.833em;
+  border-radius: 50%;
+}
+
+.mini-calendar.react-calendar__tile:disabled {
+  background-color: #f0f0f0;
+  color: #ababab;
+}
+
+.mini-calendar.react-calendar__month-view__days__day--neighboringMonth:disabled,
+.mini-calendar.react-calendar__decade-view__years__year--neighboringDecade:disabled,
+.mini-calendar.react-calendar__century-view__decades__decade--neighboringCentury:disabled {
+  color: #cdcdcd;
+}
+
+.mini-calendar.react-calendar__tile:enabled:hover,
+.mini-calendar.react-calendar__tile:enabled:focus {
+  background-color: #e6e6e6;
+}
+
+.mini-calendar.react-calendar__tile--now {
+  background: #ffff76;
+}
+
+.mini-calendar.react-calendar__tile--now:enabled:hover,
+.mini-calendar.react-calendar__tile--now:enabled:focus {
+  background: #ffffa9;
+}
+
+.mini-calendar.react-calendar__tile--hasActive {
+  background: #191616;
+}
+
+.mini-calendar.react-calendar__tile--hasActive:enabled:hover,
+.mini-calendar.react-calendar__tile--hasActive:enabled:focus {
+  background: #a9d4ff;
+}
+
+.mini-calendar.react-calendar__tile--active {
+  background: #191616;
+  color: white;
+}
+
+.mini-calendar.react-calendar__tile--active:enabled:hover,
+.mini-calendar.react-calendar__tile--active:enabled:focus {
+  background: #191616;
+}
+
+.mini-calendar.react-calendar--selectRange .mini-calendar.react-calendar__tile--hover {
+  background-color: #e6e6e6;
+}
