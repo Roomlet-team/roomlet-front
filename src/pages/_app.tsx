@@ -13,6 +13,7 @@ import '@assets/reset.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../features/authentication/assets/onboarding-slider.css';
+import '../features/booking/assets/custom-react-calendar.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   dayjs.extend(utc);
