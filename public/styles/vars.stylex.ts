@@ -145,3 +145,7 @@ export const Typography = stylex.create({
     lineHeight: '100%',
   },
 });
+
+export const Shadows = stylex.defineVars({
+  Shadow1: '0 4px 16px 0px rgba(87, 56, 56, 0.12)',
+});
