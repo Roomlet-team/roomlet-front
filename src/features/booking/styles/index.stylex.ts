@@ -12,4 +12,7 @@ export const BookingStyles = stylex.create({
     boxShadow: `inset 0 0 0 1px ${colors.gray40}`,
     borderRadius: '12px',
   },
+  selectedValueText: {
+    color: colors.black500,
+  },
 });
