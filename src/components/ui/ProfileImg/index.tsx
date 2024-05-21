@@ -32,7 +32,7 @@ const Styles = stylex.create({
     height: `${size}px`,
     backgroundSize: 'cover',
     borderWidth: borderProperties?.width,
-    borderRadius: borderProperties?.radius,
+    borderRadius: borderProperties?.radius || '50%',
     borderColor: borderProperties?.color,
     borderStyle: borderProperties?.width ? 'solid' : null,
   }),
