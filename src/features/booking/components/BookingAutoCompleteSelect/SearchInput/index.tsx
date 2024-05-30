@@ -22,19 +22,34 @@ const SearchInput: FC<SearchInputProps> = (props) => {
     setKeyword(e.target.value);
   };
 
-  const handleClickUncheckedItem = (item) => {
+  const handleClickUncheckedItem = (e, item) => {
+    // 이벤트 전파 중단 (이벤트가 실행되면서 의도와 상관없이 SearchInput가 닫히게 됨.)
+    e.stopPropagation();
     const removeKeyWordList = selectedKeywordList.filter(
       (keywordItem) => keywordItem[columnItem.id.dataName] !== item[columnItem.id.dataName]
     );
     setSelectedKeywordList(removeKeyWordList);
+    setUnselectedKeywordList([...unselectedKeywordList, item]);
+
+    onSelect(removeKeyWordList);
   };
 
-  const handleClickCheckedItem = (item) => {
+  const handleClickCheckedItem = (e, item) => {
+    // 이벤트 전파 중단 (이벤트가 실행되면서 의도와 상관없이 SearchInput가 닫히게 됨.)
+    e.stopPropagation();
+
+    const removeKeyWordList = unselectedKeywordList.filter(
+      (keywordItem) => keywordItem[columnItem.id.dataName] !== item[columnItem.id.dataName]
+    );
+
+    setUnselectedKeywordList(removeKeyWordList);
     setSelectedKeywordList([...selectedKeywordList, item]);
+
+    onSelect([...selectedKeywordList, item]);
   };
 
   useEffect(() => {
-    // setUnselectedKeywordList('');
+    setUnselectedKeywordList(data);
   }, []);
 
   return (
@@ -51,23 +66,25 @@ const SearchInput: FC<SearchInputProps> = (props) => {
         />
       </div>
       {/* 선택 완료된 항목 */}
-      <div {...stylex.props(Styles.itemListContainer, Styles.checkedItemListWrapper)}>
-        {selectedKeywordList.map((item) => (
-          <button type="button" {...stylex.props(Styles.itemBtn)} onClick={() => handleClickUncheckedItem(item)}>
-            <div {...stylex.props(Styles.checkedBox)}>
-              <CheckmarkOutlined width={12} height={8} />
-            </div>
-            <span {...stylex.props(Typography.TagLargeMedium)}>{item[columnItem.name.dataName]}</span>
-          </button>
-        ))}
-      </div>
+      {selectedKeywordList.length > 0 && (
+        <div {...stylex.props(Styles.itemListContainer, Styles.checkedItemListWrapper)}>
+          {selectedKeywordList.map((item) => (
+            <button type="button" {...stylex.props(Styles.itemBtn)} onClick={(e) => handleClickUncheckedItem(e, item)}>
+              <div {...stylex.props(Styles.checkedBox)}>
+                <CheckmarkOutlined width={12} height={8} />
+              </div>
+              <span {...stylex.props(Typography.TagLargeMedium)}>{item[columnItem.name.dataName]}</span>
+            </button>
+          ))}
+        </div>
+      )}
       {/* 미선택 항목 */}
       <div {...stylex.props(Styles.itemListContainer)}>
-        {data.map((item) => (
+        {unselectedKeywordList.map((item) => (
           <button
             type="button"
             {...stylex.props(Styles.itemBtn, Typography.TagLargeMedium)}
-            onClick={() => handleClickCheckedItem(item)}
+            onClick={(e) => handleClickCheckedItem(e, item)}
           >
             <div {...stylex.props(Styles.uncheckedBox)} />
             <span {...stylex.props(Typography.TagLargeMedium)}>{item[columnItem.name.dataName]}</span>
@@ -91,6 +108,7 @@ const Styles = stylex.create({
     background: colors.white500,
     boxShadow: Shadows.Shadow1,
     borderRadius: '8px',
+    zIndex: 1,
   },
   inputContainer: {
     width: '100%',
