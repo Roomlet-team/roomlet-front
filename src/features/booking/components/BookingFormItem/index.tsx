@@ -28,6 +28,7 @@ export default BookingFormItem;
 
 const Styles = stylex.create({
   container: {
+    marginBottom: '24px',
     display: 'flex',
     flexDirection: 'column',
     gap: '12px',
