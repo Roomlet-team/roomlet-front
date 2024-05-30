@@ -122,7 +122,8 @@ const MiniCalendar: FC<MiniCalendarProps> = (props) => {
         locale="en-GB"
         activeStartDate={new Date(year, month - 1, day)} // month는 0~11까지라서 -1을 해줌.
         calendarType="gregory" // 일주일의 시작이 sun으로 시작되게 수정
-        tileClassName="mini-calendar"
+        tileClassName="mini-calendar-title"
+        className="mini-calendar"
       />
       <div {...stylex.props(Styles.CancelAndSaveBtnContainer)}>
         <button
