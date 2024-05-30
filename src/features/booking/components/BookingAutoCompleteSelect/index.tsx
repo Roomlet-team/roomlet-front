@@ -6,7 +6,7 @@ import { AutoCompleteItemInfo } from '../../types';
 import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 
 type BookingAutoCompleteSelectProps = {
-  defaultValueImgUrl: string;
+  defaultValueImgUrl?: string;
   apiUrl: string;
   onSelect: (value: any) => void;
   replaceSelectedItemsWithImage?: boolean; // 선택된 항목들을 이미지로만 보여줄지 말지 결정하는 함수(ex. 프로필 이미지로만 보여줄지 결정)
