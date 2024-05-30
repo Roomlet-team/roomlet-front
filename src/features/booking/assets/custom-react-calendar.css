@@ -68,16 +68,43 @@
   font-weight: 700;
 }
 
-.mini-calendar-title.react-calendar__month-view__weekdays__weekday {
+/* 토,일 */
+.mini-calendar .react-calendar__month-view__weekdays__weekday.react-calendar__month-view__weekdays__weekday--weekend {
   flex: none !important;
-  padding: 0.5em;
+  overflow: hidden;
+  margin-inline-end: 0px;
+  width: 22px;
+  height: 22px;
+  margin: 12px 16px;
+  margin-right: 0;
+  max-width: 100%;
+  text-align: center;
+  color: var(--Red-300);
+}
+
+/* 토요일 글자색 */
+.mini-calendar
+  .react-calendar__month-view__weekdays__weekday.react-calendar__month-view__weekdays__weekday--weekend:nth-child(7) {
+  color: var(--Blue-300);
+}
+
+/* 월~금 */
+.mini-calendar .react-calendar__month-view__weekdays__weekday {
+  flex: none !important;
+  overflow: hidden;
+  margin-inline-end: 0px;
+  width: 22px;
+  height: 22px;
+  margin: 12px 16px;
+  margin-right: 0;
+  max-width: 100%;
+  text-align: center;
 }
 
 .react-calendar__month-view__weekdays {
   background: none;
   abbr {
     /*월,화,수... 글자 부분*/
-    color: black;
     font-size: 1.4rem;
     font-weight: 500;
     text-decoration: none;
@@ -95,6 +122,13 @@
 
 .mini-calendar-title.react-calendar__month-view__days__day--weekend {
   color: #d10000;
+}
+
+/* 토요일에 해당하는 날짜는 모두 파란색 (다음달로 넘어가는 날짜는 파란색으로 표현되지 않게 예외처리) */
+.mini-calendar-title.react-calendar__month-view__days__day--weekend:nth-child(7n):not(
+    .mini-calendar-title.react-calendar__month-view__days__day--neighboringMonth
+  ) {
+  color: var(--Blue-300);
 }
 
 .mini-calendar-title.react-calendar__month-view__days__day--neighboringMonth,
