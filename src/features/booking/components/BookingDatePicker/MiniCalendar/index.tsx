@@ -34,11 +34,9 @@ const MiniCalendar: FC<MiniCalendarProps> = (props) => {
 
   const handleFormatDay = (locale, date) => dayjs(date).format('D');
 
-  const handleFormatWeekday = (locale, date) => {
-    // 해당 코드가 실행되지 않음.
+  const handleFormatShortWeekday = (locale, date) => {
     const day = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-    console.log(['S', 'M', 'T', 'W', 'T', 'F', 'S'][Number(dayjs(date).format('d'))]);
-    console.log(day[Number(dayjs(date).format('d'))], Number(dayjs(date).format('d')), 'dd');
+
     return day[Number(dayjs(date).format('d'))];
   };
 
@@ -120,7 +118,7 @@ const MiniCalendar: FC<MiniCalendarProps> = (props) => {
         value={new Date(year, month - 1, day)} // month는 0~11까지라서 -1을 해줌.
         showNavigation={false}
         formatDay={handleFormatDay}
-        formatWeekday={handleFormatWeekday}
+        formatShortWeekday={handleFormatShortWeekday} // 요일을 표현하는 방식 커스텀
         locale="en-GB"
         activeStartDate={new Date(year, month - 1, day)} // month는 0~11까지라서 -1을 해줌.
         calendarType="gregory" // 일주일의 시작이 sun으로 시작되게 수정
