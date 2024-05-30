@@ -62,6 +62,7 @@ const Styles = stylex.create({
   Wrapper: {
     width: '150px',
     position: 'relative',
+    zIndex: 1,
   },
   dateText: {
     color: colors.gray60,
