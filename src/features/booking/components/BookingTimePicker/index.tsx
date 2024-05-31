@@ -63,6 +63,7 @@ const Styles = stylex.create({
   Wrapper: {
     width: '100%',
     position: 'relative',
+    zIndex: 1,
   },
   TimePickerBtn: {
     width: '100%',
