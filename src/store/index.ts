@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import onboardingReducer from '@features/onboarding/slices/onboarding';
+import bookingReducer from '@features/booking/slices/booking';
 
 export const store = configureStore({
   reducer: {
     onboarding: onboardingReducer,
+    booking: bookingReducer,
   },
 });
 
