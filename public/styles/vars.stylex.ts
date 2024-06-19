@@ -106,6 +106,11 @@ export const Typography = stylex.create({
     fontSize: '1.4rem',
     lineHeight: '2rem',
   },
+  SubTextRegularBold: {
+    fontWeight: '700',
+    fontSize: '1.6rem',
+    lineHeight: '2.4rem',
+  },
   SubTextRegularSemiBold: {
     fontWeight: '600',
     fontSize: '1.2rem',
