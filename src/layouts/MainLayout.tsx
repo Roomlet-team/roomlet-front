@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import stylex from '@stylexjs/stylex';
 
 type MainLayoutProps = {
-  isScroll: boolean; // 전체 화면에 스크롤이 적용되게 할지 말지 결정
+  isScroll?: boolean; // 전체 화면에 스크롤이 적용되게 할지 말지 결정
   children: React.ReactElement | React.ReactElement[] | string;
 };
 
