@@ -31,8 +31,6 @@ export default MyPageImgUpload;
 const Styles = stylex.create({
   Container: {
     display: 'flex',
-    justifyContent: 'center',
-    margin: '24px 0',
   },
   ImgContainer: {
     position: 'relative',
