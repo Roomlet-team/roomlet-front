@@ -6,13 +6,15 @@ import { MenuListType } from './index.type';
 
 type MypageMenu = {
   menuList: MenuListType;
+  title?: string;
 };
 
 const MypageMenu: FC<MypageMenu> = (props) => {
-  const { menuList } = props;
+  const { menuList, title } = props;
 
   return (
     <nav>
+      <div {...stylex.props(Styles.Title, Typography.SubTextLargeSemiBold)}>{title}</div>
       <ul {...stylex.props(Styles.List)}>
         {menuList.map((item) => (
           <li key={item.id} {...stylex.props(Styles.Item)}>
@@ -30,6 +32,10 @@ const MypageMenu: FC<MypageMenu> = (props) => {
 export default MypageMenu;
 
 const Styles = stylex.create({
+  Title: {
+    margin: '16px 16px 8px',
+    color: colors.gray60,
+  },
   List: {
     listStyle: 'none',
     flexDirection: 'column',
