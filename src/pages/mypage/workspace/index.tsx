@@ -6,9 +6,13 @@ import UserGroupOutlined from '@src/components/icons/UserGroupOutlined';
 import Header from '@src/components/ui/Header';
 import MypageMenu from '@src/features/mypage/compontents/MypageMenu';
 import MainLayout from '@src/layouts/MainLayout';
+import MyPageImgUpload from '@src/features/mypage/compontents/MyPageImgUpload';
+import MyPageInput from '@src/features/mypage/compontents/MyPageInput';
+import BoundaryArea from '@src/components/ui/BoundaryArea';
 
 const WorkspaceHome = () => {
   const [isEditComplete, setIsEditComplete] = useState<boolean>(false);
+  const [workspaceName, setWorkspaceName] = useState<string>('');
   const commonUrl = 'mypage/workspace';
   const menuList = [
     {
@@ -27,12 +31,38 @@ const WorkspaceHome = () => {
     onClick: () => console.log(''),
   };
 
+  const handleChangeWorkspaceName = (e) => {
+    setWorkspaceName(e.target.value);
+  };
+
   return (
     <MainLayout>
       <Header title="워크스페이스 설정" prevUrl="/workspace" rightBtnInfo={completeBtnProps} />
-      <MypageMenu menuList={menuList} />
+
+      {/* 이미지 업로드 및 이름 입력 */}
+      <div {...stylex.props(Styles.SettingContainer)}>
+        <MyPageImgUpload onSelect={null} />
+        <MyPageInput label="워크스페이스 이름" value={workspaceName} onChange={handleChangeWorkspaceName} />
+      </div>
+
+      {/* 경계선 */}
+      <BoundaryArea />
+
+      {/* 메뉴 리스트 */}
+      <MypageMenu menuList={menuList} title="기타 설정" />
     </MainLayout>
   );
 };
 
 export default WorkspaceHome;
+
+const Styles = stylex.create({
+  SettingContainer: {
+    width: '100%',
+    padding: '0 16px 24px',
+    display: 'flex',
+    gap: '24px',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+});
