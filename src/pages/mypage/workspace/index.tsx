@@ -9,10 +9,11 @@ import MainLayout from '@src/layouts/MainLayout';
 import MyPageImgUpload from '@src/features/mypage/compontents/MyPageImgUpload';
 import MyPageInput from '@src/features/mypage/compontents/MyPageInput';
 import BoundaryArea from '@src/components/ui/BoundaryArea';
+import useInput from '@src/hooks/useInput';
 
 const WorkspaceHome = () => {
   const [isEditComplete, setIsEditComplete] = useState<boolean>(false);
-  const [workspaceName, setWorkspaceName] = useState<string>('');
+  const [workspaceName, handleChangeWorkspaceName] = useInput<string>('');
   const commonUrl = 'mypage/workspace';
   const menuList = [
     {
@@ -29,10 +30,6 @@ const WorkspaceHome = () => {
     name: '완료',
     isActive: isEditComplete,
     onClick: () => console.log(''),
-  };
-
-  const handleChangeWorkspaceName = (e) => {
-    setWorkspaceName(e.target.value);
   };
 
   return (
