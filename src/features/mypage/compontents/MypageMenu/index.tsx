@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 import { MenuListType } from './index.type';
 
-type MypageMenu = {
+type MypageMenuProps = {
   menuList: MenuListType;
   title?: string;
 };
 
-const MypageMenu: FC<MypageMenu> = (props) => {
+const MypageMenu: FC<MypageMenuProps> = (props) => {
   const { menuList, title } = props;
 
   return (
