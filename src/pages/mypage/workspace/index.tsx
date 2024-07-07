@@ -34,7 +34,7 @@ const WorkspaceHome = () => {
 
   return (
     <MainLayout>
-      <Header title="워크스페이스 설정" prevUrl="/workspace" rightBtnInfo={completeBtnProps} />
+      <Header title="워크스페이스 설정" prevUrl="/mypage" rightBtnInfo={completeBtnProps} />
 
       {/* 이미지 업로드 및 이름 입력 */}
       <div {...stylex.props(Styles.SettingContainer)}>
