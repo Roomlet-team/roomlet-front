@@ -10,6 +10,7 @@ import HomeOutlined from '@src/components/icons/HomeOutlined';
 import ListOutlined from '@src/components/icons/ListOutlined';
 import ListTwoTone from '@src/components/icons/ListTwoTone';
 import MypageOutlined from '@src/components/icons/MypageOutlined';
+import MypageTwoTone from '@src/components/icons/MypageTwoTone';
 
 type GnbNavLayoutProps = {
   backgroundColor?: string;
@@ -52,7 +53,7 @@ const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
     {
       id: 4,
       name: '마이페이지',
-      onIcon: '',
+      onIcon: <MypageTwoTone width={24} height={24} />,
       offIcon: <MypageOutlined width={24} height={24} />,
       href: '/mypage',
     },
