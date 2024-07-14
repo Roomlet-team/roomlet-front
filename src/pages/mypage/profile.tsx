@@ -15,7 +15,7 @@ import MyPageImgUpload from '@src/features/mypage/compontents/MyPageImgUpload';
 import MyPageInput from '@src/features/mypage/compontents/MyPageInput';
 import useInput from '@src/hooks/useInput';
 
-const Reservations = () => {
+const MyPageProfile = () => {
   const [nickname, handleChangeNickname] = useInput<string>('');
   const [isEditComplete, setIsEditComplete] = useState<boolean>(false);
 
@@ -50,7 +50,7 @@ const Reservations = () => {
   );
 };
 
-export default Reservations;
+export default MyPageProfile;
 
 const Styles = stylex.create({
   SettingContainer: {
