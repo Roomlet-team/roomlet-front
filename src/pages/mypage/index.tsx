@@ -21,7 +21,7 @@ const MyPageHome = () => {
       href: `/${commonUrl}/workspace`,
     },
     { id: 2, name: '멤버초대', icon: <AddUserOutlined width={24} height={24} />, href: '' },
-    { id: 4, name: '알림설정', icon: <BellOutlined width={24} height={24} />, href: '' },
+    { id: 4, name: '알림 설정', icon: <BellOutlined width={24} height={24} />, href: `/${commonUrl}/alarm` },
     { id: 5, name: '워크스페이스 나가기', icon: <ExitOutlined width={24} height={24} />, href: '' },
   ];
 
