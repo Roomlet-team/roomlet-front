@@ -7,10 +7,23 @@ import RoomletTextLogo from '@assets/logo_text_roomlet.svg';
 import GoogleLogo from '@features/authentication/assets/google_logo.svg';
 import MainLayout from '@src/layouts/MainLayout';
 import OnboardingSlider from '@src/features/onboarding/components/OnboardingSlider';
+import { useRouter } from 'next/router';
 
 const Login = () => {
-  const snsLoginList = [{ id: 1, logo: <GoogleLogo />, name: 'Google' }];
+  const router = useRouter();
+  const snsLoginList = [
+    {
+      id: 1,
+      logo: <GoogleLogo />,
+      name: 'Google',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/auth/google`,
+    },
+  ];
   const { isOnboardingHidden } = useSelector((state: RootState) => state.onboarding);
+
+  const handleClickSnsLogin = (url) => {
+    router.push(url);
+  };
 
   return (
     <MainLayout>
@@ -24,7 +37,12 @@ const Login = () => {
           </div>
           <div {...stylex.props(SnsLoginStyles.content)}>
             {snsLoginList.map((item) => (
-              <button type="button" key={item.id} {...stylex.props(SnsLoginStyles.button)}>
+              <button
+                type="button"
+                key={item.id}
+                {...stylex.props(SnsLoginStyles.button)}
+                onClick={() => handleClickSnsLogin(item.url)}
+              >
                 <span>{item.logo}</span>
                 <span>{item.name}&nbsp;계정으로 시작하기</span>
               </button>
