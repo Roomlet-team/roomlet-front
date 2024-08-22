@@ -1,13 +1,16 @@
 import React from 'react';
+import stylex from '@stylexjs/stylex';
+import { Typography } from '../../../public/styles/vars.stylex';
+import MainLayout from '@src/layouts/MainLayout';
 
-const CongressInfo = () => {
+const MeetingDetails = () => {
   return (
-    <div>
+    <MainLayout>
       {/* 회의 정보 */}
       <div>
         <div>디자인</div>
         <div>
-          <h1>사용성 관련 기획 회의</h1>
+          <h1 {...stylex.props(Typography.TextLargeBold)}>사용성 관련 기획 회의</h1>
           <button type="button">더보기</button>
         </div>
         <div>
@@ -36,8 +39,8 @@ const CongressInfo = () => {
 
       {/* 댓글 */}
       <div>댓글</div>
-    </div>
+    </MainLayout>
   );
 };
 
-export default CongressInfo;
+export default MeetingDetails;
