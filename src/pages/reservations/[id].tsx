@@ -16,7 +16,7 @@ const MeetingDetails = () => {
         <div>
           <ul>
             <li>
-              <div>장소</div>
+              <div {...stylex.props(Typography.SubTextRegularSemiBold)}>장소</div>
               <div>C 회의실</div>
             </li>
             <li>
