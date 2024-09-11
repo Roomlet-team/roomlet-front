@@ -21,27 +21,27 @@ const MeetingDetails = () => {
         </div>
 
         {/* 회의실 정보 */}
-        <div>
-          <ul>
-            <li>
-              <div {...stylex.props(Typography.SubTextRegularSemiBold)}>장소</div>
-              <div>C 회의실</div>
+        <div {...stylex.props(Styles.InfoContainer)}>
+          <ul {...stylex.props(Styles.List)}>
+            <li {...stylex.props(Styles.horizonItem)}>
+              <div {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.CommonItem)}>장소</div>
+              <div {...stylex.props(Typography.TextSmallRegular)}>C 회의실</div>
             </li>
-            <li>
-              <div>날짜/시간</div>
-              <div>2024-03-06 10:00 ~ 11:00</div>
+            <li {...stylex.props(Styles.horizonItem)}>
+              <div {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.CommonItem)}>날짜/시간</div>
+              <div {...stylex.props(Typography.TextSmallRegular)}>2024-03-06 10:00 ~ 11:00</div>
             </li>
-            <li>
-              <div>참여자</div>
+            <li {...stylex.props(Styles.horizonItem)}>
+              <div {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.CommonItem)}>참여자</div>
               <div>
                 <div>기획팀</div>
               </div>
             </li>
+            <li {...stylex.props(Styles.verticalItem)}>
+              <div {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.CommonItem)}>상세내용</div>
+              <pre {...stylex.props(Styles.ContentWrapper)}>홍길동 인턴: 당뇨 관리앱 분석 조사 발표</pre>
+            </li>
           </ul>
-        </div>
-        <div>
-          <div>상세내용</div>
-          <div>홍길동 인턴: 당뇨 관리앱 분석 조사 발표</div>
         </div>
       </div>
 
@@ -70,5 +70,36 @@ const Styles = stylex.create({
   TitleAndShowMoreContainer: {
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  InfoContainer: {
+    padding: '16px 16px 24px',
+  },
+  List: {
+    display: 'flex',
+    gap: '16px',
+    flexDirection: 'column',
+  },
+  CommonItem: {
+    width: '70px',
+    color: colors.gray60,
+  },
+  horizonItem: {
+    display: 'flex',
+    gap: '16px',
+  },
+  verticalItem: {
+    marginTop: '4px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  ContentWrapper: {
+    margin: 0,
+    padding: '12px',
+    minHeight: '120px',
+    borderRadius: '16px',
+    background: colors.gray20,
+    fontSize: '1.4rem',
+    color: colors.black300,
   },
 });
