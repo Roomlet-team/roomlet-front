@@ -12,6 +12,7 @@ export const colors = stylex.defineVars({
   gray50: '#A7ABAD',
   gray40: '#D9D9D9',
   gray30: '#E3E3E3',
+  gray20: '#F2F2F2',
   white500: '#FFFFFF',
   white5: 'rgba(255, 255, 255, 0.5)',
   red500: '#B5312C',
