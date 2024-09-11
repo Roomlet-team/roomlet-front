@@ -15,7 +15,7 @@ const MeetingDetails = () => {
           <div {...stylex.props(Styles.TitleAndShowMoreContainer)}>
             <h1 {...stylex.props(Typography.TextLargeBold)}>사용성 관련 기획 회의</h1>
             <button type="button">
-              <EllipsisOutlined width="24" heigh="24" />
+              <EllipsisOutlined width="24" height="24" />
             </button>
           </div>
         </div>
