@@ -45,6 +45,9 @@ const MeetingDetails = () => {
         </div>
       </div>
 
+      {/* 경계선 */}
+      <div {...stylex.props(Styles.borderLine)} />
+
       {/* 댓글 */}
       <div>댓글</div>
     </MainLayout>
@@ -101,5 +104,11 @@ const Styles = stylex.create({
     background: colors.gray20,
     fontSize: '1.4rem',
     color: colors.black300,
+  },
+  borderLine: {
+    width: '100%',
+    height: '8px',
+    background: '#F2F2F2',
+    borderTop: colors.gray30,
   },
 });
