@@ -38,6 +38,10 @@ export default CommentTextarea;
 
 const Styles = stylex.create({
   container: {
+    width: 'inherit',
+    maxWidth: 'inherit',
+    position: 'fixed',
+    bottom: 0,
     padding: '16px',
     borderTop: `1px solid ${colors.gray20}`,
     background: colors.white500,
