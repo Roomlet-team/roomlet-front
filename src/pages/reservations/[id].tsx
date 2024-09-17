@@ -3,10 +3,12 @@ import stylex from '@stylexjs/stylex';
 import { colors, Typography } from '../../../public/styles/vars.stylex';
 import MainLayout from '@src/layouts/MainLayout';
 import EllipsisOutlined from '@src/components/icons/EllipsisOutlined';
+import CommentTextarea from '@src/features/comment/components/CommentTextarea';
+import CommentList from '@src/features/comment/components/CommentList';
 
 const MeetingDetails = () => {
   return (
-    <MainLayout>
+    <MainLayout isScroll>
       {/* 회의 정보 */}
       <div>
         {/* 카테고리 태그 및 회의 제목 */}
@@ -49,7 +51,13 @@ const MeetingDetails = () => {
       <div {...stylex.props(Styles.borderLine)} />
 
       {/* 댓글 */}
-      <div>댓글</div>
+      <div>
+        {/* 댓글 리스트 */}
+        <CommentList />
+      </div>
+
+      {/* 댓글 작성 */}
+      <CommentTextarea />
     </MainLayout>
   );
 };
