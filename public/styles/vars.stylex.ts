@@ -18,6 +18,7 @@ export const colors = stylex.defineVars({
   red500: '#B5312C',
   red300: '#D14444',
   red50: '#D56231',
+  redDim: '#E3B1AF',
   blue300: '#087BFF',
   yellow300: '#FF8329',
   green300: '#67BC8F',
