@@ -151,6 +151,12 @@ export const Typography = stylex.create({
     fontSize: '1.2rem',
     lineHeight: '100%',
   },
+  // Material 3 Design Kit
+  M3BodyLarge: {
+    fontWeight: '400',
+    fontSize: '1.6rem',
+    lineHeight: '2.4rem',
+  },
 });
 
 export const Shadows = stylex.defineVars({
