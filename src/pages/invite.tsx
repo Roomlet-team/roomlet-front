@@ -6,9 +6,11 @@ import { colors, Typography } from '../../public/styles/vars.stylex';
 import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import Button from '@src/components/ui/Button';
+import useInviteInfoQuery from '@src/features/invite/queries/useInviteInfoQuery';
 
 const Invite = () => {
   const [nickname, handleChangeNickname] = useInput('');
+  const { data } = useInviteInfoQuery();
   const letterImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/invite/invite-letter.png';
 
   return (
@@ -25,10 +27,10 @@ const Invite = () => {
             <div {...stylex.props(Typography.M3BodyLarge)}>
               <img src={letterImgUrl} alt="편지 이미지" {...stylex.props(Styles.letterImg)} />
               <div {...stylex.props(Styles.contentWrapper, Typography.M3BodyLarge)}>
-                ~님이 초대했어요.
+                [{data.myInfo.displayName}]님이 초대했어요.
                 <br />
                 <br />
-                룸렛에서 [워크스페이스] 회의를 <br />
+                룸렛에서 [{data.myInfo.teamInfo.teamName}] 회의를 <br />
                 함께 준비해보세요.
               </div>
             </div>
