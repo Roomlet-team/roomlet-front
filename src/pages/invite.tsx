@@ -27,10 +27,10 @@ const Invite = () => {
             <div {...stylex.props(Typography.M3BodyLarge)}>
               <img src={letterImgUrl} alt="편지 이미지" {...stylex.props(Styles.letterImg)} />
               <div {...stylex.props(Styles.contentWrapper, Typography.M3BodyLarge)}>
-                [{data.myInfo.displayName}]님이 초대했어요.
+                [{data?.myInfo?.displayName}]님이 초대했어요.
                 <br />
                 <br />
-                룸렛에서 [{data.myInfo.teamInfo.teamName}] 회의를 <br />
+                룸렛에서 [{data?.myInfo?.teamInfo?.teamName}] 회의를 <br />
                 함께 준비해보세요.
               </div>
             </div>
