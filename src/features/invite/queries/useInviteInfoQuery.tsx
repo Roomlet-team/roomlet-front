@@ -1,5 +1,5 @@
+import clientInstance from '@src/utils/api/clientInstance';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 
 interface InviteInfo {
@@ -18,7 +18,7 @@ interface InviteInfo {
 }
 
 const getInviteInfoApi = async (InviteId: string): Promise<InviteInfo> => {
-  const response = await axios.get(`/v1/workspace/invite/${InviteId}`);
+  const response = await clientInstance.get(`/v1/workspace/invite/${InviteId}`);
 
   return response.data;
 };
