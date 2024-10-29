@@ -3,16 +3,17 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 interface InviteInfo {
-  myInfo: {
-    MemberId: number;
-    displayName: string;
-    profileImgUrl: string;
-    position: string;
-    isAdmin: boolean;
-    email: string;
-    teamInfo: {
-      TeamId: number;
-      teamName: string;
+  code: number;
+  success: boolean;
+  inviteInfo: {
+    InviteId: string;
+    workspace: {
+      WorkspaceId: number;
+      workspaceName: string;
+    };
+    invitedMember: {
+      displayName: string;
+      profileImgUrl: string;
     };
   };
 }
@@ -35,9 +36,11 @@ const getInviteInfoApi = async (InviteId: string): Promise<InviteInfo> => {
 const useInviteInfoQuery = () => {
   const router = useRouter();
   const InviteId = router.query.InviteId as string;
+
   const result = useQuery({
     queryKey: ['inviteInfo', InviteId],
     queryFn: () => getInviteInfoApi(InviteId),
+    enabled: Boolean(InviteId), // InviteId가 정의되어 있지 않은 경우, 첫 렌더링시 요청이 이뤄지지 않게 함.
   });
 
   return result;
