@@ -6,11 +6,11 @@ import { colors, Typography } from '../../public/styles/vars.stylex';
 import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import Button from '@src/components/ui/Button';
-import useInviteInfoQuery from '@src/features/invite/queries/useInviteInfoQuery';
+import useGetInviteInfoQuery from '@src/features/invite/queries/useGetInviteInfoQuery';
 
 const Invite = () => {
   const [nickname, handleChangeNickname] = useInput('');
-  const { data } = useInviteInfoQuery();
+  const { data } = useGetInviteInfoQuery();
   const letterImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/invite/invite-letter.png';
 
   return (

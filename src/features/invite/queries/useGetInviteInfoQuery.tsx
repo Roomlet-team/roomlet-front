@@ -33,7 +33,7 @@ const getInviteInfoApi = async (InviteId: string): Promise<InviteInfo> => {
  *   - `isLoading`: 데이터 로딩 여부
  *   - `refetch`: 데이터를 수동으로 다시 가져오는 함수
  */
-const useInviteInfoQuery = () => {
+const useGetInviteInfoQuery = () => {
   const router = useRouter();
   const InviteId = router.query.InviteId as string;
 
@@ -46,4 +46,4 @@ const useInviteInfoQuery = () => {
   return result;
 };
 
-export default useInviteInfoQuery;
+export default useGetInviteInfoQuery;
