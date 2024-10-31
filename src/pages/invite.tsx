@@ -7,11 +7,20 @@ import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import Button from '@src/components/ui/Button';
 import useGetInviteInfoQuery from '@src/features/invite/queries/useGetInviteInfoQuery';
+import usePostWorkspaceJoinQuery from '@src/features/invite/queries/usePostWorkspaceJoinQuery';
 
 const Invite = () => {
-  const [nickname, handleChangeNickname] = useInput('');
+  const [displayName, handleChangeDisplayName] = useInput('');
   const { data } = useGetInviteInfoQuery();
+  const mutation = usePostWorkspaceJoinQuery();
   const letterImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/invite/invite-letter.png';
+
+  const handleClickJoin = () => {
+    mutation.mutate({
+      WorkspaceId: data.inviteInfo.workspace.WorkspaceId,
+      joinInfo: { displayName, InviteId: data.inviteInfo.InviteId },
+    });
+  };
 
   return (
     <MainLayout isScroll>
@@ -39,10 +48,12 @@ const Invite = () => {
 
         <div className="" {...stylex.props(Styles.formContainer)}>
           {/* 닉네임 */}
-          <Input onChange={handleChangeNickname} value={nickname} placeholder="사용하실 닉네임을 입력해주세요." />
+          <Input onChange={handleChangeDisplayName} value={displayName} placeholder="사용하실 닉네임을 입력해주세요." />
 
           {/* 참가하기 및 참가하지 않기 버튼 */}
-          <Button type="button">참가하기</Button>
+          <Button type="button" onClick={handleClickJoin}>
+            참가하기
+          </Button>
           <button type="button" {...stylex.props(Styles.dontParticipateButton, Typography.M3BodyLarge)}>
             참가하지 않기
           </button>
