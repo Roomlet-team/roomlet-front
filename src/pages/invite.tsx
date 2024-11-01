@@ -8,11 +8,13 @@ import useInput from '@src/hooks/useInput';
 import Button from '@src/components/ui/Button';
 import useGetInviteInfoQuery from '@src/features/invite/queries/useGetInviteInfoQuery';
 import usePostWorkspaceJoinQuery from '@src/features/invite/queries/usePostWorkspaceJoinQuery';
+import { useRouter } from 'next/router';
 
 const Invite = () => {
   const [displayName, handleChangeDisplayName] = useInput('');
   const { data } = useGetInviteInfoQuery();
   const mutation = usePostWorkspaceJoinQuery();
+  const router = useRouter();
   const letterImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/invite/invite-letter.png';
 
   const handleClickJoin = () => {
@@ -20,6 +22,10 @@ const Invite = () => {
       WorkspaceId: data.inviteInfo.workspace.WorkspaceId,
       joinInfo: { displayName, InviteId: data.inviteInfo.InviteId },
     });
+  };
+
+  const handleClickDenyJoin = () => {
+    router.push('/');
   };
 
   return (
@@ -54,7 +60,11 @@ const Invite = () => {
           <Button type="button" onClick={handleClickJoin}>
             참가하기
           </Button>
-          <button type="button" {...stylex.props(Styles.dontParticipateButton, Typography.M3BodyLarge)}>
+          <button
+            type="button"
+            onClick={handleClickDenyJoin}
+            {...stylex.props(Styles.dontParticipateButton, Typography.M3BodyLarge)}
+          >
             참가하지 않기
           </button>
         </div>
