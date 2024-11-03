@@ -1,5 +1,6 @@
+import { confirm } from '@src/components/ui/Modal/confirm';
+import useCustomMutation from '@src/hooks/react-query/useCustomMutation';
 import clientInstance from '@src/utils/api/clientInstance';
-import { useMutation } from '@tanstack/react-query';
 
 interface WorkspaceInfo {
   code: number;
@@ -35,8 +36,12 @@ const postWorkspaceJoinApi = async (data: JoinInfo): Promise<WorkspaceInfo> => {
  *   - `isSuccess`: mutation이 성공했고, mutation data를 사용할 수 있는지에 대한 여부
  */
 const usePostWorkspaceJoinQuery = () => {
-  const mutation = useMutation({
+  const mutation = useCustomMutation({
     mutationFn: (data: JoinInfo) => postWorkspaceJoinApi(data),
+    onError: (error, variables, context) => {
+      // 에러가 발생한 경우, 에러 내용이 담긴 confirm 모달 띄우기
+      confirm({ content: error?.response.data.message.errMsg });
+    },
   });
 
   return mutation;
