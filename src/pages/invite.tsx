@@ -6,10 +6,27 @@ import { colors, Typography } from '../../public/styles/vars.stylex';
 import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import Button from '@src/components/ui/Button';
+import useGetInviteInfoQuery from '@src/features/invite/queries/useGetInviteInfoQuery';
+import usePostWorkspaceJoinQuery from '@src/features/invite/queries/usePostWorkspaceJoinQuery';
+import { useRouter } from 'next/router';
 
 const Invite = () => {
-  const [nickname, handleChangeNickname] = useInput('');
+  const [displayName, handleChangeDisplayName] = useInput('');
+  const { data } = useGetInviteInfoQuery();
+  const mutation = usePostWorkspaceJoinQuery();
+  const router = useRouter();
   const letterImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/invite/invite-letter.png';
+
+  const handleClickJoin = () => {
+    mutation.mutate({
+      WorkspaceId: data.inviteInfo.workspace.WorkspaceId,
+      joinInfo: { displayName, InviteId: data.inviteInfo.InviteId },
+    });
+  };
+
+  const handleClickDenyJoin = () => {
+    router.push('/');
+  };
 
   return (
     <MainLayout isScroll>
@@ -25,10 +42,10 @@ const Invite = () => {
             <div {...stylex.props(Typography.M3BodyLarge)}>
               <img src={letterImgUrl} alt="편지 이미지" {...stylex.props(Styles.letterImg)} />
               <div {...stylex.props(Styles.contentWrapper, Typography.M3BodyLarge)}>
-                ~님이 초대했어요.
+                [{data?.inviteInfo?.invitedMember.displayName}]님이 초대했어요.
                 <br />
                 <br />
-                룸렛에서 [워크스페이스] 회의를 <br />
+                룸렛에서 [{data?.inviteInfo?.workspace?.workspaceName}] 회의를 <br />
                 함께 준비해보세요.
               </div>
             </div>
@@ -37,11 +54,17 @@ const Invite = () => {
 
         <div className="" {...stylex.props(Styles.formContainer)}>
           {/* 닉네임 */}
-          <Input onChange={handleChangeNickname} value={nickname} placeholder="사용하실 닉네임을 입력해주세요." />
+          <Input onChange={handleChangeDisplayName} value={displayName} placeholder="사용하실 닉네임을 입력해주세요." />
 
           {/* 참가하기 및 참가하지 않기 버튼 */}
-          <Button type="button">참가하기</Button>
-          <button type="button" {...stylex.props(Styles.dontParticipateButton, Typography.M3BodyLarge)}>
+          <Button type="button" onClick={handleClickJoin}>
+            참가하기
+          </Button>
+          <button
+            type="button"
+            onClick={handleClickDenyJoin}
+            {...stylex.props(Styles.dontParticipateButton, Typography.M3BodyLarge)}
+          >
             참가하지 않기
           </button>
         </div>
