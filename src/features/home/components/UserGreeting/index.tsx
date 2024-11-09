@@ -1,17 +1,20 @@
 import ProfileImg from '@src/components/ui/ProfileImg';
 import stylex from '@stylexjs/stylex';
 import React, { FC } from 'react';
+import useGetWorkspaceMainInfoQuery from '../../queries/useGetWorkspaceMainInfoQuery';
 
 /**
  * 홈 화면에서 사용자에게 인사를 하는 내용을 담은 컴포넌트
  */
 const UserGreeting = () => {
+  const { data } = useGetWorkspaceMainInfoQuery();
+
   return (
     <div {...stylex.props(Styles.container)}>
-      <ProfileImg src={null} size={50} borderProperties={{ radius: '50%' }} />
+      <ProfileImg src={data.memberInfo.profileImgUrl} size={50} borderProperties={{ radius: '50%' }} />
       <div {...stylex.props(Styles.textContent)}>
         <p {...stylex.props(Styles.greetingText)}>룸렛에 오신걸 환영해요 🖐🏻</p>
-        <p {...stylex.props(Styles.nicknameText)}>닉네임님</p>
+        <p {...stylex.props(Styles.nicknameText)}>{data.memberInfo.displayName}님</p>
       </div>
     </div>
   );
