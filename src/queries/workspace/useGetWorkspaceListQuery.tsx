@@ -19,6 +19,7 @@ const getWorkspaceListApi = async (): Promise<InviteInfo> => {
 
 /**
  * React-query를 사용하여 워크스페이스 리스트를 가져오는 커스텀 훅
+ * 자주 사용되는 훅이라서 gcTime을 설정함.
  * @returns
  * - 다음 객체를 반환합니다:
  *   - `data`: 초대 정보 (아직 가져오지 않았다면 `undefined`)
@@ -30,6 +31,7 @@ const useGetWorkspaceListQuery = () => {
   const result = useQuery({
     queryKey: ['workspaceList'],
     queryFn: () => getWorkspaceListApi(),
+    gcTime: 3 * 60 * 1000,
   });
 
   return result;
