@@ -1,9 +1,16 @@
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import stylex from '@stylexjs/stylex';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
 
 const MonthlyCalendar = () => {
-  const [monthList, setMonthList] = useState<string[]>(['2024-02']);
+  const currentMonth = dayjs().format('YYYY-MM');
+  const prevMonth = dayjs().subtract(1, 'M').format('YYYY-MM');
+  const nextMonth = dayjs().add(1, 'M').format('YYYY-MM');
+  const [monthList, setMonthList] = useState<string[]>([prevMonth, currentMonth, nextMonth]);
   const [selectDate, setSelectDate] = useState<number>(dayjs().date());
   const dayOfTheWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const getCurrentMonth = (ym) => dayjs(ym).month();
@@ -37,14 +44,37 @@ const MonthlyCalendar = () => {
     setSelectDate(date);
   };
 
-  useEffect(() => {
-    setMonthList(['2024-01', ...monthList, '2024-03']);
-  }, []);
+  const handleSlideChange = (swiper) => {
+    const monthFormat = 'YYYY-MM';
+
+    // 첫번째 요소를 만났을 때, 미리 이전 2달치 로드
+    if (swiper.activeIndex === 0) {
+      const firstMonthIndex = monthList[0];
+      setMonthList([
+        dayjs(firstMonthIndex).subtract(2, 'M').format(monthFormat),
+        dayjs(firstMonthIndex).subtract(1, 'M').format(monthFormat),
+        ...monthList,
+      ]);
+      swiper.slideTo(2, 0);
+    }
+
+    if (swiper.activeIndex === monthList.length - 1) {
+      // 마지막 요소를 만났을 때, 미리 뒤의 2달치 로드
+      const lastMonthIndex = monthList[monthList.length - 1];
+
+      setMonthList([
+        ...monthList,
+        dayjs(lastMonthIndex).add(1, 'M').format(monthFormat),
+        dayjs(lastMonthIndex).add(2, 'M').format(monthFormat),
+      ]);
+      swiper.slideTo(monthList.length, 0);
+    }
+  };
 
   return (
-    <div {...stylex.props(Styles.scrollWrapper)}>
+    <Swiper spaceBetween={50} slidesPerView={1} initialSlide={1} onSlideChange={handleSlideChange}>
       {monthList.map((ym) => (
-        <div {...stylex.props(Styles.scrollContent)}>
+        <SwiperSlide {...stylex.props(Styles.scrollContent)}>
           <div {...stylex.props(Styles.monthlyContent)}>
             <h1 {...stylex.props(Styles.currentMonthText)}>{dayjs(ym).format('YYYY.MM')}</h1>
             <table {...stylex.props(Styles.calenderContent)}>
@@ -131,9 +161,9 @@ const MonthlyCalendar = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </SwiperSlide>
       ))}
-    </div>
+    </Swiper>
   );
 };
 
@@ -143,13 +173,8 @@ const Styles = stylex.create({
   scrollWrapper: {
     display: 'flex',
     overflow: 'auto',
-    scrollSnapType: 'x mandatory',
-    '::-webkit-scrollbar': {
-      // 스크롤바 보이지 않게 설정
-      backgroundColor: 'rgba(0,0,0,0)',
-    },
   },
-  scrollContent: { width: '100%', height: 'auto', display: 'flex', flexShrink: 0, scrollSnapAlign: 'start' },
+  scrollContent: { width: '100%', height: 'auto', display: 'flex', flexShrink: 0 },
   monthlyContent: { width: '100%', height: '100%' },
   currentMonthText: {
     padding: '16px 20px',
