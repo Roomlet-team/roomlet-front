@@ -46,7 +46,7 @@ export default MeetingSchedule;
 const Styles = stylex.create({
   container: {
     width: '100%',
-    height: 'calc(100vh - 549px)',
+    height: 'calc(100vh - 532px)',
     padding: '16px',
     borderTop: '1px solid #E2E2E2',
     overflowY: 'auto',
