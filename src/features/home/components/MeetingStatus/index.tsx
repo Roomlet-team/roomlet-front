@@ -1,10 +1,13 @@
 import React from 'react';
 import stylex from '@stylexjs/stylex';
+import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
+import useGetWorkspaceMainInfoQuery from '../../queries/useGetWorkspaceMainInfoQuery';
 
 /**
  * 나의 회의 및 전체 회의 상태를 나타내는 컴포넌트
  */
 const MeetingStatus = () => {
+  const { data } = useGetWorkspaceMainInfoQuery();
   const myMeetingImgUrl = 'https://roomlet-front.s3.ap-northeast-2.amazonaws.com/public/images/home/my.png';
   const allMeetingImgUrl = 'https://roomlet-front.s3.ap-northeast-2.amazonaws.com/public/images/home/all.png';
 
@@ -14,14 +17,14 @@ const MeetingStatus = () => {
         <img {...stylex.props(Styles.img)} src={myMeetingImgUrl} alt="나의 회의" />
         <div {...stylex.props(Styles.textContent)}>
           <p {...stylex.props(Styles.titleText)}>나의 회의</p>
-          <p {...stylex.props(Styles.countText('var(--Red-600)'))}>3</p>
+          <p {...stylex.props(Styles.countText('var(--Red-600)'))}>{data.workspaceCongressStatus.myCongressCount}</p>
         </div>
       </div>
       <div {...stylex.props(Styles.content)}>
         <img {...stylex.props(Styles.img)} src={allMeetingImgUrl} alt="전체 회의" />
         <div {...stylex.props(Styles.textContent)}>
           <p {...stylex.props(Styles.titleText)}>전체 회의</p>
-          <p {...stylex.props(Styles.countText('#444444'))}>3</p>
+          <p {...stylex.props(Styles.countText('#444444'))}>{data.workspaceCongressStatus.workspaceCongressCount}</p>
         </div>
       </div>
     </div>
