@@ -6,6 +6,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 // react-query
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // redux
 import { Provider } from 'react-redux';
 import { store } from '../store';
@@ -17,6 +18,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import '../features/authentication/assets/onboarding-slider.css';
 import '../features/booking/assets/custom-react-calendar.css';
 
+// client 생성
+const queryClient = new QueryClient();
+
 export default function App({ Component, pageProps }: AppProps) {
   dayjs.extend(utc);
   dayjs.extend(timezone);
@@ -27,14 +31,16 @@ export default function App({ Component, pageProps }: AppProps) {
   // 로케일 설정
   dayjs.locale('ko');
 
-  // client 생성
-  const queryClient = new QueryClient();
-
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <Component {...pageProps} />
       </Provider>
+
+      {/* react-query devtools - devtools 폰트 사이즈가 너무 작아서 16px로 설정 */}
+      <div className="react-query-devtools" style={{ fontSize: '16px' }}>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </div>
     </QueryClientProvider>
   );
 }
