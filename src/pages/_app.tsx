@@ -18,6 +18,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import '../features/authentication/assets/onboarding-slider.css';
 import '../features/booking/assets/custom-react-calendar.css';
 
+// client 생성
+const queryClient = new QueryClient();
+
 export default function App({ Component, pageProps }: AppProps) {
   dayjs.extend(utc);
   dayjs.extend(timezone);
@@ -27,9 +30,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // 로케일 설정
   dayjs.locale('ko');
-
-  // client 생성
-  const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
