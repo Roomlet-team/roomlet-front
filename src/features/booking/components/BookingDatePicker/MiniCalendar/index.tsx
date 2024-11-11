@@ -149,7 +149,7 @@ export default MiniCalendar;
 
 const Styles = stylex.create({
   Wrapper: {
-    width: '286px', // 설정한 너비에 맞게 일주일에 표현되는 일 수가 달라짐
+    width: { default: '328px', '@media (max-width: 359px)': '286px' }, // 설정한 너비에 맞게 일주일에 표현되는 일 수가 달라짐
     position: 'absolute',
     top: '56px',
     left: 0,
