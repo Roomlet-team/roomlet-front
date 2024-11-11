@@ -13,7 +13,7 @@ import Radio from '@src/components/ui/Radio';
 import BookingAutoCompleteSelect from '@src/features/booking/components/BookingAutoCompleteSelect';
 import MainLayout from '@src/layouts/MainLayout';
 import BookingTextarea from '@src/features/booking/components/BookingTextarea';
-import useTextArea from '@src/hooks/useTextarea';
+import useTextArea from '@src/hooks/useTextArea';
 
 const Booking = () => {
   const [meetingTitle, handleMeetingTitle] = useInput<string>('');
