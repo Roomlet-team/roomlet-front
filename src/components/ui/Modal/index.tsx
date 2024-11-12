@@ -36,5 +36,6 @@ const Styles = stylex.create({
     alignItems: 'center',
     background: 'rgba(0, 0, 0, 0.5)',
     color: BackgroundColor.gradientBlackBg,
+    zIndex: 9999,
   },
 });
