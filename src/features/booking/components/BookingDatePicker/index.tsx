@@ -25,19 +25,6 @@ const BookingDatePicker = () => {
     setIsCalendarOpen(true);
   };
 
-  const handleClickOutside = ({ target }) => {
-    if (!calendarRef.current.contains(target)) {
-      setIsCalendarOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('click', handleClickOutside);
-    return () => {
-      window.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
   const handleCloseCalendar = (status: boolean) => {
     setIsCalendarOpen(status);
   };
