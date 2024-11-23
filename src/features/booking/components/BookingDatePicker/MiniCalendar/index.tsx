@@ -17,20 +17,14 @@ type MiniCalendarProps = {
 
 type ValuePiece = Date | null;
 
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-
 const MiniCalendar: FC<MiniCalendarProps> = (props) => {
   const { onClose } = props;
   const { selectBookingDate } = useSelector((state: RootState) => state.booking);
   const [year, setYear] = useState<number>(dayjs().year());
-  const [month, setMonth] = useState<number>(dayjs().month());
+  const [month, setMonth] = useState<number>(dayjs().month() + 1);
   const [day, setDay] = useState<number>(dayjs().date());
+  const miniCalenderRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
-  const dateSelections = {
-    year: Array(300).map((_, idx) => 1800 + idx),
-    month: Array(11).map((_, idx) => 1 + idx),
-    day: Array(30).map((_, idx) => 1 + idx),
-  };
 
   const handleFormatDay = (locale, date) => dayjs(date).format('D');
 
@@ -82,8 +76,8 @@ const MiniCalendar: FC<MiniCalendarProps> = (props) => {
   useEffect(() => {
     if (!selectBookingDate) {
       setYear(dayjs().year());
-      setMonth(dayjs().month());
-      setDay(dayjs().day());
+      setMonth(dayjs().month() + 1);
+      setDay(dayjs().date());
     } else {
       const selectDateArr = dayjs(selectBookingDate).format('YYYY-M-D').split('-');
 
@@ -98,7 +92,7 @@ const MiniCalendar: FC<MiniCalendarProps> = (props) => {
   }, []);
 
   return (
-    <div {...stylex.props(Styles.Wrapper)}>
+    <div {...stylex.props(Styles.Wrapper)} ref={miniCalenderRef}>
       <div {...stylex.props(Styles.MoveDateContainer)}>
         <button type="button" {...stylex.props(Styles.DatePickerBtn, Typography.SubtitleSmallBold)}>
           {year}년 {month}월
@@ -113,6 +107,7 @@ const MiniCalendar: FC<MiniCalendarProps> = (props) => {
           </button>
         </div>
       </div>
+
       <Calendar
         onChange={handleChangeDate}
         value={new Date(year, month - 1, day)} // month는 0~11까지라서 -1을 해줌.
