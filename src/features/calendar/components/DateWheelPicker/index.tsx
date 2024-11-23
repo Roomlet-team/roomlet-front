@@ -109,6 +109,8 @@ const Styles = stylex.create({
   container: {
     width: '208px',
     background: colors.white500,
+    borderRadius: '4px',
+    border: `1px solid ${colors.gray40}`,
   },
   selectDateWrapper: {
     color: colors.red500,
