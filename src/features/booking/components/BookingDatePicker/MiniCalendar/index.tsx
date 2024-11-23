@@ -10,6 +10,7 @@ import TriangleFilled from '@src/components/icons/TriangleFilled';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveSelectBookingDate } from '@src/features/booking/slices/booking';
 import { RootState } from '@src/store';
+import DateWheelPicker from '@src/features/calendar/components/DateWheelPicker';
 
 type MiniCalendarProps = {
   onClose: (status: boolean) => void;
@@ -20,11 +21,16 @@ type ValuePiece = Date | null;
 const MiniCalendar: FC<MiniCalendarProps> = (props) => {
   const { onClose } = props;
   const { selectBookingDate } = useSelector((state: RootState) => state.booking);
+  const [isDateWheelPickerOpen, setIsDateWheelPickerOpen] = useState<boolean>(false);
   const [year, setYear] = useState<number>(dayjs().year());
   const [month, setMonth] = useState<number>(dayjs().month() + 1);
   const [day, setDay] = useState<number>(dayjs().date());
   const miniCalenderRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+
+  const handleClickDateWheelPicker = () => {
+    setIsDateWheelPickerOpen(!isDateWheelPickerOpen);
+  };
 
   const handleFormatDay = (locale, date) => dayjs(date).format('D');
 
@@ -64,6 +70,12 @@ const MiniCalendar: FC<MiniCalendarProps> = (props) => {
     setDay(+selectDay);
   };
 
+  const handleSelectDateWheelPicker = (date) => {
+    setYear(+date.year);
+    setMonth(+date.month);
+    setDay(+date.day);
+  };
+
   const handleClickCancel = () => {
     onClose(false);
   };
@@ -92,51 +104,65 @@ const MiniCalendar: FC<MiniCalendarProps> = (props) => {
   }, []);
 
   return (
-    <div {...stylex.props(Styles.Wrapper)} ref={miniCalenderRef}>
-      <div {...stylex.props(Styles.MoveDateContainer)}>
-        <button type="button" {...stylex.props(Styles.DatePickerBtn, Typography.SubtitleSmallBold)}>
-          {year}년 {month}월
-          <TriangleFilled width={24} height={24} />
-        </button>
-        <div {...stylex.props(Styles.MonthMoveBtnContainer)}>
-          <button type="button" onClick={handleClickPrevMonth}>
-            <ArrowHeadOutlinedV2 width={24} height={24} rotate={180} />
+    <>
+      <div {...stylex.props(Styles.Wrapper)} ref={miniCalenderRef}>
+        <div {...stylex.props(Styles.MoveDateContainer)}>
+          <button
+            type="button"
+            {...stylex.props(Styles.DatePickerBtn, Typography.SubtitleSmallBold)}
+            onClick={handleClickDateWheelPicker}
+          >
+            {year}년 {month}월
+            <TriangleFilled width={24} height={24} />
           </button>
-          <button type="button" onClick={handleClickNextMonth}>
-            <ArrowHeadOutlinedV2 width={24} height={24} />
+          <div {...stylex.props(Styles.MonthMoveBtnContainer)}>
+            <button type="button" onClick={handleClickPrevMonth}>
+              <ArrowHeadOutlinedV2 width={24} height={24} rotate={180} />
+            </button>
+            <button type="button" onClick={handleClickNextMonth}>
+              <ArrowHeadOutlinedV2 width={24} height={24} />
+            </button>
+          </div>
+        </div>
+
+        <Calendar
+          onChange={handleChangeDate}
+          value={new Date(year, month - 1, day)} // month는 0~11까지라서 -1을 해줌.
+          showNavigation={false}
+          formatDay={handleFormatDay}
+          formatShortWeekday={handleFormatShortWeekday} // 요일을 표현하는 방식 커스텀
+          locale="en-GB"
+          activeStartDate={new Date(year, month - 1, day)} // month는 0~11까지라서 -1을 해줌.
+          calendarType="gregory" // 일주일의 시작이 sun으로 시작되게 수정
+          tileClassName="mini-calendar-title"
+          className="mini-calendar"
+        />
+        <div {...stylex.props(Styles.CancelAndSaveBtnContainer)}>
+          <button
+            type="button"
+            onClick={handleClickCancel}
+            {...stylex.props(BtnStyles.CommonBtn, BtnStyles.Cancel, Typography.SubTextLargeMedium)}
+          >
+            취소
+          </button>
+          <button
+            type="button"
+            onClick={handleClickSave}
+            {...stylex.props(BtnStyles.CommonBtn, BtnStyles.Save, Typography.SubTextLargeMedium)}
+          >
+            저장
           </button>
         </div>
       </div>
 
-      <Calendar
-        onChange={handleChangeDate}
-        value={new Date(year, month - 1, day)} // month는 0~11까지라서 -1을 해줌.
-        showNavigation={false}
-        formatDay={handleFormatDay}
-        formatShortWeekday={handleFormatShortWeekday} // 요일을 표현하는 방식 커스텀
-        locale="en-GB"
-        activeStartDate={new Date(year, month - 1, day)} // month는 0~11까지라서 -1을 해줌.
-        calendarType="gregory" // 일주일의 시작이 sun으로 시작되게 수정
-        tileClassName="mini-calendar-title"
-        className="mini-calendar"
+      {/* wheel로 날짜를 선택하는 컴포넌트  */}
+      <DateWheelPicker
+        isOpen={isDateWheelPickerOpen}
+        onClose={handleClickDateWheelPicker}
+        defaultValue={{ year: `${year}`, month: `${month}`, day: `${day}` }}
+        onSelect={handleSelectDateWheelPicker}
       />
-      <div {...stylex.props(Styles.CancelAndSaveBtnContainer)}>
-        <button
-          type="button"
-          onClick={handleClickCancel}
-          {...stylex.props(BtnStyles.CommonBtn, BtnStyles.Cancel, Typography.SubTextLargeMedium)}
-        >
-          취소
-        </button>
-        <button
-          type="button"
-          onClick={handleClickSave}
-          {...stylex.props(BtnStyles.CommonBtn, BtnStyles.Save, Typography.SubTextLargeMedium)}
-        >
-          저장
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 
