@@ -134,15 +134,6 @@ const Booking = () => {
             )}
           </div>
         </BookingFormItem>
-        <BookingFormItem label="팀" required>
-          <BookingAutoCompleteSelect
-            placeholder="참석팀 검색"
-            columnItem={columnItem}
-            data={dummyList}
-            apiUrl={`/v1/workspace/@{wid}/team`}
-            onSelect={handleSelectTeam}
-          />
-        </BookingFormItem>
         <BookingFormItem label="참석자" required>
           <BookingAutoCompleteSelect
             placeholder="참석자 검색"
