@@ -6,10 +6,10 @@ import MypageSummaryProfile from '@src/features/mypage/compontents/MypageSummary
 import MypageMenu from '@src/features/mypage/compontents/MypageMenu';
 import SettingOutlined from '@src/components/icons/SettingOutlined';
 import AddUserOutlined from '@src/components/icons/AddUserOutlined';
-import MegaphoneOutlined from '@src/components/icons/MegaphoneOutlined';
 import BellOutlined from '@src/components/icons/BellOutlined';
 import ExitOutlined from '@src/components/icons/ExitOutlined';
 import BoundaryArea from '@src/components/ui/BoundaryArea';
+import { confirm } from '@src/components/ui/Modal/confirm';
 
 const MyPageHome = () => {
   const commonUrl = 'mypage';
@@ -22,7 +22,22 @@ const MyPageHome = () => {
     },
     { id: 2, name: '멤버초대', icon: <AddUserOutlined width={24} height={24} />, href: '' },
     { id: 4, name: '알림 설정', icon: <BellOutlined width={24} height={24} />, href: `/${commonUrl}/alarm` },
-    { id: 5, name: '워크스페이스 나가기', icon: <ExitOutlined width={24} height={24} />, href: '' },
+    {
+      id: 5,
+      name: '워크스페이스 나가기',
+      icon: <ExitOutlined width={24} height={24} />,
+      onClick: () => {
+        console.log('dd');
+        confirm({
+          content:
+            '워크스페이스를 나가도 작성된 회의 내용은 남아있어요. 다시 참여를 원하시면 초대 링크를 입력 후 참여 가능합니다.',
+          okBtnName: '나갈래요',
+          onOk: null,
+          cancelBtnName: '유지할래요',
+          onCancel: null,
+        });
+      },
+    },
   ];
 
   return (
