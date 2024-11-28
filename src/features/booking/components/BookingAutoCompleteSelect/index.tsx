@@ -7,17 +7,15 @@ import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 
 type BookingAutoCompleteSelectProps = {
   defaultValueImgUrl?: string;
-  apiUrl: string;
   onSelect: (value: any) => void;
   replaceSelectedItemsWithImage?: boolean; // 선택된 항목들을 이미지로만 보여줄지 말지 결정하는 함수(ex. 프로필 이미지로만 보여줄지 결정)
   placeholder: string;
   columnItem: AutoCompleteItemInfo;
-  data: any;
 };
 
 const BookingAutoCompleteSelect: FC<BookingAutoCompleteSelectProps> = (props) => {
-  const { defaultValueImgUrl, apiUrl, onSelect, replaceSelectedItemsWithImage, placeholder, columnItem, data } = props;
-  const [selectedItem, setSelectedItem] = useState<any[]>([]);
+  const { defaultValueImgUrl, onSelect, replaceSelectedItemsWithImage, placeholder, columnItem } = props;
+  const [selectedItemList, setSelectedItemList] = useState<any[]>([]);
   const [isOpenAutoCompleteSelect, setIsOpenAutoCompleteSelect] = useState<boolean>(false);
   const autoCompleteRef = useRef<HTMLDivElement>(null);
 
@@ -25,8 +23,9 @@ const BookingAutoCompleteSelect: FC<BookingAutoCompleteSelectProps> = (props) =>
     setIsOpenAutoCompleteSelect(true);
   };
 
-  const handleSelectedKeywordList = (value: any[]) => {
-    setSelectedItem(value);
+  const handleSelectedKeywordList = (list: any[]) => {
+    setSelectedItemList(list);
+    onSelect(list);
   };
 
   const handleClickOutside = ({ target }) => {
@@ -44,19 +43,23 @@ const BookingAutoCompleteSelect: FC<BookingAutoCompleteSelectProps> = (props) =>
 
   return (
     <div {...stylex.props(Styles.autoCompleteSelect)} ref={autoCompleteRef}>
-      {selectedItem.length ? (
+      {/* 선택된 참가자 목록을 밖에서 보여주는 영역 */}
+      {selectedItemList.length ? (
         <>
           {replaceSelectedItemsWithImage ? (
-            <div>
-              {selectedItem.map((item) => (
-                <button type="button">
-                  <ProfileImg src={item.href} size={32} />
+            <div {...stylex.props(Styles.selectedItemContainer)}>
+              {selectedItemList.map((item) => (
+                <button type="button" onClick={handleClickItem}>
+                  <div {...stylex.props(Styles.userInfoContainer)}>
+                    <ProfileImg src={item.profileImgUrl} size={20} />
+                    <span {...stylex.props(Typography.TagLargeMedium)}>{item.displayName}</span>
+                  </div>
                 </button>
               ))}
             </div>
           ) : (
             <div {...stylex.props(Styles.selectedItemContainer)}>
-              {selectedItem.map((item) => (
+              {selectedItemList.map((item) => (
                 <button type="button" onClick={handleClickItem}>
                   <span {...stylex.props(Styles.selectedItemName, Typography.TextSmallRegular)}>{item.teamName}</span>
                 </button>
@@ -73,12 +76,14 @@ const BookingAutoCompleteSelect: FC<BookingAutoCompleteSelectProps> = (props) =>
           )}
         </button>
       )}
+
+      {/* 참석자 검색 및 선택 */}
       {isOpenAutoCompleteSelect && (
         <SearchInput
           onSelect={handleSelectedKeywordList}
           placeholder={placeholder}
           columnItem={columnItem}
-          data={selectedItem}
+          defaultValue={selectedItemList}
         />
       )}
     </div>
@@ -94,7 +99,7 @@ const Styles = stylex.create({
   },
   selectedItemContainer: {
     display: 'flex',
-    gap: '16px',
+    gap: '6px',
   },
   selectedItemName: {
     color: colors.black500,
@@ -108,5 +113,10 @@ const Styles = stylex.create({
     background: colors.gray60,
     borderRadius: '50%',
     color: colors.white500,
+  },
+  userInfoContainer: {
+    display: 'flex',
+    gap: '4px',
+    alignItems: 'center',
   },
 });
