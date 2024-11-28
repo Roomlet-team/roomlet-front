@@ -4,19 +4,24 @@ import { Shadows, Typography, colors } from '../../../../../../public/styles/var
 import SearchOutlined from '@src/components/icons/SearchOutlined';
 import CheckmarkOutlined from '@src/components/icons/CheckmarkOutlined';
 import { AutoCompleteItemInfo } from '@src/features/booking/types';
+import useGetMemberListQuery from '@src/features/booking/queries/useGetMemberListQuery';
+import useDebounce from '@src/hooks/useDebounce';
+import ProfileImg from '@src/components/ui/ProfileImg';
 
 type SearchInputProps = {
   onSelect: (valArr: any[]) => void;
   placeholder: string;
   columnItem: AutoCompleteItemInfo;
-  data: any;
+  defaultValue: any[];
 };
 
 const SearchInput: FC<SearchInputProps> = (props) => {
-  const { onSelect, placeholder, columnItem, data } = props;
+  const { onSelect, placeholder, columnItem, defaultValue } = props;
   const [keyword, setKeyword] = useState<string>('');
-  const [selectedKeywordList, setSelectedKeywordList] = useState<any[]>([]);
+  const debounceKeyword = useDebounce(keyword);
+  const [selectedKeywordList, setSelectedKeywordList] = useState<any[]>(defaultValue);
   const [unselectedKeywordList, setUnselectedKeywordList] = useState<any[]>([]);
+  const { data } = useGetMemberListQuery(debounceKeyword);
 
   const handleChangeKeyword = (e) => {
     setKeyword(e.target.value);
@@ -49,8 +54,17 @@ const SearchInput: FC<SearchInputProps> = (props) => {
   };
 
   useEffect(() => {
-    setUnselectedKeywordList(data);
-  }, []);
+    if (selectedKeywordList.length === 0) {
+      // 선택한 리스트 값이 없을 때, 선택하지 않은 값 리스트에 전체 멤버 리스트 삽입
+      setUnselectedKeywordList(data?.memberList);
+    } else {
+      // 선택한 리스트 값이 있을 때, 전체 멤버 리스트에서 선택한 멤버 리스트를 제외한 값을 삽입
+      const selectedIdList = selectedKeywordList.map((item) => item.MemberId);
+      const filterUnselectedMemberList = data?.memberList.filter((item) => !selectedIdList.includes(item.MemberId));
+
+      setUnselectedKeywordList(filterUnselectedMemberList);
+    }
+  }, [data?.memberCount]);
 
   return (
     <div {...stylex.props(Styles.container)}>
@@ -65,29 +79,43 @@ const SearchInput: FC<SearchInputProps> = (props) => {
           placeholder={placeholder}
         />
       </div>
+
       {/* 선택 완료된 항목 */}
       {selectedKeywordList.length > 0 && (
         <div {...stylex.props(Styles.itemListContainer, Styles.checkedItemListWrapper)}>
           {selectedKeywordList.map((item) => (
-            <button type="button" {...stylex.props(Styles.itemBtn)} onClick={(e) => handleClickUncheckedItem(e, item)}>
+            <button
+              type="button"
+              key={item.MemberId}
+              {...stylex.props(Styles.itemBtn)}
+              onClick={(e) => handleClickUncheckedItem(e, item)}
+            >
               <div {...stylex.props(Styles.checkedBox)}>
                 <CheckmarkOutlined width={12} height={8} />
               </div>
-              <span {...stylex.props(Typography.TagLargeMedium)}>{item[columnItem.name.dataName]}</span>
+              <div {...stylex.props(Styles.userInfoContainer)}>
+                <ProfileImg size={20} src={item.profileImgUrl} />
+                <span {...stylex.props(Typography.TagLargeMedium)}>{item[columnItem.name.dataName]}</span>
+              </div>
             </button>
           ))}
         </div>
       )}
+
       {/* 미선택 항목 */}
       <div {...stylex.props(Styles.itemListContainer)}>
-        {unselectedKeywordList.map((item) => (
+        {unselectedKeywordList?.map((item) => (
           <button
             type="button"
+            key={item.MemberId}
             {...stylex.props(Styles.itemBtn, Typography.TagLargeMedium)}
             onClick={(e) => handleClickCheckedItem(e, item)}
           >
             <div {...stylex.props(Styles.uncheckedBox)} />
-            <span {...stylex.props(Typography.TagLargeMedium)}>{item[columnItem.name.dataName]}</span>
+            <div {...stylex.props(Styles.userInfoContainer)}>
+              <ProfileImg size={20} src={item.profileImgUrl} />
+              <span {...stylex.props(Typography.TagLargeMedium)}>{item[columnItem.name.dataName]}</span>
+            </div>
           </button>
         ))}
       </div>
@@ -128,10 +156,16 @@ const Styles = stylex.create({
     border: 'none',
     outline: 'none',
   },
+  userInfoContainer: {
+    display: 'flex',
+    gap: '4px',
+    alignItems: 'center',
+  },
   itemListContainer: {
     paddingTop: '12px',
     display: 'flex',
     gap: '16px',
+    flexDirection: 'column',
   },
   itemBtn: {
     display: 'flex',
