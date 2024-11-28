@@ -16,7 +16,7 @@ interface ConfirmModalProps {
   cancelBtnName?: string;
 }
 
-const ConfirmModal: FC<ModalProps & ConfirmModalProps> = (props) => {
+const ConfirmModal: FC<ConfirmModalProps> = (props) => {
   const { content, onOk, onCancel, okBtnName, cancelBtnName } = props;
 
   /**
@@ -81,7 +81,7 @@ const ConfirmModal: FC<ModalProps & ConfirmModalProps> = (props) => {
   );
 };
 
-const confirm = (props) => {
+const confirm = (props: ConfirmModalProps) => {
   // body 태그에 div 태그를 추가하여 모달 띄우기
   const divElement = document.createElement('div');
   divElement.id = confirmModalId;
@@ -95,7 +95,7 @@ export { confirm };
 
 const Styles = stylex.create({
   container: {
-    minWidth: '300px',
+    maxWidth: '300px',
     width: '100%',
     padding: '24px 16px',
     background: colors.white500,
