@@ -21,15 +21,16 @@ const Booking = () => {
   const [endTime, setEndTime] = useState<string>('');
   const [roomId, setRoomId] = useState<number>(null);
   const [categoryId, setCategoryId] = useState<number>(null);
+  const [memberList, setMemberList] = useState<[]>([]);
   const [detailContent, handleDetailContent] = useTextArea<string>('');
   const defaultImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/booking_default_2x.png';
 
   const columnItem = {
     id: {
-      dataName: 'TeamId',
+      dataName: 'MemberId',
     },
     name: {
-      dataName: 'teamName',
+      dataName: 'displayName',
     },
   };
   const meetingRoomList = [
@@ -81,8 +82,8 @@ const Booking = () => {
     setCategoryId(id);
   };
 
-  const handleSelectTeam = (teamList) => {
-    console.log({ teamList });
+  const handleSelectMemberList = (teamList) => {
+    setMemberList(teamList);
   };
 
   return (
@@ -139,10 +140,8 @@ const Booking = () => {
             placeholder="참석자 검색"
             replaceSelectedItemsWithImage
             columnItem={columnItem}
-            data={dummyList}
             defaultValueImgUrl={defaultImgUrl}
-            apiUrl={`/v1/workspace/@{wid}/team`}
-            onSelect={handleSelectTeam}
+            onSelect={handleSelectMemberList}
           />
         </BookingFormItem>
         <BookingFormItem label="상세 내용" required>
