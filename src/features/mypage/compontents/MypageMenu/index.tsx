@@ -18,10 +18,19 @@ const MypageMenu: FC<MypageMenuProps> = (props) => {
       <ul {...stylex.props(Styles.List)}>
         {menuList.map((item) => (
           <li key={item.id} {...stylex.props(Styles.Item)}>
-            <Link href={item.href} {...stylex.props(Styles.MenuLink)}>
-              <span>{item.icon}</span>
-              <span {...stylex.props(Typography.TextSmallMedium)}>{item.name}</span>
-            </Link>
+            {/* onClick으로 메뉴 사용할 때 */}
+            {item.onClick ? (
+              <button type="button" onClick={item.onClick} {...stylex.props(Styles.MenuButton)}>
+                <span>{item.icon}</span>
+                <span {...stylex.props(Typography.TextSmallMedium)}>{item.name}</span>
+              </button>
+            ) : (
+              // 메뉴 클릭시 링크 이동할 때
+              <Link href={item.href} {...stylex.props(Styles.MenuLink)}>
+                <span>{item.icon}</span>
+                <span {...stylex.props(Typography.TextSmallMedium)}>{item.name}</span>
+              </Link>
+            )}
           </li>
         ))}
       </ul>
@@ -49,5 +58,12 @@ const Styles = stylex.create({
     alignItems: 'center',
     textDecoration: 'none',
     color: colors.black400,
+  },
+  MenuButton: {
+    width: '100%',
+    display: 'flex',
+    gap: '16px',
+    alignItems: 'center',
+    textAlign: 'left',
   },
 });
