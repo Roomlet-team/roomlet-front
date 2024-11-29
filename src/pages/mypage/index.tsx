@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@src/components/ui/Header';
 import GnbNavLayout from '@src/layouts/GnbNavLayout';
 import { colors } from '../.../../../../public/styles/vars.stylex';
@@ -10,9 +10,17 @@ import BellOutlined from '@src/components/icons/BellOutlined';
 import ExitOutlined from '@src/components/icons/ExitOutlined';
 import BoundaryArea from '@src/components/ui/BoundaryArea';
 import { confirm } from '@src/components/ui/Modal/confirm';
+import MyPageInviteModal from '@src/features/mypage/compontents/MyPageInviteModal';
 
 const MyPageHome = () => {
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
   const commonUrl = 'mypage';
+
+  // 멤버 초대 모달을 열고 닫게하는 함수
+  const handleClickInviteModal = () => {
+    setIsInviteModalOpen(!isInviteModalOpen);
+  };
+
   const menuList = [
     {
       id: 1,
@@ -20,14 +28,18 @@ const MyPageHome = () => {
       icon: <SettingOutlined width={24} height={24} />,
       href: `/${commonUrl}/workspace`,
     },
-    { id: 2, name: '멤버초대', icon: <AddUserOutlined width={24} height={24} />, href: '' },
+    {
+      id: 2,
+      name: '멤버초대',
+      icon: <AddUserOutlined width={24} height={24} />,
+      onClick: () => handleClickInviteModal(),
+    },
     { id: 4, name: '알림 설정', icon: <BellOutlined width={24} height={24} />, href: `/${commonUrl}/alarm` },
     {
       id: 5,
       name: '워크스페이스 나가기',
       icon: <ExitOutlined width={24} height={24} />,
       onClick: () => {
-        console.log('dd');
         confirm({
           content:
             '워크스페이스를 나가도 작성된 회의 내용은 남아있어요. 다시 참여를 원하시면 초대 링크를 입력 후 참여 가능합니다.',
@@ -41,17 +53,22 @@ const MyPageHome = () => {
   ];
 
   return (
-    <GnbNavLayout backgroundColor={colors.white500}>
-      <Header title="마이페이지" />
-      {/* 프로필 페이지로 이동 */}
-      <MypageSummaryProfile />
+    <>
+      <GnbNavLayout backgroundColor={colors.white500}>
+        <Header title="마이페이지" />
+        {/* 프로필 페이지로 이동 */}
+        <MypageSummaryProfile />
 
-      {/* 경계선 */}
-      <BoundaryArea />
+        {/* 경계선 */}
+        <BoundaryArea />
 
-      {/* 마이페이지 메뉴 */}
-      <MypageMenu menuList={menuList} />
-    </GnbNavLayout>
+        {/* 마이페이지 메뉴 */}
+        <MypageMenu menuList={menuList} />
+      </GnbNavLayout>
+
+      {/* 멤버 초대 모달 열기 */}
+      <MyPageInviteModal isOpen={isInviteModalOpen} onClose={handleClickInviteModal} />
+    </>
   );
 };
 
