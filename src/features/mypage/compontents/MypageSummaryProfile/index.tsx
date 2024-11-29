@@ -4,16 +4,19 @@ import ProfileImg from '@src/components/ui/ProfileImg';
 import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 import ArrowHeadOutlinedV2 from '@src/components/icons/ArrowHeadOutlinedV2';
 import Link from 'next/link';
+import useGetMypageInfoQuery from '../../queries/useGetMypageInfoQuery';
 
 const MypageSummaryProfile = () => {
+  const { data } = useGetMypageInfoQuery();
+
   return (
     <div {...stylex.props(Styles.Container)}>
       <Link href="/mypage/profile" {...stylex.props(Styles.ProfileLink)} passHref>
-        <ProfileImg src={null} size={60} />
+        <ProfileImg src={data?.myInfo.profileImgUrl} size={60} />
         <div {...stylex.props(Styles.UserInfoContainer)}>
           <div>
-            <p {...stylex.props(Styles.NameText, Typography.SubTextRegularBold)}>이나현</p>
-            <p {...stylex.props(Styles.emailText, Typography.SubTextLargeRegular)}>abc@naver.com</p>
+            <p {...stylex.props(Styles.NameText, Typography.SubTextRegularBold)}>{data?.myInfo.displayName}</p>
+            <p {...stylex.props(Styles.emailText, Typography.SubTextLargeRegular)}>{data?.myInfo.email}</p>
           </div>
           <ArrowHeadOutlinedV2 width={24} height={24} color={colors.gray60} />
         </div>
