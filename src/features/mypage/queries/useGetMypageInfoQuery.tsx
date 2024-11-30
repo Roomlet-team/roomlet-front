@@ -35,7 +35,7 @@ const getMypageInfoApi = async (WorkspaceId: number): Promise<MypageInfo> => {
  */
 const useGetMypageInfoQuery = () => {
   const { data } = useGetWorkspaceListQuery();
-  const workspaceId = data?.workspaceList[0].WorkspaceId;
+  const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 
   const result = useQuery({
     queryKey: ['mypageInfo'],

@@ -33,7 +33,7 @@ const getWorkspaceInfoApi = async (WorkspaceId: number): Promise<WorkspaceInfo> 
  */
 const useGetWorkspaceMainInfoQuery = () => {
   const { data } = useGetWorkspaceListQuery();
-  const workspaceId = data?.workspaceList[0].WorkspaceId;
+  const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 
   const result = useQuery({
     queryKey: ['workspaceInfo', workspaceId],
@@ -48,7 +48,7 @@ const useGetWorkspaceMainInfoQuery = () => {
       },
       workspaceCongressStatus: { workspaceCongressCount: 0, myCongressCount: 0 },
     },
-    enabled: Boolean(workspaceId), // InviteId가 정의되어 있지 않은 경우, 첫 렌더링시 요청이 이뤄지지 않게 함.
+    enabled: Boolean(workspaceId), // workspaceId가 정의되어 있지 않은 경우, 첫 렌더링시 요청이 이뤄지지 않게 함.
   });
 
   return result;
