@@ -26,7 +26,7 @@ const postInviteCodeApi = async (WorkspaceId: number): Promise<InviteCodeInfo> =
  */
 const usePostInviteCodeQuery = () => {
   const { data } = useGetWorkspaceListQuery();
-  const workspaceId = data?.workspaceList[0].WorkspaceId;
+  const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 
   const result = useQuery({
     queryKey: ['inviteCode'],
