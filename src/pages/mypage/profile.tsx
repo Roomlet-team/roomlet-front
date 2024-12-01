@@ -1,10 +1,7 @@
-import ArrowHeadOutlinedV2 from '@src/components/icons/ArrowHeadOutlinedV2';
 import Header from '@src/components/ui/Header';
-import ProfileImg from '@src/components/ui/ProfileImg';
-import ReservationList from '@src/features/reservation/components/ReservationList';
 import GnbNavLayout from '@src/layouts/GnbNavLayout';
 import stylex from '@stylexjs/stylex';
-import { Typography, colors } from '../../../public/styles/vars.stylex';
+import { colors } from '../../../public/styles/vars.stylex';
 import React, { useState } from 'react';
 import BoundaryArea from '@src/components/ui/BoundaryArea';
 import MyPagePersonalDataList from '@src/features/mypage/compontents/MyPagePersonalDataList';
@@ -14,10 +11,14 @@ import MailOutlined from '@src/components/icons/MailOutlined';
 import MyPageImgUpload from '@src/features/mypage/compontents/MyPageImgUpload';
 import MyPageInput from '@src/features/mypage/compontents/MyPageInput';
 import useInput from '@src/hooks/useInput';
+import usePatchMypageInfoQuery from '@src/features/mypage/profile/queries/usePostWorkspaceJoinQuery';
+import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 
 const MyPageProfile = () => {
-  const [nickname, handleChangeNickname] = useInput<string>('');
-  const [isEditComplete, setIsEditComplete] = useState<boolean>(false);
+  const { data } = useGetMypageInfoQuery();
+  const mutation = usePatchMypageInfoQuery();
+  const [displayName, handleChangeDisplayName] = useInput<string>(data?.myInfo?.displayName);
+  const [imageFile, setImageFile] = useState<Blob>(null);
 
   const menuList = [
     { id: 1, name: '디자인팀', icon: <DataflowOutlined width={24} height={24} /> },
@@ -25,10 +26,22 @@ const MyPageProfile = () => {
     { id: 3, name: 'dudu1104@naver.com', icon: <MailOutlined width={24} height={24} /> },
   ];
 
+  // [ ] 이미지 저장용 hook 만들기
+  const handleSelectImg = (file: Blob) => {
+    setImageFile(file);
+  };
+
   const completeBtnProps = {
     name: '완료',
-    isActive: isEditComplete,
-    onClick: () => console.log(''),
+    isActive: data?.myInfo?.displayName !== displayName || !!imageFile,
+    onClick: () => {
+      const formData = new FormData();
+
+      formData.append('displayName', displayName);
+      formData.append('image', imageFile);
+
+      mutation.mutate(formData);
+    },
   };
 
   return (
@@ -37,8 +50,8 @@ const MyPageProfile = () => {
 
       {/* 이미지 업로드 및 이름 입력 */}
       <div {...stylex.props(Styles.SettingContainer)}>
-        <MyPageImgUpload onSelect={null} />
-        <MyPageInput label="닉네임" value={nickname} onChange={handleChangeNickname} />
+        <MyPageImgUpload onSelect={handleSelectImg} initialImgUrl={data?.myInfo?.profileImgUrl} />
+        <MyPageInput label="닉네임" value={displayName} onChange={handleChangeDisplayName} />
       </div>
 
       {/* 경계선 */}
