@@ -22,7 +22,7 @@ const WorkspaceHome = () => {
       icon: <UserGroupOutlined width={24} height={24} />,
       href: `/${commonUrl}/member`,
     },
-    { id: 2, name: '회의실 정보', icon: <BoxOutlined width={24} height={24} />, href: '' },
+    { id: 2, name: '회의실 정보', icon: <BoxOutlined width={24} height={24} />, href: `/${commonUrl}/congress-room` },
     { id: 3, name: '카테고리 정보', icon: <CategoryGroupOutlined width={24} height={24} />, href: '' },
   ];
 
