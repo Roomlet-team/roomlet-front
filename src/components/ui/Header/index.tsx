@@ -29,11 +29,11 @@ const Header: FC<HeaderProps> = (props) => {
       {rightBtnInfo && (
         <button
           type="button"
-          onClick={rightBtnInfo.onClick}
+          {...(rightBtnInfo.isActive ? { onClick: rightBtnInfo.onClick } : {})}
           {...stylex.props(
             Typography.SubTextLargeRegular,
             Styles.rightBtn,
-            rightBtnInfo.isActive && Styles.isActiveRightBtn
+            rightBtnInfo.isActive ? Styles.isActiveRightBtn : Styles.isInactiveRightBtn
           )}
         >
           {rightBtnInfo.name}
@@ -61,5 +61,8 @@ const Styles = stylex.create({
   },
   isActiveRightBtn: {
     color: '#3859CE',
+  },
+  isInactiveRightBtn: {
+    cursor: 'not-allowed',
   },
 });
