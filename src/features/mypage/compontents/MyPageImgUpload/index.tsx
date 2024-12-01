@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import PhotoFilled from '@src/components/icons/PhotoFilled';
 
 type MyPageImgUploadProps = {
-  onSelect: () => void;
+  onSelect: (file: Blob) => void;
+  initialImgUrl: string;
 };
 
 /**
@@ -12,15 +13,65 @@ type MyPageImgUploadProps = {
  * @param onSelect 선택한 값
  */
 const MyPageImgUpload: FC<MyPageImgUploadProps> = (props) => {
-  const { onSelect } = props;
+  const { onSelect, initialImgUrl } = props;
+
+  const [profileImg, setProfileImg] = useState<string>('');
+  const [imgUrl, setImgUrl] = useState<string | Blob>(initialImgUrl);
+  const imageUploadRef = useRef(null);
+
+  const handleClickImgUpload = () => {
+    imageUploadRef.current.click();
+  };
+
+  const handleLoadFile = (e) => {
+    const file = e.target.files;
+    const fileType = file['0']?.type;
+    const fileSize = file['0']?.size && file['0'].size;
+    const limitSize = 5 * 1024 ** 2; // 파일 용량 제한은 5MB
+
+    if (!file['0']) {
+      return false;
+    }
+    if (fileType === 'image/jpeg' || fileType === 'image/jpg' || fileType === 'image/png') {
+      if (fileSize > limitSize) {
+        alert('파일 사이즈가 5MB를 초과합니다.');
+      } else {
+        const reader = new FileReader();
+        {
+          /* [ ] setImgUrl 타입 수정하기 */
+        }
+        reader.onload = () => setImgUrl(reader.result);
+        reader.readAsDataURL(file['0']);
+        setProfileImg(file);
+        onSelect(file['0']);
+      }
+    } else {
+      alert('이미지 파일만 등록이 가능합니다.');
+    }
+
+    return null;
+  };
+
+  const handleImgInit = (e) => {
+    e.currentTarget.value = null;
+  };
 
   return (
     <div {...stylex.props(Styles.Container)}>
       <div {...stylex.props(Styles.ImgContainer)}>
-        <ProfileImg src={null} size={68} />
-        <div {...stylex.props(Styles.IconWrapper)}>
+        {/* [ ] src 타입 수정하기 */}
+        <ProfileImg src={imgUrl} size={68} />
+        <input
+          type="file"
+          style={{ display: 'none' }}
+          accept=".png, .jpg, .jpeg"
+          ref={imageUploadRef}
+          onChange={handleLoadFile}
+          onClick={handleImgInit}
+        />
+        <button type="button" onClick={handleClickImgUpload} {...stylex.props(Styles.IconWrapper)}>
           <PhotoFilled width={24} height={24} />
-        </div>
+        </button>
       </div>
     </div>
   );
