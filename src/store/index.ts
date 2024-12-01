@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import onboardingReducer from '@features/onboarding/slices/onboarding';
 import bookingReducer from '@features/booking/slices/booking';
+import congressRoomReducer from '@features/mypage/workspace/congress-room/slice/congressRoom';
 
 export const store = configureStore({
   reducer: {
     onboarding: onboardingReducer,
     booking: bookingReducer,
+    congressRoom: congressRoomReducer,
   },
 });
 
