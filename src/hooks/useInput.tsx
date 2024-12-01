@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * input 태그에서 state 값 변경만 다루는 onChange와 값이 변경된 state를 반환하는 custom hook
@@ -7,6 +7,11 @@ import { useState } from 'react';
  */
 function useInput<T>(initValue: T): [T, React.ChangeEventHandler<HTMLInputElement>] {
   const [value, setValue] = useState<T>(initValue);
+
+  // initValue가 변경되면 value에도 함께 반영
+  useEffect(() => {
+    setValue(initValue);
+  }, [initValue]);
 
   const handleInputValue: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.target.value as T);
