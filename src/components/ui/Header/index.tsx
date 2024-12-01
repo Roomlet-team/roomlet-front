@@ -29,11 +29,11 @@ const Header: FC<HeaderProps> = (props) => {
       {rightBtnInfo && (
         <button
           type="button"
-          {...(rightBtnInfo.isActive ? { onClick: rightBtnInfo.onClick } : {})}
+          onClick={rightBtnInfo.onClick}
           {...stylex.props(
             Typography.SubTextLargeRegular,
             Styles.rightBtn,
-            rightBtnInfo.isActive ? Styles.isActiveRightBtn : Styles.isInactiveRightBtn
+            rightBtnInfo.isActive && Styles.isActiveRightBtn
           )}
         >
           {rightBtnInfo.name}
@@ -51,6 +51,7 @@ const Styles = stylex.create({
     padding: '16px',
     gap: '16px',
     alignItems: 'center',
+    background: colors.white500,
   },
   withRightBtn: {
     justifyContent: 'space-between',
@@ -61,8 +62,5 @@ const Styles = stylex.create({
   },
   isActiveRightBtn: {
     color: '#3859CE',
-  },
-  isInactiveRightBtn: {
-    cursor: 'not-allowed',
   },
 });
