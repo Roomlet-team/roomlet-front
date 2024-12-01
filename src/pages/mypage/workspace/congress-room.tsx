@@ -42,7 +42,7 @@ const MeetingRoom = () => {
       <div {...stylex.props(Styles.RoomListWrapper)}>
         {isEdit
           ? // 수정 상태 일 때
-            editCongressRoomList.map((item) => <CongressRoomCard data={item} isEdit={isEdit} />)
+            editCongressRoomList?.map((item) => <CongressRoomCard data={item} isEdit={isEdit} />)
           : // 수정 상태가 아닐 때
             data?.congressRoomList.map((item) => <CongressRoomCard data={item} />)}
       </div>
