@@ -2,15 +2,14 @@ import React, { FC } from 'react';
 import stylex from '@stylexjs/stylex';
 import { s3ImgUrlConfig } from '@src/config';
 
-type ProfileImgProps = {
-  src: string;
+interface ProfileImgProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   size: number;
   borderProperties?: {
     width?: string;
     color?: string;
     radius?: string;
   };
-};
+}
 
 /**
  * 프로필 이미지를 보여주는 컴포넌트
