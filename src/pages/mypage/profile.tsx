@@ -20,10 +20,10 @@ const MyPageProfile = () => {
   const [displayName, handleChangeDisplayName] = useInput<string>(data?.myInfo?.displayName);
   const [imageFile, setImageFile] = useState<Blob>(null);
 
-  const menuList = [
-    { id: 1, name: '디자인팀', icon: <DataflowOutlined width={24} height={24} /> },
-    { id: 2, name: '디자이너', icon: <UserSquareOutlined width={24} height={24} /> },
-    { id: 3, name: 'dudu1104@naver.com', icon: <MailOutlined width={24} height={24} /> },
+  const dataList = [
+    { id: 1, name: data?.myInfo?.teamInfo?.teamName, icon: <DataflowOutlined width={24} height={24} /> },
+    { id: 2, name: data?.myInfo?.position || '직책 없음', icon: <UserSquareOutlined width={24} height={24} /> },
+    { id: 3, name: data?.myInfo?.email, icon: <MailOutlined width={24} height={24} /> },
   ];
 
   // [ ] 이미지 저장용 hook 만들기
@@ -58,7 +58,7 @@ const MyPageProfile = () => {
       <BoundaryArea />
 
       {/* 개인 정보 리스트 */}
-      <MyPagePersonalDataList dataList={menuList} title="기타 설정" />
+      <MyPagePersonalDataList dataList={dataList} title="기타 설정" />
     </GnbNavLayout>
   );
 };
