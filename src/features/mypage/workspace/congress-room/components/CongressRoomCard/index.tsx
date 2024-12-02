@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import stylex from '@stylexjs/stylex';
-import { colors, Typography } from '../../../../../../../public/styles/vars.stylex';
+import { colors, Shadows, Typography } from '../../../../../../../public/styles/vars.stylex';
 import { CongressRoomInfoItem } from '@src/queries/congress/useGetCongressRoomListQuery';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@src/store';
@@ -42,7 +42,7 @@ const CongressRoomCard: FC<CongressRoomCardProps> = (props) => {
   );
 
   return (
-    <div {...stylex.props(Styles.Container)}>
+    <div {...stylex.props(Styles.Container(isEdit))}>
       <img src={meetingRoomCubeImgUrl} width={24} height={24} />
       <div {...stylex.props(Styles.InfoContainer)}>
         {isEdit ? (
@@ -76,14 +76,14 @@ const CongressRoomCard: FC<CongressRoomCardProps> = (props) => {
 export default CongressRoomCard;
 
 const Styles = stylex.create({
-  Container: {
+  Container: (isEdit: boolean) => ({
     padding: '16px',
     display: 'flex',
     gap: '12px',
-    border: `1px solid ${colors.gray20}`,
+    boxShadow: isEdit ? Shadows.Shadow1 : `inset 0 0 0 1px ${colors.gray20}`,
     borderRadius: '16px',
     background: colors.white500,
-  },
+  }),
   InfoContainer: {
     width: '100%',
     display: 'flex',
