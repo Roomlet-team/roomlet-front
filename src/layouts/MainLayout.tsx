@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import stylex from '@stylexjs/stylex';
 import { colors } from '../../public/styles/vars.stylex';
+import { useSelector } from 'react-redux';
+import { RootState } from '@src/store';
 
 interface MainLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   isScroll?: boolean; // 전체 화면에 스크롤이 적용되게 할지 말지 결정
@@ -10,10 +12,12 @@ interface MainLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const MainLayout: FC<MainLayoutProps> = (props) => {
   const { isScroll, backgroundColor, children } = props;
+  const modal = useSelector((state: RootState) => state.modal);
 
   return (
     <div id="main-layout" {...stylex.props(Styles.container(isScroll, backgroundColor))}>
       {children}
+      {modal && <div {...stylex.props(Styles.modalWrapper)}>{modal}</div>}
     </div>
   );
 };
@@ -30,4 +34,10 @@ const Styles = stylex.create({
     overflowY: isScroll ? 'auto' : 'hidden',
     background: backgroundColor || colors.white500,
   }),
+  modalWrapper: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: '100vh',
+  },
 });
