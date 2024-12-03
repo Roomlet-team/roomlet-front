@@ -10,13 +10,15 @@ import { saveCongressRoomList } from '@src/features/mypage/workspace/congress-ro
 import { RootState } from '@src/store';
 import PlusOutlined from '@src/components/icons/PlusOutlined';
 import MainLayout from '@src/layouts/MainLayout';
-import { AddCongressRoomBottomSheet } from '@src/features/mypage/workspace/congress-room/components/AddCongressRoomBottomSheet';
+import useRenderModal from '@src/hooks/ui/useRenderModal';
+import AddCongressRoomBottomSheet from '@src/features/mypage/workspace/congress-room/components/AddCongressRoomBottomSheet';
 
 const MeetingRoom = () => {
   const { data } = useGetCongressRoomListQuery();
   const dispatch = useDispatch();
   const { editCongressRoomList } = useSelector((state: RootState) => state.congressRoom);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const { renderModal } = useRenderModal();
 
   const completeBtnProps = {
     name: isEdit ? '완료' : '수정',
@@ -27,7 +29,7 @@ const MeetingRoom = () => {
   };
 
   const handleClickAddCongressRoom = () => {
-    AddCongressRoomBottomSheet();
+    renderModal(AddCongressRoomBottomSheet, null);
   };
 
   useEffect(() => {
