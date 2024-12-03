@@ -1,21 +1,21 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import stylex from '@stylexjs/stylex';
 import BottomSheet from '@src/components/ui/BottomSheet';
-import useCreateModal from '@src/hooks/ui/useCreateModal';
-import useModalEvent from '@src/hooks/ui/useModalEvent';
 import { colors, Typography } from '../../../../../../../public/styles/vars.stylex';
 import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
+import { hideModal } from '@src/slices/modal';
 
 let bottomSheetId = 'add-congress-room-bottom-sheet';
 
-const AddCongressRoomContent = () => {
-  const { close } = useModalEvent(bottomSheetId);
+const AddCongressRoomBottomSheet = () => {
   const [name, handleChangeName] = useInput<string>('');
   const [description, handleChangeDescription] = useInput<string>('');
+  const dispatch = useDispatch();
 
   return (
-    <BottomSheet id={bottomSheetId} onClick={() => close()}>
+    <BottomSheet id={bottomSheetId} onClick={() => dispatch(hideModal())}>
       <div {...stylex.props(Styles.Container)}>
         <p {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.Title)}>회의실 추가</p>
         <div {...stylex.props(Styles.InputContainer)}>
@@ -40,14 +40,7 @@ const AddCongressRoomContent = () => {
   );
 };
 
-/**
- * 회의실 추가 Bottom Sheet
- */
-const AddCongressRoomBottomSheet = () => {
-  useCreateModal(bottomSheetId, AddCongressRoomContent, null);
-};
-
-export { AddCongressRoomBottomSheet };
+export default AddCongressRoomBottomSheet;
 
 const Styles = stylex.create({
   Container: {
