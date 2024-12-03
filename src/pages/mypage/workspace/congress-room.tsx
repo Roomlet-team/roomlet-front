@@ -10,6 +10,7 @@ import { saveCongressRoomList } from '@src/features/mypage/workspace/congress-ro
 import { RootState } from '@src/store';
 import PlusOutlined from '@src/components/icons/PlusOutlined';
 import MainLayout from '@src/layouts/MainLayout';
+import { AddCongressRoomBottomSheet } from '@src/features/mypage/workspace/congress-room/components/AddCongressRoomBottomSheet';
 
 const MeetingRoom = () => {
   const { data } = useGetCongressRoomListQuery();
@@ -23,6 +24,10 @@ const MeetingRoom = () => {
     onClick: () => {
       setIsEdit(!isEdit);
     },
+  };
+
+  const handleClickAddCongressRoom = () => {
+    AddCongressRoomBottomSheet();
   };
 
   useEffect(() => {
@@ -52,7 +57,11 @@ const MeetingRoom = () => {
 
         {/* 회의실 추가 */}
         {isEdit && (
-          <button type="button" {...stylex.props(Styles.AddCongressRoomBtn, Typography.TextSmallMedium)}>
+          <button
+            type="button"
+            {...stylex.props(Styles.AddCongressRoomBtn, Typography.TextSmallMedium)}
+            onClick={handleClickAddCongressRoom}
+          >
             <PlusOutlined width={24} height={24} />
             <span>회의실 추가</span>
           </button>
