@@ -92,8 +92,9 @@ const Styles = stylex.create({
   },
   TextInput: {
     width: '100%',
-    padding: '4px',
+    padding: '4px 8px',
     background: colors.gray20,
     border: 'none',
+    borderRadius: '4px',
   },
 });
