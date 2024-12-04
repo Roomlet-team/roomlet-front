@@ -4,10 +4,12 @@ import { colors, Shadows, Typography } from '../../../../../../../public/styles/
 import { CongressRoomInfoItem } from '@src/queries/congress/useGetCongressRoomListQuery';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@src/store';
-import { saveCongressRoomList } from '../../slice/congressRoom';
+import { saveCongressRoomList, tempRemoveCongressRoom } from '../../slice/congressRoom';
+import CircleCloseFilled from '@src/components/icons/CircleCloseFilled';
+import { editCongressRoomItem } from '../../types/congressRoom';
 
 interface CongressRoomCardProps {
-  data: CongressRoomInfoItem;
+  data: editCongressRoomItem;
   isEdit?: boolean;
 }
 
@@ -41,32 +43,45 @@ const CongressRoomCard: FC<CongressRoomCardProps> = (props) => {
     [editCongressRoomList, data.RoomId, dispatch]
   );
 
+  const handleClickTempDelete = () => {
+    dispatch(tempRemoveCongressRoom(data.tempRoomId ? { tempRoomId: data.tempRoomId } : { ...data }));
+  };
+
   return (
     <div {...stylex.props(Styles.Container(isEdit))}>
       <img src={meetingRoomCubeImgUrl} width={24} height={24} />
-      <div {...stylex.props(Styles.InfoContainer)}>
-        {isEdit ? (
-          // 수정 상태일 때
-          <>
-            <input
-              type="text"
-              value={data.roomName}
-              onChange={handleChangeData('roomName')}
-              {...stylex.props(Styles.TextInput, Typography.TextSmallMedium)}
-            />
-            <input
-              type="text"
-              value={data.roomDescription}
-              onChange={handleChangeData('roomDescription')}
-              {...stylex.props(Styles.TextInput, Typography.TextSmallMedium)}
-            />
-          </>
-        ) : (
-          // 수정이 아닌 상태일 때
-          <>
-            <p {...stylex.props(Typography.TextSmallMedium)}>{data?.roomName}</p>
-            <p {...stylex.props(Typography.SubTextLargeMedium)}>{data?.roomDescription}</p>
-          </>
+      <div {...stylex.props(Styles.InputAndRemoveContainer)}>
+        <div {...stylex.props(Styles.InfoContainer)}>
+          {isEdit ? (
+            // 수정 상태일 때
+            <>
+              <input
+                type="text"
+                value={data.roomName}
+                onChange={handleChangeData('roomName')}
+                {...stylex.props(Styles.TextInput, Typography.TextSmallMedium)}
+              />
+              <input
+                type="text"
+                value={data.roomDescription}
+                onChange={handleChangeData('roomDescription')}
+                {...stylex.props(Styles.TextInput, Typography.TextSmallMedium)}
+              />
+            </>
+          ) : (
+            // 수정이 아닌 상태일 때
+            <>
+              <p {...stylex.props(Typography.TextSmallMedium)}>{data?.roomName}</p>
+              <p {...stylex.props(Typography.SubTextLargeMedium)}>{data?.roomDescription}</p>
+            </>
+          )}
+        </div>
+
+        {/* 임시 제거 */}
+        {isEdit && (
+          <button type="button" onClick={handleClickTempDelete}>
+            <CircleCloseFilled width={24} height={24} />
+          </button>
         )}
       </div>
     </div>
@@ -96,5 +111,11 @@ const Styles = stylex.create({
     background: colors.gray20,
     border: 'none',
     borderRadius: '4px',
+  },
+  InputAndRemoveContainer: {
+    width: '100%',
+    display: 'flex',
+    gap: '16px',
+    alignItems: 'flex-start',
   },
 });
