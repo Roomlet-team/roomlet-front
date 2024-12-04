@@ -16,7 +16,7 @@ import AddCongressRoomBottomSheet from '@src/features/mypage/workspace/congress-
 const MeetingRoom = () => {
   const { data } = useGetCongressRoomListQuery();
   const dispatch = useDispatch();
-  const { editCongressRoomList } = useSelector((state: RootState) => state.congressRoom);
+  const { editCongressRoomList, tempDeleteCongressRoomList } = useSelector((state: RootState) => state.congressRoom);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const { renderModal } = useRenderModal();
 
@@ -24,6 +24,18 @@ const MeetingRoom = () => {
     name: isEdit ? '완료' : '수정',
     isActive: isEdit,
     onClick: () => {
+      const removeTempRoomIdCongressRoomList = editCongressRoomList.map((item) => {
+        const { tempRoomId = null, ...anotherItem } = item;
+
+        return tempRoomId ? anotherItem : item;
+      });
+
+      if (isEdit) {
+        console.log({
+          congressRoomList: removeTempRoomIdCongressRoomList,
+          deleteCongressRoomList: tempDeleteCongressRoomList,
+        });
+      }
       setIsEdit(!isEdit);
     },
   };
@@ -45,7 +57,8 @@ const MeetingRoom = () => {
       <div {...stylex.props(Styles.Container)}>
         {/* 회의실 개수 */}
         <div {...stylex.props(Styles.TotalCountWrapper, Typography.TextSmallMedium)}>
-          전체 회의실 <span {...stylex.props(Styles.Count)}>{data?.congressRoomCount}</span>
+          전체 회의실{' '}
+          <span {...stylex.props(Styles.Count)}>{isEdit ? editCongressRoomList?.length : data?.congressRoomCount}</span>
         </div>
 
         {/* 회의실 목록 */}
