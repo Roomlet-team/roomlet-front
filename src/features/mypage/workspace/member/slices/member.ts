@@ -18,10 +18,17 @@ export const MemberSlice = createSlice({
     saveTeamList: (state, action) => {
       state.editTeamList = action.payload;
     },
+    // 팀 추가
+    addTeam: (state, action) => {
+      // 임시로 생성한 팀을 제거할 때, 고유 id 값으로 판별하기 위해 tempTeamId 생성
+      const tempTeamId = state.editTeamList.filter((item) => item.tempTeamId).length + 1;
+
+      state.editTeamList = [...state.editTeamList, { ...action.payload, tempTeamId, memberList: [] }];
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { saveTeamList } = MemberSlice.actions;
+export const { saveTeamList, addTeam } = MemberSlice.actions;
 
 export default MemberSlice.reducer;
