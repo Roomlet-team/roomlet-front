@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { CongressRoomInfoItem } from '@src/queries/congress/useGetCongressRoomListQuery';
+import { editCongressRoomItem } from '../types/congressRoom';
 
 export interface CongressRoomState {
-  editCongressRoomList: CongressRoomInfoItem[];
+  editCongressRoomList: editCongressRoomItem[];
+  tempDeleteCongressRoomList: editCongressRoomItem[];
 }
 
 const initialState: CongressRoomState = {
   // 회의실 리스트 저장
-  editCongressRoomList: null,
+  editCongressRoomList: [],
+  tempDeleteCongressRoomList: [],
 };
 
 export const CongressRoomSlice = createSlice({
@@ -20,11 +22,26 @@ export const CongressRoomSlice = createSlice({
     },
     // 회의실 추가
     addCongressRoom: (state, action) => {
-      state.editCongressRoomList = [...state.editCongressRoomList, action.payload];
+      // 임시로 생성한 회의실을 제거할 때, 고유 id 값으로 판별하기 위해 tempRoomId 생성
+      const tempRoomId = state.editCongressRoomList.filter((item) => item.tempRoomId).length + 1;
+
+      state.editCongressRoomList = [...state.editCongressRoomList, { ...action.payload, tempRoomId }];
     },
     // 회의실 제거
     tempRemoveCongressRoom: (state, action) => {
-      const filterRemoveCongressRoomList = state.editCongressRoomList.filter((item) => item.RoomId !== action.payload);
+      // 회의실 제거 시, 임시로 생성한 회의실과 기존 회의실을 별도로 처리해서 제거
+      const filterRemoveCongressRoomList = state.editCongressRoomList.filter((item) => {
+        if (item.RoomId) {
+          return item.RoomId !== action.payload.RoomId;
+        }
+
+        return item.tempRoomId !== action.payload.tempRoomId;
+      });
+
+      // RoomId가 존재하는 경우에만 회의실 제거 리스트에 추가
+      if (action.payload.RoomId) {
+        state.tempDeleteCongressRoomList = [...state.tempDeleteCongressRoomList, action.payload];
+      }
 
       state.editCongressRoomList = filterRemoveCongressRoomList;
     },
