@@ -22,10 +22,16 @@ export const CongressRoomSlice = createSlice({
     addCongressRoom: (state, action) => {
       state.editCongressRoomList = [...state.editCongressRoomList, action.payload];
     },
+    // 회의실 제거
+    tempRemoveCongressRoom: (state, action) => {
+      const filterRemoveCongressRoomList = state.editCongressRoomList.filter((item) => item.RoomId !== action.payload);
+
+      state.editCongressRoomList = filterRemoveCongressRoomList;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { saveCongressRoomList, addCongressRoom } = CongressRoomSlice.actions;
+export const { saveCongressRoomList, addCongressRoom, tempRemoveCongressRoom } = CongressRoomSlice.actions;
 
 export default CongressRoomSlice.reducer;
