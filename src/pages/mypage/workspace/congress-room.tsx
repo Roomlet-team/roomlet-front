@@ -12,9 +12,11 @@ import PlusOutlined from '@src/components/icons/PlusOutlined';
 import MainLayout from '@src/layouts/MainLayout';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import AddCongressRoomBottomSheet from '@src/features/mypage/workspace/congress-room/components/AddCongressRoomBottomSheet';
+import usePutCongressRoomQuery from '@src/features/mypage/workspace/congress-room/queries/usePutCongressRoomQuery';
 
 const MeetingRoom = () => {
   const { data } = useGetCongressRoomListQuery();
+  const mutation = usePutCongressRoomQuery();
   const dispatch = useDispatch();
   const { editCongressRoomList, tempDeleteCongressRoomList } = useSelector((state: RootState) => state.congressRoom);
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -31,7 +33,7 @@ const MeetingRoom = () => {
       });
 
       if (isEdit) {
-        console.log({
+        mutation.mutate({
           congressRoomList: removeTempRoomIdCongressRoomList,
           deleteCongressRoomList: tempDeleteCongressRoomList,
         });
