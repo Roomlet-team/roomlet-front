@@ -18,10 +18,14 @@ export const CongressRoomSlice = createSlice({
     saveCongressRoomList: (state, action) => {
       state.editCongressRoomList = action.payload;
     },
+    // 회의실 추가
+    addCongressRoom: (state, action) => {
+      state.editCongressRoomList = [...state.editCongressRoomList, action.payload];
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { saveCongressRoomList } = CongressRoomSlice.actions;
+export const { saveCongressRoomList, addCongressRoom } = CongressRoomSlice.actions;
 
 export default CongressRoomSlice.reducer;
