@@ -5,6 +5,7 @@ import BottomSheet from '@src/components/ui/BottomSheet';
 import { colors, Typography } from '../../../../../../../public/styles/vars.stylex';
 import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
+import { addCongressRoom } from '../../slice/congressRoom';
 import { hideModal } from '@src/slices/modal';
 
 let bottomSheetId = 'add-congress-room-bottom-sheet';
@@ -13,6 +14,11 @@ const AddCongressRoomBottomSheet = () => {
   const [name, handleChangeName] = useInput<string>('');
   const [description, handleChangeDescription] = useInput<string>('');
   const dispatch = useDispatch();
+
+  const handleClickRegister = () => {
+    dispatch(addCongressRoom({ roomName: name, roomDescription: description }));
+    dispatch(hideModal());
+  };
 
   return (
     <BottomSheet id={bottomSheetId} onClick={() => dispatch(hideModal())}>
@@ -28,10 +34,18 @@ const AddCongressRoomBottomSheet = () => {
           />
         </div>
         <div {...stylex.props(Styles.ButtonContainer)}>
-          <button type="button" {...stylex.props(Styles.Button, Styles.CancelButton, Typography.TextSmallMedium)}>
+          <button
+            type="button"
+            onClick={() => dispatch(hideModal())}
+            {...stylex.props(Styles.Button, Styles.CancelButton, Typography.TextSmallMedium)}
+          >
             닫기
           </button>
-          <button type="button" {...stylex.props(Styles.Button, Styles.RegisterButton, Typography.TextSmallMedium)}>
+          <button
+            type="button"
+            onClick={handleClickRegister}
+            {...stylex.props(Styles.Button, Styles.RegisterButton, Typography.TextSmallMedium)}
+          >
             등록
           </button>
         </div>
