@@ -10,8 +10,8 @@ const confirmModalId = 'confirm-modal';
 
 interface ConfirmModalProps {
   content: string;
-  onOk: (e: React.MouseEvent) => void;
-  onCancel: (e: React.MouseEvent) => void;
+  onOk?: (e: React.MouseEvent) => void;
+  onCancel?: (e: React.MouseEvent) => void;
   okBtnName?: string;
   cancelBtnName?: string;
 }
