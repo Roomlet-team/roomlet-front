@@ -7,6 +7,7 @@ import { RootState } from '@src/store';
 import { saveCongressRoomList, tempRemoveCongressRoom } from '../../slice/congressRoom';
 import CircleCloseFilled from '@src/components/icons/CircleCloseFilled';
 import { editCongressRoomItem } from '../../types/congressRoom';
+import { confirm } from '@src/components/ui/Modal/confirm';
 
 interface CongressRoomCardProps {
   data: editCongressRoomItem;
@@ -44,7 +45,12 @@ const CongressRoomCard: FC<CongressRoomCardProps> = (props) => {
   );
 
   const handleClickTempDelete = () => {
-    dispatch(tempRemoveCongressRoom(data.tempRoomId ? { tempRoomId: data.tempRoomId } : { ...data }));
+    confirm({
+      content: '기존 회의 기록은 변하지 않지만,\n새로운 회의에서는 더이상 사용할 수 없어요.',
+      cancelBtnName: '유지할래요',
+      okBtnName: '삭제할래요',
+      onOk: () => dispatch(tempRemoveCongressRoom(data.tempRoomId ? { tempRoomId: data.tempRoomId } : { ...data })),
+    });
   };
 
   return (
