@@ -56,8 +56,10 @@ const Member = () => {
         {/* 팀 목록 */}
         <div {...stylex.props(Styles.TeamListContainer)}>
           {isEdit
-            ? editTeamList?.map((item) => <TeamToggle key={item.TeamId} data={item} isEdit={isEdit} />)
-            : data?.teamList?.map((item) => <TeamToggle key={item.TeamId} data={item} />)}
+            ? editTeamList?.map((item, idx) => (
+                <TeamToggle key={item.TeamId} data={item} teamIdx={idx} isEdit={isEdit} />
+              ))
+            : data?.teamList?.map((item, idx) => <TeamToggle key={item.TeamId} data={item} teamIdx={idx} />)}
         </div>
 
         {/* 팀 추가 */}
