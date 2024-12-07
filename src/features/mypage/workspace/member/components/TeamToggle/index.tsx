@@ -1,21 +1,25 @@
 import React, { FC, useCallback, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import ArrowHeadOutlinedV2 from '@src/components/icons/ArrowHeadOutlinedV2';
-import { TeamInfoItem } from '@src/queries/team/useGetTeamListQuery';
+import { MemberInfoItem, TeamInfoItem } from '@src/queries/team/useGetTeamListQuery';
 import { colors, Typography } from '../../../../../../../public/styles/vars.stylex';
 import CircleCloseFilled from '@src/components/icons/CircleCloseFilled';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveTeamList } from '../../slices/member';
 import { RootState } from '@src/store';
+import useRenderModal from '@src/hooks/ui/useRenderModal';
+import MoveMemberBottomSheet from '../MoveMemberBottomSheet';
 
 interface TeamToggleProps {
   data: TeamInfoItem;
   isEdit?: boolean;
+  teamIdx: number;
 }
 
 const TeamToggle: FC<TeamToggleProps> = (props) => {
-  const { data, isEdit } = props;
+  const { data, isEdit, teamIdx } = props;
   const dispatch = useDispatch();
+  const { renderModal } = useRenderModal();
   const { editTeamList } = useSelector((state: RootState) => state.member);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -42,8 +46,11 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
     },
     [editTeamList, data.TeamId, dispatch]
   );
-
   const handleClickTempDelete = () => {};
+
+  const handleClickMoveMember = (item: MemberInfoItem, idx: number) => {
+    renderModal(MoveMemberBottomSheet, { data: item, selectMemberTeamIdx: teamIdx });
+  };
 
   return (
     <div>
@@ -76,8 +83,21 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
       {isOpen && (
         <div {...stylex.props(Styles.MemberListWrapper)}>
           <ul {...stylex.props(Styles.MemberList)}>
-            {data.memberList.map((item) => (
-              <li {...stylex.props(Typography.SubtitleRegularSemiBold)}>{item.displayName}</li>
+            {data.memberList.map((item, idx) => (
+              <li {...stylex.props(Typography.SubtitleRegularSemiBold)}>
+                <div {...stylex.props(Styles.MemberItemContainer)}>
+                  <span>{item.displayName}</span>
+                  {isEdit && (
+                    <button
+                      type="button"
+                      onClick={() => handleClickMoveMember(item, idx)}
+                      {...stylex.props(Styles.MoveButton, Typography.SubTextRegularSemiBold)}
+                    >
+                      이동
+                    </button>
+                  )}
+                </div>
+              </li>
             ))}
           </ul>
         </div>
@@ -124,5 +144,16 @@ const Styles = stylex.create({
   },
   MiniToggleButton: {
     marginRight: '12px',
+  },
+  MoveButton: {
+    padding: '4px 12px',
+    background: colors.black400,
+    color: colors.white500,
+    borderRadius: '13px',
+  },
+  MemberItemContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

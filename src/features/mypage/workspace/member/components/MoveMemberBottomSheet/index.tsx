@@ -20,7 +20,7 @@ const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
   const { data, selectMemberTeamIdx } = props;
   const dispatch = useDispatch();
   const { editTeamList } = useSelector((state: RootState) => state.member);
-  const [selectTeamIdx, setSelectTeamIdx] = useState<number>(null);
+  const [selectTeamIdx, setSelectTeamIdx] = useState<number>(0);
 
   const handleClickSelectTeam = (e) => {
     const value = Number(e.target.value);
@@ -65,9 +65,9 @@ const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
               onChange={handleClickSelectTeam}
               {...stylex.props(Styles.Select, Typography.SubTextLargeRegular)}
             >
-              {editTeamList.map((item, index) => (
-                <option value={index}>{item.teamName}</option>
-              ))}
+              {editTeamList.map((item, index) =>
+                index !== selectMemberTeamIdx ? <option value={index}>{item.teamName}</option> : null
+              )}
             </select>
           </div>
 
