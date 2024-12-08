@@ -47,7 +47,7 @@ const useGetTeamListQuery = () => {
   const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 
   const result = useQuery({
-    queryKey: ['roomList'],
+    queryKey: ['teamList'],
     queryFn: () => getTeamListApi(workspaceId),
     enabled: Boolean(workspaceId),
   });
