@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { editTeamItem } from '../types/member';
+import { EditTeamItem } from '../types/member';
 
 export interface MemberState {
-  editTeamList: editTeamItem[];
+  editTeamList: EditTeamItem[];
 }
 
 const initialState: MemberState = {
