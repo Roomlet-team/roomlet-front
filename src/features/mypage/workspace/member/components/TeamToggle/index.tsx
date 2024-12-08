@@ -1,17 +1,19 @@
 import React, { FC, useCallback, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import ArrowHeadOutlinedV2 from '@src/components/icons/ArrowHeadOutlinedV2';
-import { MemberInfoItem, TeamInfoItem } from '@src/queries/team/useGetTeamListQuery';
+import { MemberInfoItem } from '@src/queries/team/useGetTeamListQuery';
 import { colors, Typography } from '../../../../../../../public/styles/vars.stylex';
 import CircleCloseFilled from '@src/components/icons/CircleCloseFilled';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveTeamList } from '../../slices/member';
+import { saveTeamList, tempRemoveTeam } from '../../slices/member';
 import { RootState } from '@src/store';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import MoveMemberBottomSheet from '../MoveMemberBottomSheet';
+import { EditTeamItem } from '../../types/member';
+import { confirm } from '@src/components/ui/Modal/confirm';
 
 interface TeamToggleProps {
-  data: TeamInfoItem;
+  data: EditTeamItem;
   isEdit?: boolean;
   teamIdx: number;
   isLastIdx: boolean;
@@ -47,7 +49,14 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
     },
     [editTeamList, data.TeamId, dispatch]
   );
-  const handleClickTempDelete = () => {};
+  const handleClickTempDelete = () => {
+    confirm({
+      content: '팀 삭제를 하면 기존 팀원들은 미분류로 이동돼요.\n수정 완료 전까지 팀 변경 가능해요.',
+      cancelBtnName: '유지할래요',
+      okBtnName: '삭제할래요',
+      onOk: () => dispatch(tempRemoveTeam(data.tempTeamId ? { ...data, tempTeamId: data.tempTeamId } : { ...data })),
+    });
+  };
 
   const handleClickMoveMember = (item: MemberInfoItem, idx: number) => {
     renderModal(MoveMemberBottomSheet, { data: item, selectMemberTeamIdx: teamIdx });
