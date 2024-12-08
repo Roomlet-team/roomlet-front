@@ -57,9 +57,17 @@ const Member = () => {
         <div {...stylex.props(Styles.TeamListContainer)}>
           {isEdit
             ? editTeamList?.map((item, idx) => (
-                <TeamToggle key={item.TeamId} data={item} teamIdx={idx} isEdit={isEdit} />
+                <TeamToggle
+                  key={item.TeamId}
+                  data={item}
+                  teamIdx={idx}
+                  isEdit={isEdit}
+                  isLastIdx={editTeamList.length - 1 === idx}
+                />
               ))
-            : data?.teamList?.map((item, idx) => <TeamToggle key={item.TeamId} data={item} teamIdx={idx} />)}
+            : data?.teamList?.map((item, idx) => (
+                <TeamToggle key={item.TeamId} data={item} teamIdx={idx} isLastIdx={editTeamList.length - 1 === idx} />
+              ))}
         </div>
 
         {/* 팀 추가 */}
@@ -99,10 +107,11 @@ const Styles = stylex.create({
     flexDirection: 'column',
   },
   AddTeamBtn: {
-    width: '100%',
+    maxWidth: '735px',
+    width: 'calc(100% - 32px)',
     padding: '16px',
-    position: 'sticky',
-    bottom: '8px',
+    position: 'fixed',
+    bottom: '16px',
     display: 'flex',
     gap: '8px',
     justifyContent: 'center',
