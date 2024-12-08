@@ -14,10 +14,11 @@ interface TeamToggleProps {
   data: TeamInfoItem;
   isEdit?: boolean;
   teamIdx: number;
+  isLastIdx: boolean;
 }
 
 const TeamToggle: FC<TeamToggleProps> = (props) => {
-  const { data, isEdit, teamIdx } = props;
+  const { data, isEdit, teamIdx, isLastIdx } = props;
   const dispatch = useDispatch();
   const { renderModal } = useRenderModal();
   const { editTeamList } = useSelector((state: RootState) => state.member);
@@ -53,7 +54,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
   };
 
   return (
-    <div>
+    <div {...stylex.props(isLastIdx && Styles.LastIdxContainer)}>
       {/* 팀 이름 */}
       {isEdit ? (
         <div {...stylex.props(Styles.EditToggleContainer)}>
@@ -109,6 +110,9 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
 export default TeamToggle;
 
 const Styles = stylex.create({
+  LastIdxContainer: {
+    paddingBottom: '104px',
+  },
   ToggleButton: {
     width: '100%',
     padding: '16px',
