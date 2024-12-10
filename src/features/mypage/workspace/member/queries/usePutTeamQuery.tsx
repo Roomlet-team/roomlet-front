@@ -5,7 +5,7 @@ import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceList
 import clientInstance from '@src/utils/api/clientInstance';
 import { useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
-import { saveTeamList } from '../slices/member';
+import { resetTeamList } from '../slices/member';
 
 type ResponseData = null;
 
@@ -42,7 +42,9 @@ const usePutTeamQuery = () => {
     onSuccess: (data, variables) => {
       // 업데이트 후 팀 리스트 데이터 재요청 (쿼리 무효화)
       queryClient.invalidateQueries({ queryKey: ['teamList'] });
-      dispatch(saveTeamList([]));
+
+      // 리덕스에 저장된 팀 리스트 관련 state 모두 초기화
+      dispatch(resetTeamList());
     },
     onError: (error, variables, context) => {
       // 에러가 발생한 경우, 에러 내용이 담긴 confirm 모달 띄우기
