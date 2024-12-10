@@ -4,6 +4,8 @@ import { TeamInfoItem } from '@src/queries/team/useGetTeamListQuery';
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
 import clientInstance from '@src/utils/api/clientInstance';
 import { useQueryClient } from '@tanstack/react-query';
+import { useDispatch } from 'react-redux';
+import { saveTeamList } from '../slices/member';
 
 type ResponseData = null;
 
@@ -32,6 +34,7 @@ const putTeamApi = async (WorkspaceId, data: TeamListInfo): ResponseData => {
 const usePutTeamQuery = () => {
   const { data } = useGetWorkspaceListQuery();
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
   const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 
   const mutation = useCustomMutation({
@@ -39,6 +42,7 @@ const usePutTeamQuery = () => {
     onSuccess: (data, variables) => {
       // 업데이트 후 팀 리스트 데이터 재요청 (쿼리 무효화)
       queryClient.invalidateQueries({ queryKey: ['teamList'] });
+      dispatch(saveTeamList([]));
     },
     onError: (error, variables, context) => {
       // 에러가 발생한 경우, 에러 내용이 담긴 confirm 모달 띄우기
