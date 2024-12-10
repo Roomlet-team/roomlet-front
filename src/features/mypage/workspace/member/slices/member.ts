@@ -58,10 +58,15 @@ export const MemberSlice = createSlice({
 
       state.editTeamList = filterRemoveTeamList;
     },
+    // 편집용 팀 리스트 및 임시 팀 리스트 제거 state 초기화
+    resetTeamList: (state) => {
+      state.editTeamList = [];
+      state.tempDeleteTeamList = [];
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { saveTeamList, addTeam, tempRemoveTeam } = MemberSlice.actions;
+export const { saveTeamList, addTeam, tempRemoveTeam, resetTeamList } = MemberSlice.actions;
 
 export default MemberSlice.reducer;
