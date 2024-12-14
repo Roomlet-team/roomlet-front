@@ -11,11 +11,13 @@ import PlusOutlined from '@src/components/icons/PlusOutlined';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import MainLayout from '@src/layouts/MainLayout';
 import AddTeamBottomSheet from '@src/features/mypage/workspace/member/components/AddTeamBottomSheet';
+import usePutTeamQuery from '@src/features/mypage/workspace/member/queries/usePutTeamQuery';
 
 const Member = () => {
   const { data } = useGetTeamListQuery();
+  const mutation = usePutTeamQuery();
   const dispatch = useDispatch();
-  const { editTeamList } = useSelector((state: RootState) => state.member);
+  const { editTeamList, tempDeleteTeamList } = useSelector((state: RootState) => state.member);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const { renderModal } = useRenderModal();
 
@@ -28,6 +30,18 @@ const Member = () => {
     name: isEdit ? '완료' : '수정',
     isActive: isEdit,
     onClick: () => {
+      const removeTempTeamIdInTemList = editTeamList.map((item) => {
+        const { tempTeamId = null, ...anotherItem } = item;
+
+        return tempTeamId ? anotherItem : item;
+      });
+
+      if (isEdit) {
+        mutation.mutate({
+          teamList: removeTempTeamIdInTemList,
+          deleteTeamList: tempDeleteTeamList,
+        });
+      }
       setIsEdit(!isEdit);
     },
   };
