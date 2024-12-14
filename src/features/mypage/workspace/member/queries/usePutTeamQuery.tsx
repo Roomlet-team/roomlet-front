@@ -47,8 +47,13 @@ const usePutTeamQuery = () => {
       dispatch(resetTeamList());
     },
     onError: (error, variables, context) => {
-      // 에러가 발생한 경우, 에러 내용이 담긴 confirm 모달 띄우기
-      confirm({ content: error?.response.data.message.errMsg });
+      if (error.status !== 452) {
+        // alert 도 모달로 수정해주기
+        alert(`서버 에러가 발생했습니다. (code: ${error.status})`);
+      } else {
+        // 에러가 발생한 경우, 에러 내용이 담긴 confirm 모달 띄우기
+        confirm({ content: error?.response.data.message.errMsg });
+      }
     },
   });
 
