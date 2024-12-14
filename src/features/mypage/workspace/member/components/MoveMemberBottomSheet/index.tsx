@@ -20,7 +20,8 @@ const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
   const { data, selectMemberTeamIdx } = props;
   const dispatch = useDispatch();
   const { editTeamList } = useSelector((state: RootState) => state.member);
-  const [selectTeamIdx, setSelectTeamIdx] = useState<number>(0);
+  const selectOptionList = editTeamList.filter((item, index) => index !== selectMemberTeamIdx); // 이미 참여한 팀은 option에 나타나지 않게 함.
+  const [selectTeamIdx, setSelectTeamIdx] = useState<number>(selectOptionList[0].TeamId);
 
   const handleClickSelectTeam = (e) => {
     const value = Number(e.target.value);
@@ -38,7 +39,7 @@ const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
       }
 
       // 새로운 팀에서 멤버 추가
-      if (idx === selectTeamIdx) {
+      if (item.TeamId === selectTeamIdx) {
         return { ...item, memberList: [...item.memberList, data] };
       }
 
@@ -65,9 +66,9 @@ const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
               onChange={handleClickSelectTeam}
               {...stylex.props(Styles.Select, Typography.SubTextLargeRegular)}
             >
-              {editTeamList.map((item, index) =>
-                index !== selectMemberTeamIdx ? <option value={index}>{item.teamName}</option> : null
-              )}
+              {selectOptionList.map((item, index) => (
+                <option value={index}>{item.teamName}</option>
+              ))}
             </select>
           </div>
 
