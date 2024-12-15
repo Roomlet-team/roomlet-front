@@ -4,6 +4,7 @@ import bookingReducer from '@features/booking/slices/booking';
 import congressRoomReducer from '@features/mypage/workspace/congress-room/slice/congressRoom';
 import modalReducer from '@src/slices/modal';
 import memberReducer from '@features/mypage/workspace/member/slices/member';
+import categoryReducer from '@features/mypage/workspace/category/slices/category';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     congressRoom: congressRoomReducer,
     modal: modalReducer,
     member: memberReducer,
+    category: categoryReducer,
   },
 });
 
