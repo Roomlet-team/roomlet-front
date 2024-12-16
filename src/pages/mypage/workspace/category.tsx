@@ -9,12 +9,15 @@ import MainLayout from '@src/layouts/MainLayout';
 import CategoryItem from '@src/features/mypage/workspace/category/components/CategoryItem';
 import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQuery';
 import { saveCategoryList } from '@src/features/mypage/workspace/category/slices/category';
+import useRenderModal from '@src/hooks/ui/useRenderModal';
+import AddCategoryBottomSheet from '@src/features/mypage/workspace/category/components/AddCategoryBottomSheet';
 
 const Category = () => {
   const { data } = useGetCategoryListQuery();
   const dispatch = useDispatch();
   const { editCongressCategoryList } = useSelector((state: RootState) => state.category);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const { renderModal } = useRenderModal();
 
   const completeBtnProps = {
     name: isEdit ? '완료' : '수정',
@@ -22,6 +25,10 @@ const Category = () => {
     onClick: () => {
       setIsEdit(!isEdit);
     },
+  };
+
+  const handleClickAddCategory = () => {
+    renderModal(AddCategoryBottomSheet, null);
   };
 
   useEffect(() => {
@@ -50,7 +57,11 @@ const Category = () => {
 
         {/* 카테고리 추가 */}
         {isEdit && (
-          <button type="button" {...stylex.props(Styles.AddCategoryBtn, Typography.TextSmallMedium)} onClick={null}>
+          <button
+            type="button"
+            {...stylex.props(Styles.AddCategoryBtn, Typography.TextSmallMedium)}
+            onClick={handleClickAddCategory}
+          >
             <PlusOutlined width={24} height={24} />
             <span>카테고리 추가</span>
           </button>
