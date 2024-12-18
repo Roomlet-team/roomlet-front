@@ -37,7 +37,7 @@ const useGetCategoryListQuery = () => {
   const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 
   const result = useQuery({
-    queryKey: ['category'],
+    queryKey: ['categoryList'],
     queryFn: () => getCongressCategoryListApi(workspaceId),
     enabled: Boolean(workspaceId),
   });
