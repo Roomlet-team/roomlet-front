@@ -3,11 +3,14 @@ import { editCongressCategoryItem } from '../types/category';
 
 export interface CategoryState {
   editCongressCategoryList: editCongressCategoryItem[];
+  tempDeleteCongressCategoryList: editCongressCategoryItem[];
 }
 
 const initialState: CategoryState = {
   // 회의실 카테고리 저장
   editCongressCategoryList: [],
+  // 삭제한 회의실 카테고리 임시 리스트
+  tempDeleteCongressCategoryList: [],
 };
 
 export const CategorySlice = createSlice({
@@ -29,10 +32,28 @@ export const CategorySlice = createSlice({
         { ...action.payload, tempCongressCategoryId },
       ];
     },
+    // 회의실 카테고리 제거
+    tempRemoveCategory: (state, action) => {
+      // 회의실 카테고리 제거 시, 임시로 생성한 카테고리와 기존 카테고리를 별도로 처리해서 제거
+      const filterRemoveCategoryList = state.editCongressCategoryList.filter((item) => {
+        if (item.CongressCategoryId) {
+          return item.CongressCategoryId !== action.payload.CongressCategoryId;
+        }
+
+        return item.tempCongressCategoryId !== action.payload.tempRoomId;
+      });
+
+      // RoomId가 존재하는 경우에만 회의실 제거 리스트에 추가
+      if (action.payload.RoomId) {
+        state.tempDeleteCongressCategoryList = [...state.tempDeleteCongressCategoryList, action.payload];
+      }
+
+      state.editCongressCategoryList = filterRemoveCategoryList;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { saveCategoryList, addCategory } = CategorySlice.actions;
+export const { saveCategoryList, addCategory, tempRemoveCategory } = CategorySlice.actions;
 
 export default CategorySlice.reducer;
