@@ -11,11 +11,15 @@ import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQue
 import { saveCategoryList } from '@src/features/mypage/workspace/category/slices/category';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import AddCategoryBottomSheet from '@src/features/mypage/workspace/category/components/AddCategoryBottomSheet';
+import usePutCongressCategory from '@src/features/mypage/workspace/category/queries/usePutCongressCategory';
 
 const Category = () => {
   const { data } = useGetCategoryListQuery();
+  const mutation = usePutCongressCategory();
   const dispatch = useDispatch();
-  const { editCongressCategoryList } = useSelector((state: RootState) => state.category);
+  const { editCongressCategoryList, tempDeleteCongressCategoryList } = useSelector(
+    (state: RootState) => state.category
+  );
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const { renderModal } = useRenderModal();
 
@@ -23,6 +27,18 @@ const Category = () => {
     name: isEdit ? '완료' : '수정',
     isActive: isEdit,
     onClick: () => {
+      const removeTempCongressCategoryIdCongressCategoryList = editCongressCategoryList.map((item) => {
+        const { tempCongressCategoryId = null, ...anotherItem } = item;
+
+        return tempCongressCategoryId ? anotherItem : item;
+      });
+
+      if (isEdit) {
+        mutation.mutate({
+          congressCategoryList: removeTempCongressCategoryIdCongressCategoryList,
+          deleteCongressCategoryList: tempDeleteCongressCategoryList,
+        });
+      }
       setIsEdit(!isEdit);
     },
   };
