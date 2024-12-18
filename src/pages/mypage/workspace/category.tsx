@@ -33,7 +33,7 @@ const Category = () => {
 
   useEffect(() => {
     if (isEdit) {
-      dispatch(saveCategoryList(data.congressCategoryList));
+      dispatch(saveCategoryList(data?.congressCategoryList));
     }
   }, [isEdit]);
 
