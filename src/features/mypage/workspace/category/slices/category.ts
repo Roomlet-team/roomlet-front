@@ -40,11 +40,11 @@ export const CategorySlice = createSlice({
           return item.CongressCategoryId !== action.payload.CongressCategoryId;
         }
 
-        return item.tempCongressCategoryId !== action.payload.tempRoomId;
+        return item.tempCongressCategoryId !== action.payload.tempCongressCategoryId;
       });
 
-      // RoomId가 존재하는 경우에만 회의실 제거 리스트에 추가
-      if (action.payload.RoomId) {
+      // CongressCategoryId가 존재하는 경우에만 회의실 제거 리스트에 추가
+      if (action.payload.CongressCategoryId) {
         state.tempDeleteCongressCategoryList = [...state.tempDeleteCongressCategoryList, action.payload];
       }
 
