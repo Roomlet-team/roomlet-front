@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import stylex from '@stylexjs/stylex';
 import FileOutlined from '@src/components/icons/FileOutlined';
 import { CongressCategoryItem } from '@src/queries/category/useGetCategoryListQuery';
@@ -6,9 +6,10 @@ import useInput from '@src/hooks/useInput';
 import CircleCloseFilled from '@src/components/icons/CircleCloseFilled';
 import { colors, Typography } from '../../../../../../../public/styles/vars.stylex';
 import { confirm } from '@src/components/ui/Modal/confirm';
-import { useDispatch } from 'react-redux';
-import { tempRemoveCategory } from '../../slices/category';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveCategoryList, tempRemoveCategory } from '../../slices/category';
 import { editCongressCategoryItem } from '../../types/category';
+import { RootState } from '@src/store';
 
 interface CategoryItemProps {
   data: editCongressCategoryItem;
@@ -17,8 +18,30 @@ interface CategoryItemProps {
 
 const CategoryItem: FC<CategoryItemProps> = (props) => {
   const { isEdit, data } = props;
+  const { editCongressCategoryList } = useSelector((state: RootState) => state.category);
   const [categoryName, handleChangeCategoryName] = useInput<string>(data?.categoryName);
   const dispatch = useDispatch();
+
+  // 회의실 카테고리 이름값 변경을 다루는 함수
+  const handleChangeCategory = useCallback(
+    (key: 'categoryName') => (e) => {
+      const value = e.target.value;
+      const mappingCongressRoomList = editCongressCategoryList.map((item) =>
+        item.CongressCategoryId === data.CongressCategoryId ? { ...item, [key]: value } : item
+      );
+      const index = editCongressCategoryList.findIndex((item) => item.CongressCategoryId === data.CongressCategoryId);
+
+      if (index === -1) {
+        return null;
+      }
+
+      const updateCongressCategoryList = [...editCongressCategoryList];
+      updateCongressCategoryList[index] = { ...updateCongressCategoryList[index], [key]: value };
+
+      dispatch(saveCategoryList(mappingCongressRoomList));
+    },
+    [editCongressCategoryList, data.CongressCategoryId, dispatch]
+  );
 
   const handleClickDelete = () => {
     confirm({
@@ -41,7 +64,7 @@ const CategoryItem: FC<CategoryItemProps> = (props) => {
         <div {...stylex.props(Styles.InputAndCloseBtnContainer)}>
           <input
             value={categoryName}
-            onChange={handleChangeCategoryName}
+            onChange={handleChangeCategory('categoryName')}
             {...stylex.props(Styles.TextInput, Typography.TextSmallMedium)}
           />
           <button type="button" onClick={handleClickDelete}>
