@@ -14,6 +14,8 @@ import BookingAutoCompleteSelect from '@src/features/booking/components/BookingA
 import MainLayout from '@src/layouts/MainLayout';
 import BookingTextarea from '@src/features/booking/components/BookingTextarea';
 import useTextArea from '@src/hooks/useTextArea';
+import useGetCongressRoomListQuery from '@src/queries/congress/useGetCongressRoomListQuery';
+import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQuery';
 
 const Booking = () => {
   const [meetingTitle, handleMeetingTitle] = useInput<string>('');
@@ -24,6 +26,8 @@ const Booking = () => {
   const [memberList, setMemberList] = useState<[]>([]);
   const [detailContent, handleDetailContent] = useTextArea<string>('');
   const defaultImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/booking_default_2x.png';
+  const { data: congressRoomData } = useGetCongressRoomListQuery();
+  const { data: categoryData } = useGetCategoryListQuery();
 
   const columnItem = {
     id: {
@@ -33,21 +37,6 @@ const Booking = () => {
       dataName: 'displayName',
     },
   };
-  const meetingRoomList = [
-    {
-      RoomId: 1,
-      roomName: '회의실 이름',
-      roomDescription: '회의실 설명',
-      roomSize: 1,
-    },
-  ];
-  const categoryList = [
-    {
-      CongressCategoryId: 1,
-      categoryType: 'custom',
-      categoryName: '전체',
-    },
-  ];
 
   const dummyList = [
     {
@@ -110,7 +99,7 @@ const Booking = () => {
         <BookingFormItem label="장소" required>
           <div {...stylex.props(Styles.RadioBtnContainer)}>
             {React.Children.toArray(
-              meetingRoomList.map((item) => (
+              congressRoomData?.congressRoomList.map((item) => (
                 <Radio
                   id={item.roomName}
                   name="meeting-room"
@@ -124,7 +113,7 @@ const Booking = () => {
         <BookingFormItem label="카테고리" required>
           <div {...stylex.props(Styles.RadioBtnContainer)}>
             {React.Children.toArray(
-              categoryList.map((item) => (
+              categoryData?.congressCategoryList.map((item) => (
                 <Radio
                   id={item.categoryName}
                   name="category"
