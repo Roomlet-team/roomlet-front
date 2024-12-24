@@ -88,7 +88,7 @@ const Booking = () => {
 
   return (
     <MainLayout isScroll>
-      <Header title="예약하기" />
+      <Header title="예약하기" prevUrl="/calendar" />
       <div {...stylex.props(Styles.container)}>
         <BookingFormItem label="회의 타이틀" required>
           <BookingTextInput
