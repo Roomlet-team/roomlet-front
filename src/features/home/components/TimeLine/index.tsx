@@ -1,11 +1,17 @@
 import React from 'react';
 import stylex from '@stylexjs/stylex';
+import { useSelector } from 'react-redux';
+import { RootState } from '@src/store';
 
 /**
  * 홈 화면의 타임라인을 나타내는 컴포넌트
+ * - 워크스페이스가 존재하지 않는 경우에 대한 화면도 같이 구현함.
  */
 const TimeLine = () => {
-  return (
+  const { isWorkspace } = useSelector((state: RootState) => state.workspace);
+
+  return isWorkspace ? (
+    // 워크스페이스가 존재할 때 보여지는 타임 라인
     <div {...stylex.props(Styles.container)}>
       <div {...stylex.props(Styles.timeAndMeetingDivider)} />
       <div {...stylex.props(Styles.scrollContainer)}>
@@ -20,6 +26,27 @@ const TimeLine = () => {
               <div {...stylex.props(Styles.categoryTag)}>기획</div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    // 워크스페이스가 존재하지 않을 때 보여지는 타임라인 (시간만 보여주고 스케줄 상세 설명 영역은 비어있음)
+    <div {...stylex.props(Styles.NoScheduleContainer)}>
+      <div {...stylex.props(Styles.timeAndMeetingDivider)} />
+      <div {...stylex.props(Styles.NoContentScrollContainer)}>
+        <div {...stylex.props(Styles.timeAndMeetingContent)}>
+          <div {...stylex.props(Styles.timeContent)}>
+            <span {...stylex.props(Styles.timeText)}>09:00</span>
+            <div {...stylex.props(Styles.timeDot)} />
+          </div>
+          <div {...stylex.props(Styles.NoMeetingContent)} />
+        </div>
+        <div {...stylex.props(Styles.timeAndMeetingContent)}>
+          <div {...stylex.props(Styles.timeContent)}>
+            <span {...stylex.props(Styles.timeText)}>10:00</span>
+            <div {...stylex.props(Styles.timeDot)} />
+          </div>
+          <div {...stylex.props(Styles.NoMeetingContent)} />
         </div>
       </div>
     </div>
@@ -68,6 +95,7 @@ const Styles = stylex.create({
     alignItems: 'center',
   },
   timeText: {
+    width: '47px',
     paddingRight: '9px',
     fontSize: '1.4rem',
     fontWeight: '400',
@@ -111,5 +139,24 @@ const Styles = stylex.create({
     fontWeight: 500,
     lineHeight: '100%',
     color: 'var(--Base-White)',
+  },
+  NoScheduleContainer: {
+    width: '100%',
+    height: '176px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px',
+    backgroundColor: '#FAFAFA',
+    position: 'relative',
+    borderTop: '1px solid #F2F2F2',
+    borderBottom: '1px solid #F2F2F2',
+  },
+  NoMeetingContent: {
+    height: '52px',
+  },
+  NoContentScrollContainer: {
+    paddingTop: '30px',
+    height: '176px',
+    overflowY: 'auto',
   },
 });
