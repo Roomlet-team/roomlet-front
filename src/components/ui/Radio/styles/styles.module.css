@@ -17,7 +17,7 @@
   display: none;
 }
 
-.common-radio-input[type='radio']:checked + .common-radio-label {
+.common-radio-label:has(.common-radio-input[type='radio']:checked) {
   box-shadow: none;
   background-color: #b5312c;
   color: #ffffff;
