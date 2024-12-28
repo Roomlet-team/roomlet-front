@@ -1,28 +1,18 @@
 import React, { FC } from 'react';
 import styles from './styles/styles.module.css';
 
-type RadioProps = {
-  id: string;
+interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  key?: React.Key;
   label: string;
-  checked?: boolean;
-  name: string;
-  onChange: () => void;
-};
+}
 
 const Radio: FC<RadioProps> = (props) => {
-  const { id, label, name, checked, onChange } = props;
+  const { id, label, type, ...anotherProps } = props;
 
   return (
     <>
-      <input
-        className={styles['common-radio-input']}
-        type="radio"
-        id={id}
-        name={name}
-        checked={checked}
-        onChange={onChange}
-      />
       <label className={styles['common-radio-label']} htmlFor={id}>
+        <input className={styles['common-radio-input']} type="radio" id={id} {...anotherProps} />
         {label}
       </label>
     </>
