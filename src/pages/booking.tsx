@@ -59,35 +59,6 @@ const Booking = () => {
             />
           </BookingFormItem>
 
-          {/* 날짜 선택 */}
-          <BookingFormItem label="날짜 선택" required>
-            <Controller
-              name="date"
-              control={control}
-              defaultValue={selectBookingDate}
-              render={({ field }) => <BookingDatePicker />}
-            />
-          </BookingFormItem>
-
-          {/* 시간 선택 */}
-          <BookingFormItem label="시간 선택" required>
-            <div {...stylex.props(Styles.TimePickerContainer)}>
-              <Controller
-                name="startTime"
-                control={control}
-                defaultValue=""
-                render={({ field }) => <BookingTimePicker placeholder="시작 시간" onSelect={field.onChange} />}
-              />
-              <span {...stylex.props(Styles.Hyphen)} />
-              <Controller
-                name="endTime"
-                control={control}
-                defaultValue=""
-                render={({ field }) => <BookingTimePicker placeholder="종료 시간" onSelect={field.onChange} />}
-              />
-            </div>
-          </BookingFormItem>
-
           {/* 장소 */}
           <BookingFormItem label="장소" required>
             <div {...stylex.props(Styles.RadioBtnContainer)}>
@@ -133,6 +104,35 @@ const Booking = () => {
                   />
                 ))
               )}
+            </div>
+          </BookingFormItem>
+
+          {/* 날짜 선택 */}
+          <BookingFormItem label="날짜 선택" required>
+            <Controller
+              name="date"
+              control={control}
+              defaultValue={selectBookingDate}
+              render={({ field }) => <BookingDatePicker />}
+            />
+          </BookingFormItem>
+
+          {/* 시간 선택 */}
+          <BookingFormItem label="시간 선택" required>
+            <div {...stylex.props(Styles.TimePickerContainer)}>
+              <Controller
+                name="startTime"
+                control={control}
+                defaultValue=""
+                render={({ field }) => <BookingTimePicker placeholder="시작 시간" onSelect={field.onChange} />}
+              />
+              <span {...stylex.props(Styles.Hyphen)} />
+              <Controller
+                name="endTime"
+                control={control}
+                defaultValue=""
+                render={({ field }) => <BookingTimePicker placeholder="종료 시간" onSelect={field.onChange} />}
+              />
             </div>
           </BookingFormItem>
 
