@@ -13,7 +13,7 @@ const TimeLine = () => {
   return isWorkspace ? (
     // 워크스페이스가 존재할 때 보여지는 타임 라인
     <div {...stylex.props(Styles.container)}>
-      <div {...stylex.props(Styles.timeAndMeetingDivider)} />
+      <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />
       <div {...stylex.props(Styles.scrollContainer)}>
         <div {...stylex.props(Styles.timeAndMeetingContent)}>
           <div {...stylex.props(Styles.timeContent)}>
@@ -32,7 +32,7 @@ const TimeLine = () => {
   ) : (
     // 워크스페이스가 존재하지 않을 때 보여지는 타임라인 (시간만 보여주고 스케줄 상세 설명 영역은 비어있음)
     <div {...stylex.props(Styles.NoScheduleContainer)}>
-      <div {...stylex.props(Styles.timeAndMeetingDivider)} />
+      <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />
       <div {...stylex.props(Styles.NoContentScrollContainer)}>
         <div {...stylex.props(Styles.timeAndMeetingContent)}>
           <div {...stylex.props(Styles.timeContent)}>
@@ -77,13 +77,13 @@ const Styles = stylex.create({
     left: 0,
     overflowY: 'auto',
   },
-  timeAndMeetingDivider: {
+  timeAndMeetingDivider: (isWorkspace) => ({
     position: 'absolute',
     top: 0,
     left: '67px',
-    height: '100%',
+    height: isWorkspace ? '100vh' : '100%',
     borderRight: '1px solid #E2E2E2',
-  },
+  }),
   timeAndMeetingContent: {
     padding: '0 16px',
     display: 'flex',
