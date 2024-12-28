@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import stylex from '@stylexjs/stylex';
 import Header from '@src/components/ui/Header';
@@ -8,13 +8,13 @@ import BookingTextInput from '@src/features/booking/components/BookingTextInput'
 import BookingTimePicker from '@src/features/booking/components/BookingTimePicker';
 import { Typography, colors } from '../.../../../public/styles/vars.stylex';
 import Radio from '@src/components/ui/Radio';
-import BookingAutoCompleteSelect from '@src/features/booking/components/BookingAutoCompleteSelect';
 import MainLayout from '@src/layouts/MainLayout';
 import BookingTextarea from '@src/features/booking/components/BookingTextarea';
 import useGetCongressRoomListQuery from '@src/queries/congress/useGetCongressRoomListQuery';
 import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQuery';
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
+import BookingMemberSelect from '@src/features/booking/components/BookingMemberSelect';
 
 const Booking = () => {
   const { selectBookingDate } = useSelector((state: RootState) => state.booking);
@@ -24,23 +24,8 @@ const Booking = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const [memberList, setMemberList] = useState<[]>([]);
-  const defaultImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/booking_default_2x.png';
   const { data: congressRoomData } = useGetCongressRoomListQuery();
   const { data: categoryData } = useGetCategoryListQuery();
-
-  const columnItem = {
-    id: {
-      dataName: 'MemberId',
-    },
-    name: {
-      dataName: 'displayName',
-    },
-  };
-
-  const handleSelectMemberList = (teamList) => {
-    setMemberList(teamList);
-  };
 
   const onSubmit = (data) => {
     console.log({ data });
@@ -80,7 +65,6 @@ const Booking = () => {
               name="date"
               control={control}
               defaultValue={selectBookingDate}
-              rules={{ required: 'This field is required' }}
               render={({ field }) => <BookingDatePicker />}
             />
           </BookingFormItem>
@@ -154,12 +138,11 @@ const Booking = () => {
 
           {/* 참석자 */}
           <BookingFormItem label="참석자" required>
-            <BookingAutoCompleteSelect
-              placeholder="참석자 검색"
-              replaceSelectedItemsWithImage
-              columnItem={columnItem}
-              defaultValueImgUrl={defaultImgUrl}
-              onSelect={handleSelectMemberList}
+            <Controller
+              name="attendMemberList"
+              control={control}
+              defaultValue=""
+              render={({ field }) => <BookingMemberSelect onSelect={field.onChange} />}
             />
           </BookingFormItem>
 
