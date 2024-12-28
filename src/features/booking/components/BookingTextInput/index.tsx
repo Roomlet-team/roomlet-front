@@ -3,24 +3,14 @@ import stylex from '@stylexjs/stylex';
 import { BookingStyles } from '../../styles/index.stylex';
 import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 
-type BookingTextInputProps = {
-  placeholder: string;
-  value: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
-};
+interface BookingTextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 const BookingTextInput: FC<BookingTextInputProps> = (props) => {
-  const { placeholder, value, onChange } = props;
+  const { ...anotherProps } = props;
 
   return (
     <div {...stylex.props(BookingStyles.formItemInputWrapper)}>
-      <input
-        type="text"
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        {...stylex.props(Styles.inputText, Typography.SubTextLargeRegular)}
-      />
+      <input type="text" {...anotherProps} {...stylex.props(Styles.inputText, Typography.SubTextLargeRegular)} />
     </div>
   );
 };
