@@ -1,18 +1,24 @@
 import React from 'react';
 import stylex from '@stylexjs/stylex';
 import GnbNavLayout from '@src/layouts/GnbNavLayout';
-import UserGreeting from '@src/features/home/components/UserGreeting';
+import WorkspaceUserGreeting from '@src/features/home/components/UserGreeting/workspaceUser';
+import NonWorkspaceUserGreeting from '@src/features/home/components/UserGreeting/nonWorkspaceUser';
 import MeetingStatus from '@src/features/home/components/MeetingStatus';
 import TimeLine from '@src/features/home/components/TimeLine';
+import { colors, Typography } from '../../public/styles/vars.stylex';
+import PlusOutlined from '@src/components/icons/PlusOutlined';
+import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { RootState } from '@src/store';
 
 const Home = () => {
-  console.log('');
+  const { isWorkspace } = useSelector((state: RootState) => state.workspace);
 
   return (
     <GnbNavLayout backgroundColor="#FAFAFA">
       {/* 프로필 섹션 */}
       <section {...stylex.props(Styles.userGreetingSection)}>
-        <UserGreeting />
+        {isWorkspace ? <WorkspaceUserGreeting /> : <NonWorkspaceUserGreeting />}
       </section>
       {/* 회의 현황 섹션 */}
       <section {...stylex.props(Styles.meetingStatusSection)}>
@@ -24,6 +30,20 @@ const Home = () => {
         <h2 {...stylex.props(Styles.sectionTitle, Styles.timeLineSectionTitle)}>타임라인</h2>
         <TimeLine />
       </section>
+
+      {/* 워크스페이스가 없는 경우 */}
+      {!isWorkspace && (
+        <div {...stylex.props(Styles.CreateWorkspaceBtnWrapper)}>
+          {/* 워크스페이스 등록하기 버튼 */}
+          <Link
+            href="/mypage/create-workspace"
+            {...stylex.props(Typography.SubtitleSmallBold, Styles.CreateWorkspaceBtn)}
+          >
+            <PlusOutlined width={24} height={24} />
+            워크스페이스 등록하기
+          </Link>
+        </div>
+      )}
     </GnbNavLayout>
   );
 };
@@ -43,7 +63,7 @@ const Styles = stylex.create({
     marginBottom: '24px',
   },
   timeLineSection: {
-    height: '100%',
+    height: 'fit-content',
   },
   sectionTitle: {
     marginBottom: '16px',
@@ -54,5 +74,24 @@ const Styles = stylex.create({
   },
   timeLineSectionTitle: {
     padding: '0 16px',
+  },
+  CreateWorkspaceBtnWrapper: {
+    position: 'relative',
+    padding: '0 16px',
+  },
+  CreateWorkspaceBtn: {
+    maxWidth: '735px',
+    width: 'calc(100% - 32px)',
+    padding: '15px',
+    position: 'fixed',
+    bottom: '101px',
+    display: 'flex',
+    gap: '12px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '16px',
+    background: colors.gray900,
+    color: colors.white500,
+    textDecoration: 'none',
   },
 });

@@ -1,26 +1,26 @@
 import ProfileImg from '@src/components/ui/ProfileImg';
 import stylex from '@stylexjs/stylex';
 import React, { FC } from 'react';
-import useGetWorkspaceMainInfoQuery from '../../queries/useGetWorkspaceMainInfoQuery';
+import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGetMyPageProfileQuery';
 
 /**
- * 홈 화면에서 사용자에게 인사를 하는 내용을 담은 컴포넌트
+ * 홈 화면에서 아직 워크스페이스에 가입되지 않은 사용자에게 인사를 하는 내용을 담은 컴포넌트
  */
-const UserGreeting = () => {
-  const { data } = useGetWorkspaceMainInfoQuery();
+const NonWorkspaceUserGreeting = () => {
+  const { data } = useGetMyPageProfileQuery();
 
   return (
     <div {...stylex.props(Styles.container)}>
-      <ProfileImg src={data.memberInfo.profileImgUrl} size={50} borderProperties={{ radius: '50%' }} />
+      <ProfileImg src={data?.profile.profileImgUrl} size={50} borderProperties={{ radius: '50%' }} />
       <div {...stylex.props(Styles.textContent)}>
         <p {...stylex.props(Styles.greetingText)}>룸렛에 오신걸 환영해요 🖐🏻</p>
-        <p {...stylex.props(Styles.nicknameText)}>{data.memberInfo.displayName}님</p>
+        <p {...stylex.props(Styles.nicknameText)}>{data?.profile.displayName}님</p>
       </div>
     </div>
   );
 };
 
-export default UserGreeting;
+export default NonWorkspaceUserGreeting;
 
 const Styles = stylex.create({
   container: {
