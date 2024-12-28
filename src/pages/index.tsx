@@ -1,7 +1,8 @@
 import React from 'react';
 import stylex from '@stylexjs/stylex';
 import GnbNavLayout from '@src/layouts/GnbNavLayout';
-import UserGreeting from '@src/features/home/components/UserGreeting';
+import WorkspaceUserGreeting from '@src/features/home/components/UserGreeting/workspaceUser';
+import NonWorkspaceUserGreeting from '@src/features/home/components/UserGreeting/nonWorkspaceUser';
 import MeetingStatus from '@src/features/home/components/MeetingStatus';
 import TimeLine from '@src/features/home/components/TimeLine';
 import { colors, Typography } from '../../public/styles/vars.stylex';
@@ -17,7 +18,7 @@ const Home = () => {
     <GnbNavLayout backgroundColor="#FAFAFA">
       {/* 프로필 섹션 */}
       <section {...stylex.props(Styles.userGreetingSection)}>
-        <UserGreeting />
+        {isWorkspace ? <WorkspaceUserGreeting /> : <NonWorkspaceUserGreeting />}
       </section>
       {/* 회의 현황 섹션 */}
       <section {...stylex.props(Styles.meetingStatusSection)}>
