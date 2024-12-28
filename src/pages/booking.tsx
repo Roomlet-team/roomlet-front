@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import stylex from '@stylexjs/stylex';
 import Header from '@src/components/ui/Header';
 import BookingDatePicker from '@src/features/booking/components/BookingDatePicker';
 import BookingFormItem from '@src/features/booking/components/BookingFormItem';
 import BookingTextInput from '@src/features/booking/components/BookingTextInput';
 import BookingTimePicker from '@src/features/booking/components/BookingTimePicker';
-import useInput from '@src/hooks/useInput';
-import GnbNavLayout from '@src/layouts/GnbNavLayout';
 import { Typography, colors } from '../.../../../public/styles/vars.stylex';
-import type { TimeItemType } from '@src/features/booking/types';
 import Radio from '@src/components/ui/Radio';
 import BookingAutoCompleteSelect from '@src/features/booking/components/BookingAutoCompleteSelect';
 import MainLayout from '@src/layouts/MainLayout';
 import BookingTextarea from '@src/features/booking/components/BookingTextarea';
-import useTextArea from '@src/hooks/useTextArea';
 import useGetCongressRoomListQuery from '@src/queries/congress/useGetCongressRoomListQuery';
 import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQuery';
+import { useSelector } from 'react-redux';
+import { RootState } from '@src/store';
 
 const Booking = () => {
-  const [meetingTitle, handleMeetingTitle] = useInput<string>('');
-  const [startTime, setStartTime] = useState<string>('');
-  const [endTime, setEndTime] = useState<string>('');
-  const [roomId, setRoomId] = useState<number>(null);
-  const [categoryId, setCategoryId] = useState<number>(null);
+  const { selectBookingDate } = useSelector((state: RootState) => state.booking);
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [memberList, setMemberList] = useState<[]>([]);
-  const [detailContent, handleDetailContent] = useTextArea<string>('');
   const defaultImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/booking_default_2x.png';
   const { data: congressRoomData } = useGetCongressRoomListQuery();
   const { data: categoryData } = useGetCategoryListQuery();
@@ -38,114 +38,155 @@ const Booking = () => {
     },
   };
 
-  const dummyList = [
-    {
-      TeamId: 1,
-      teamName: '개발',
-      memberList: [
-        {
-          MemberId: 1,
-          displayName: '연두',
-          profileImgUrl: 'https://프로필이미지 Url',
-          position: '백엔드',
-          isAdmin: true,
-          email: 'catalyst88@gmail.com',
-        },
-      ],
-    },
-  ];
-
-  const handleSelectStartTime = (timeObj: TimeItemType) => {
-    setStartTime(timeObj.value);
-  };
-
-  const handleSelectEndTime = (timeObj: TimeItemType) => {
-    setEndTime(timeObj.value);
-  };
-
-  const handleChangeMeetingRoom = (id: number) => {
-    setRoomId(id);
-  };
-
-  const handleChangeCategory = (id: number) => {
-    setCategoryId(id);
-  };
-
   const handleSelectMemberList = (teamList) => {
     setMemberList(teamList);
   };
 
+  const onSubmit = (data) => {
+    console.log({ data });
+  };
+
+  // Redux 상태 변경 시 React Hook Form의 값 동기화
+  useEffect(() => {
+    reset({ date: selectBookingDate });
+  }, [selectBookingDate, reset]);
+
   return (
     <MainLayout isScroll>
       <Header title="예약하기" prevUrl="/calendar" />
-      <div {...stylex.props(Styles.container)}>
-        <BookingFormItem label="회의 타이틀" required>
-          <BookingTextInput
-            placeholder="회의 타이틀을 입력해주세요."
-            value={meetingTitle}
-            onChange={handleMeetingTitle}
-          />
-        </BookingFormItem>
-        <BookingFormItem label="날짜 선택" required>
-          <BookingDatePicker />
-        </BookingFormItem>
-        <BookingFormItem label="시간 선택" required>
-          <div {...stylex.props(Styles.TimePickerContainer)}>
-            <BookingTimePicker placeholder="시작 시간" onSelect={handleSelectStartTime} />
-            <span {...stylex.props(Styles.Hyphen)} />
-            <BookingTimePicker placeholder="종료 시간" onSelect={handleSelectEndTime} />
-          </div>
-        </BookingFormItem>
-        <BookingFormItem label="장소" required>
-          <div {...stylex.props(Styles.RadioBtnContainer)}>
-            {React.Children.toArray(
-              congressRoomData?.congressRoomList.map((item) => (
-                <Radio
-                  id={item.roomName}
-                  name="meeting-room"
-                  label={item.roomName}
-                  onChange={() => handleChangeMeetingRoom(item.RoomId)}
+
+      {/* 예약하기 폼 */}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div {...stylex.props(Styles.container)}>
+          {/* 회의 타이틀 */}
+          <BookingFormItem label="회의 타이틀" required>
+            <Controller
+              name="congressTitle"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <BookingTextInput
+                  placeholder="회의 타이틀을 입력해주세요."
+                  value={field.value}
+                  onChange={field.onChange}
                 />
-              ))
-            )}
-          </div>
-        </BookingFormItem>
-        <BookingFormItem label="카테고리" required>
-          <div {...stylex.props(Styles.RadioBtnContainer)}>
-            {React.Children.toArray(
-              categoryData?.congressCategoryList.map((item) => (
-                <Radio
-                  id={item.categoryName}
-                  name="category"
-                  label={item.categoryName}
-                  onChange={() => handleChangeCategory(item.CongressCategoryId)}
+              )}
+            />
+          </BookingFormItem>
+
+          {/* 날짜 선택 */}
+          <BookingFormItem label="날짜 선택" required>
+            <Controller
+              name="date"
+              control={control}
+              defaultValue={selectBookingDate}
+              rules={{ required: 'This field is required' }}
+              render={({ field }) => <BookingDatePicker />}
+            />
+          </BookingFormItem>
+
+          {/* 시간 선택 */}
+          <BookingFormItem label="시간 선택" required>
+            <div {...stylex.props(Styles.TimePickerContainer)}>
+              <Controller
+                name="startTime"
+                control={control}
+                defaultValue=""
+                render={({ field }) => <BookingTimePicker placeholder="시작 시간" onSelect={field.onChange} />}
+              />
+              <span {...stylex.props(Styles.Hyphen)} />
+              <Controller
+                name="endTime"
+                control={control}
+                defaultValue=""
+                render={({ field }) => <BookingTimePicker placeholder="종료 시간" onSelect={field.onChange} />}
+              />
+            </div>
+          </BookingFormItem>
+
+          {/* 장소 */}
+          <BookingFormItem label="장소" required>
+            <div {...stylex.props(Styles.RadioBtnContainer)}>
+              {React.Children.toArray(
+                congressRoomData?.congressRoomList.map((item) => (
+                  <Controller
+                    name="meeting-room"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Radio
+                        name="meeting-room"
+                        id={item.roomName}
+                        label={item.roomName}
+                        value={item.RoomId}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                ))
+              )}
+            </div>
+          </BookingFormItem>
+
+          {/* 카테고리 */}
+          <BookingFormItem label="카테고리" required>
+            <div {...stylex.props(Styles.RadioBtnContainer)}>
+              {React.Children.toArray(
+                categoryData?.congressCategoryList.map((item) => (
+                  <Controller
+                    name="category"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Radio
+                        name="category"
+                        id={item.categoryName}
+                        label={item.categoryName}
+                        value={item.CongressCategoryId}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                ))
+              )}
+            </div>
+          </BookingFormItem>
+
+          {/* 참석자 */}
+          <BookingFormItem label="참석자" required>
+            <BookingAutoCompleteSelect
+              placeholder="참석자 검색"
+              replaceSelectedItemsWithImage
+              columnItem={columnItem}
+              defaultValueImgUrl={defaultImgUrl}
+              onSelect={handleSelectMemberList}
+            />
+          </BookingFormItem>
+
+          {/* 상세 내용 */}
+          <BookingFormItem label="상세 내용" required>
+            <Controller
+              name="detail"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <BookingTextarea
+                  placeholder="업무에 필요한 정보를 작성해주세요"
+                  value={field.value}
+                  onChange={field.onChange}
                 />
-              ))
-            )}
-          </div>
-        </BookingFormItem>
-        <BookingFormItem label="참석자" required>
-          <BookingAutoCompleteSelect
-            placeholder="참석자 검색"
-            replaceSelectedItemsWithImage
-            columnItem={columnItem}
-            defaultValueImgUrl={defaultImgUrl}
-            onSelect={handleSelectMemberList}
-          />
-        </BookingFormItem>
-        <BookingFormItem label="상세 내용" required>
-          <BookingTextarea
-            placeholder="업무에 필요한 정보를 작성해주세요"
-            value={detailContent}
-            onChange={handleDetailContent}
-          />
-        </BookingFormItem>
-      </div>
-      <div {...stylex.props(Styles.submitBtnWrapper)}>
-        <button type="button" {...stylex.props(Styles.submitBtn, Typography.TextSmallMedium)}>
-          작성 완료
-        </button>
-      </div>
+              )}
+            />
+          </BookingFormItem>
+        </div>
+
+        {/* 작성 완료 버튼 */}
+        <div {...stylex.props(Styles.submitBtnWrapper)}>
+          <button type="submit" {...stylex.props(Styles.submitBtn, Typography.TextSmallMedium)}>
+            작성 완료
+          </button>
+        </div>
+      </form>
     </MainLayout>
   );
 };
