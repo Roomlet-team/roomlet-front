@@ -2,23 +2,12 @@ import React, { FC, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 
-type BookingTextareaProps = {
-  placeholder: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-};
+interface BookingTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
 const BookingTextarea: FC<BookingTextareaProps> = (props) => {
-  const { placeholder, onChange, value } = props;
+  const { ...anotherProps } = props;
 
-  return (
-    <textarea
-      {...stylex.props(Styles.textarea, Typography.SubTextLargeRegular)}
-      placeholder={placeholder}
-      onChange={onChange}
-      value={value}
-    />
-  );
+  return <textarea {...stylex.props(Styles.textarea, Typography.SubTextLargeRegular)} {...anotherProps} />;
 };
 
 export default BookingTextarea;
