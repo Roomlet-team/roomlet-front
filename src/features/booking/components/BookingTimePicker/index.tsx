@@ -10,7 +10,7 @@ type BookingTimePickerProps = {
   placeholder: string;
   roomId: number;
   reserDate: string;
-  startTime?: string;
+  startTime?: TimeItemType;
   onSelect: (value: TimeItemType) => void;
 };
 
@@ -22,7 +22,7 @@ const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
   const reserDateWithoutHyphens = reserDate?.split('-').join('');
 
   const { data } = useGetWorkspaceCongressRoomTimQuery(roomId, reserDateWithoutHyphens, {
-    ...(startTime ? { startTime: selectTime.value } : {}),
+    ...(startTime ? { startTime: startTime.value } : {}),
   });
 
   const handleClickTime = () => {
