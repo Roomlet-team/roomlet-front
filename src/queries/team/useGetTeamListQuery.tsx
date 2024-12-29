@@ -27,14 +27,15 @@ interface TeamList {
   teamCount: number;
 }
 
-const getTeamListApi = async (WorkspaceId: number): Promise<TeamList> => {
-  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/team`);
+const getTeamListApi = async (WorkspaceId: number, skeywd: string): Promise<TeamList> => {
+  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/team`, { params: { skeywd } });
 
   return response.data;
 };
 
 /**
  * React-query를 사용하여 워크스페이스 팀 목록을 불러오는 커스텀 훅
+ * @param skeywd 검색어
  * @returns
  * - 다음 객체를 반환합니다:
  *   - `data`: 팀 리스트 (아직 가져오지 않았다면 `undefined`)
@@ -42,13 +43,13 @@ const getTeamListApi = async (WorkspaceId: number): Promise<TeamList> => {
  *   - `isLoading`: 데이터 로딩 여부
  *   - `refetch`: 데이터를 수동으로 다시 가져오는 함수
  */
-const useGetTeamListQuery = () => {
+const useGetTeamListQuery = (skeywd: string) => {
   const { data } = useGetWorkspaceListQuery();
   const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 
   const result = useQuery({
-    queryKey: ['teamList'],
-    queryFn: () => getTeamListApi(workspaceId),
+    queryKey: ['teamList', skeywd],
+    queryFn: () => getTeamListApi(workspaceId, skeywd),
     enabled: Boolean(workspaceId),
   });
 
