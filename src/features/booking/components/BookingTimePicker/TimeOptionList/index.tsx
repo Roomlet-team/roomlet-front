@@ -22,7 +22,7 @@ const TimeOptionList: FC<TimeOptionListProps> = (props) => {
         item.isValid &&
         dayjs().isBefore(dayjs(`${reserDate} ${displayTime}`).format('YYYY-MM-DD HH:mm')) && {
           name: `${Number(item.time.slice(0, 2)) < 12 ? '오전' : '오후'} ${displayTime}`, // 오전, 오후를 시간과 함께 나타냄
-          value: item.time,
+          value: displayTime,
         }
       );
     })
