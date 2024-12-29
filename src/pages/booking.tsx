@@ -15,6 +15,7 @@ import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQue
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 import BookingMemberSelect from '@src/features/booking/components/BookingMemberSelect';
+import usePostWorkspaceCongressQuery from '@src/features/booking/queries/usePostWorkspaceCongressQuery';
 
 const Booking = () => {
   const { selectBookingDate } = useSelector((state: RootState) => state.booking);
@@ -26,19 +27,42 @@ const Booking = () => {
   } = useForm();
   const { data: congressRoomData } = useGetCongressRoomListQuery();
   const { data: categoryData } = useGetCategoryListQuery();
+  const mutation = usePostWorkspaceCongressQuery();
   // 시간 선택시 roomId, date, startTime 값이 필요해서 해당 값들은 실시간 추적이 가능하도록 함.
-  const roomId = useWatch({ control, name: 'meeting-room' });
+  const RoomId = useWatch({ control, name: 'RoomId' });
   const date = useWatch({ control, name: 'date' });
   const startTime = useWatch({ control, name: 'startTime' });
+  // selectBookingDate 설정시 값이 초기화 되는 문제가 있어서 제목, 카테고리, 종료 시간, 참석자, 상세 내용도 추적이 가능하게 함
+  const congressTitle = useWatch({ control, name: 'congressTitle' });
+  const CongressCategoryId = useWatch({ control, name: 'CongressCategoryId' });
+  const endTime = useWatch({ control, name: 'endTime' });
+  const congressDescription = useWatch({ control, name: 'congressDescription' });
 
   const onSubmit = (data) => {
-    console.log({ data });
+    const mappedAttendMemberList = data.attendMemberList.map((memberId) => ({ MemberId: memberId }));
+
+    mutation.mutate({
+      ...data,
+      attendMemberList: mappedAttendMemberList,
+      CongressCategoryId: Number(data.CongressCategoryId),
+      RoomId: Number(data.RoomId),
+      startTime: data.endTime.value,
+      endTime: data.endTime.value,
+    });
   };
 
   // Redux 상태 변경 시 React Hook Form의 값 동기화
   useEffect(() => {
     if (selectBookingDate) {
-      reset({ date: selectBookingDate, 'meeting-room': roomId, startTime: startTime });
+      reset({
+        date: selectBookingDate,
+        RoomId,
+        startTime,
+        congressTitle,
+        CongressCategoryId,
+        endTime,
+        congressDescription,
+      });
     }
   }, [selectBookingDate, reset]);
 
@@ -71,12 +95,12 @@ const Booking = () => {
               {React.Children.toArray(
                 congressRoomData?.congressRoomList.map((item) => (
                   <Controller
-                    name="meeting-room"
+                    name="RoomId"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                       <Radio
-                        name="meeting-room"
+                        name="RoomId"
                         id={item.roomName}
                         label={item.roomName}
                         value={item.RoomId}
@@ -95,12 +119,12 @@ const Booking = () => {
               {React.Children.toArray(
                 categoryData?.congressCategoryList.map((item) => (
                   <Controller
-                    name="category"
+                    name="CongressCategoryId"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                       <Radio
-                        name="category"
+                        name="CongressCategoryId"
                         id={item.categoryName}
                         label={item.categoryName}
                         value={item.CongressCategoryId}
@@ -134,7 +158,7 @@ const Booking = () => {
                   <BookingTimePicker
                     placeholder="시작 시간"
                     onSelect={field.onChange}
-                    roomId={roomId}
+                    roomId={RoomId}
                     reserDate={date}
                   />
                 )}
@@ -148,7 +172,7 @@ const Booking = () => {
                   <BookingTimePicker
                     placeholder="종료 시간"
                     onSelect={field.onChange}
-                    roomId={roomId}
+                    roomId={RoomId}
                     reserDate={date}
                     startTime={startTime}
                   />
@@ -170,7 +194,7 @@ const Booking = () => {
           {/* 상세 내용 */}
           <BookingFormItem label="상세 내용" required>
             <Controller
-              name="detail"
+              name="congressDescription"
               control={control}
               defaultValue=""
               render={({ field }) => (
