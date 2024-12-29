@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import stylex from '@stylexjs/stylex';
 import Header from '@src/components/ui/Header';
 import BookingDatePicker from '@src/features/booking/components/BookingDatePicker';
@@ -26,6 +26,10 @@ const Booking = () => {
   } = useForm();
   const { data: congressRoomData } = useGetCongressRoomListQuery();
   const { data: categoryData } = useGetCategoryListQuery();
+  // 시간 선택시 roomId, date, startTime 값이 필요해서 해당 값들은 실시간 추적이 가능하도록 함.
+  const roomId = useWatch({ control, name: 'meeting-room' });
+  const date = useWatch({ control, name: 'date' });
+  const startTime = useWatch({ control, name: 'startTime' });
 
   const onSubmit = (data) => {
     console.log({ data });
@@ -33,7 +37,9 @@ const Booking = () => {
 
   // Redux 상태 변경 시 React Hook Form의 값 동기화
   useEffect(() => {
-    reset({ date: selectBookingDate });
+    if (selectBookingDate) {
+      reset({ date: selectBookingDate, 'meeting-room': roomId, startTime: startTime });
+    }
   }, [selectBookingDate, reset]);
 
   return (
@@ -124,14 +130,29 @@ const Booking = () => {
                 name="startTime"
                 control={control}
                 defaultValue=""
-                render={({ field }) => <BookingTimePicker placeholder="시작 시간" onSelect={field.onChange} />}
+                render={({ field }) => (
+                  <BookingTimePicker
+                    placeholder="시작 시간"
+                    onSelect={field.onChange}
+                    roomId={roomId}
+                    reserDate={date}
+                  />
+                )}
               />
               <span {...stylex.props(Styles.Hyphen)} />
               <Controller
                 name="endTime"
                 control={control}
                 defaultValue=""
-                render={({ field }) => <BookingTimePicker placeholder="종료 시간" onSelect={field.onChange} />}
+                render={({ field }) => (
+                  <BookingTimePicker
+                    placeholder="종료 시간"
+                    onSelect={field.onChange}
+                    roomId={roomId}
+                    reserDate={date}
+                    startTime={startTime}
+                  />
+                )}
               />
             </div>
           </BookingFormItem>

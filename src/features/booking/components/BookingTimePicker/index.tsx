@@ -4,17 +4,26 @@ import { BookingStyles } from '../../styles/index.stylex';
 import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 import TimeOptionList from './TimeOptionList';
 import type { TimeItemType } from '../../types';
+import useGetWorkspaceCongressRoomTimQuery from '../../queries/useGetMemberListQuery copy';
 
 type BookingTimePickerProps = {
   placeholder: string;
+  roomId: number;
+  reserDate: string;
+  startTime?: string;
   onSelect: (value: TimeItemType) => void;
 };
 
 const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
-  const { placeholder, onSelect } = props;
+  const { placeholder, onSelect, roomId, reserDate, startTime } = props;
   const [isTimeOptionOpen, setIsTimeOptionOpen] = useState<boolean>(false);
   const [selectTime, setSelectTime] = useState<TimeItemType>(null);
   const timeRef = useRef<HTMLDivElement>(null);
+  const reserDateWithoutHyphens = reserDate?.split('-').join('');
+
+  const { data } = useGetWorkspaceCongressRoomTimQuery(roomId, reserDateWithoutHyphens, {
+    ...(startTime ? { startTime: selectTime.value } : {}),
+  });
 
   const handleClickTime = () => {
     setIsTimeOptionOpen(true);
@@ -52,7 +61,7 @@ const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
           placeholder
         )}
       </button>
-      {isTimeOptionOpen && <TimeOptionList onSelect={handleSelectTime} />}
+      {isTimeOptionOpen && <TimeOptionList onSelect={handleSelectTime} data={data} reserDate={reserDate} />}
     </div>
   );
 };

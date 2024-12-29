@@ -3,24 +3,30 @@ import stylex from '@stylexjs/stylex';
 import React, { FC } from 'react';
 import { Typography, colors } from '../../../../../../public/styles/vars.stylex';
 import type { TimeItemType } from '@src/features/booking/types';
+import { CongressRoomTimeList } from '@src/features/booking/queries/useGetMemberListQuery copy';
 
 type TimeOptionListProps = {
   onSelect: (value: TimeItemType) => void;
+  data: CongressRoomTimeList;
+  reserDate: string;
 };
 
 const TimeOptionList: FC<TimeOptionListProps> = (props) => {
-  const { onSelect } = props;
-  const initTime = '2024-05-09 08:30';
-  const optionList = Array(15)
-    .fill('')
-    .map((_, idx) => ({
-      name: dayjs(initTime)
-        .add(30 * idx, 'minute')
-        .format('A HH:mm'), // 오전, 오후를 시간과 함께 나타냄
-      value: dayjs(initTime)
-        .add(30 * idx, 'minute')
-        .format('HH:mm'), // 시간만 나타냄
-    }));
+  const { onSelect, data, reserDate } = props;
+  const optionList = data?.timeList
+    .map((item, idx) => {
+      const displayTime = `${item.time.slice(0, 2)}:${item.time.slice(2, 4)}`;
+
+      // 현재 시간 이후의 시간들만 출력되게 구현
+      return (
+        item.isValid &&
+        dayjs().isBefore(dayjs(`${reserDate} ${displayTime}`).format('YYYY-MM-DD HH:mm')) && {
+          name: `${Number(item.time.slice(0, 2)) < 12 ? '오전' : '오후'} ${displayTime}`, // 오전, 오후를 시간과 함께 나타냄
+          value: item.time,
+        }
+      );
+    })
+    .filter((item) => !!item); // 시간 값이 존재하지 않는 요소를 걸러냄
 
   const handleClickTime = (timeObj: TimeItemType) => {
     onSelect(timeObj);
@@ -30,7 +36,7 @@ const TimeOptionList: FC<TimeOptionListProps> = (props) => {
     <div {...stylex.props(Styles.TimeListWrapper)}>
       <ul {...stylex.props(Styles.TimeList)}>
         {React.Children.toArray(
-          optionList.map((item) => (
+          optionList?.map((item) => (
             <li {...stylex.props(Styles.TimeItem, Typography.SubTextLargeMedium)} onClick={() => handleClickTime(item)}>
               {item.name}
             </li>
