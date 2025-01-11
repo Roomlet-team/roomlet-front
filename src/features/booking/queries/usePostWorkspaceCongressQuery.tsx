@@ -17,7 +17,13 @@ interface RequestBody {
   }[];
 }
 
-const postCongressApi = async (WorkspaceId: number, data: RequestBody) => {
+interface CongressInfo {
+  success: boolean;
+  code: number;
+  CongressId: number;
+}
+
+const postCongressApi = async (WorkspaceId: number, data: RequestBody): Promise<CongressInfo> => {
   const response = await clientInstance.post(`/v1/workspace/@${WorkspaceId}/congress`, data);
 
   return response.data;
@@ -39,8 +45,8 @@ const usePostWorkspaceCongressQuery = () => {
 
   const result = useCustomMutation({
     mutationFn: (data: RequestBody) => postCongressApi(workspaceId, data),
-    onSuccess: (data, variables, context) => {
-      router.push(`/reservations/1`);
+    onSuccess: (data: CongressInfo, variables, context) => {
+      router.push(`/reservations/${data.CongressId}`);
     },
     onError: (error, variables, context) => {
       if (error.response.data.code === 452) {
