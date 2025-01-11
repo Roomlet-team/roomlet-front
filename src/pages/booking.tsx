@@ -16,15 +16,28 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 import BookingMemberSelect from '@src/features/booking/components/BookingMemberSelect';
 import usePostWorkspaceCongressQuery from '@src/features/booking/queries/usePostWorkspaceCongressQuery';
+import { TimeItemType } from '@src/features/booking/types';
+
+type BookingForm = {
+  date: string;
+  RoomId: number;
+  startTime: TimeItemType;
+  endTime: TimeItemType;
+  attendMemberList: string[];
+  CongressCategoryId: number;
+  congressTitle: string;
+  congressDescription: string;
+};
 
 const Booking = () => {
   const { selectBookingDate } = useSelector((state: RootState) => state.booking);
   const {
+    watch,
     handleSubmit,
     control,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<BookingForm>({ mode: 'onChange' }); // 실시간으로 입력값 확인 및 모든 필드가 유효한지 확인
   const { data: congressRoomData } = useGetCongressRoomListQuery();
   const { data: categoryData } = useGetCategoryListQuery();
   const mutation = usePostWorkspaceCongressQuery();
@@ -37,6 +50,19 @@ const Booking = () => {
   const CongressCategoryId = useWatch({ control, name: 'CongressCategoryId' });
   const endTime = useWatch({ control, name: 'endTime' });
   const congressDescription = useWatch({ control, name: 'congressDescription' });
+  const attendMemberList = useWatch({ control, name: 'attendMemberList' });
+
+  // 모든 필드의 값을 감시
+  const values = watch();
+
+  // 모든 필수 필드가 채워져있는지 확인
+  const isAllFieldsFilled = Object.values(values).every((value) => {
+    if (Array.isArray(value)) {
+      return value.length > 0;
+    }
+
+    return value !== undefined && value !== '';
+  });
 
   const onSubmit = (data) => {
     const mappedAttendMemberList = data.attendMemberList.map((memberId) => ({ MemberId: memberId }));
@@ -62,6 +88,7 @@ const Booking = () => {
         CongressCategoryId,
         endTime,
         congressDescription,
+        attendMemberList,
       });
     }
   }, [selectBookingDate, reset]);
@@ -210,7 +237,7 @@ const Booking = () => {
 
         {/* 작성 완료 버튼 */}
         <div {...stylex.props(Styles.submitBtnWrapper)}>
-          <button type="submit" {...stylex.props(Styles.submitBtn, Typography.TextSmallMedium)}>
+          <button type="submit" {...stylex.props(Styles.submitBtn(isAllFieldsFilled), Typography.TextSmallMedium)}>
             작성 완료
           </button>
         </div>
@@ -243,12 +270,12 @@ const Styles = stylex.create({
   submitBtnWrapper: {
     padding: '16px 16px 40px',
   },
-  submitBtn: {
+  submitBtn: (isAllFieldsFilled: boolean) => ({
     width: '100%',
     padding: '15px 0',
-    background: colors.redDim,
+    background: isAllFieldsFilled ? colors.red500 : colors.redDim,
     color: colors.white500,
     textAlign: 'center',
     borderRadius: '16px',
-  },
+  }),
 });
