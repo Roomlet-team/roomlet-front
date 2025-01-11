@@ -50,7 +50,7 @@ const BookingMemberSelect: FC<BookingMemberSelectProps> = (props) => {
     <div {...stylex.props(Styles.Container)} ref={selectRef}>
       {/* 선택이 완료된 멤버 리스트 */}
       {Object.values(selectBookingMemberObj).length > 0 ? (
-        <div onClick={handleClickMemberSelect}>
+        <div {...stylex.props(Styles.TeamListContainer)} onClick={handleClickMemberSelect}>
           {Object.keys(selectBookingMemberObj).map((teamName) => (
             <div {...stylex.props(Styles.TeamContainer)}>
               <p {...stylex.props(Styles.TeamName)}>{teamName}</p>
@@ -83,10 +83,12 @@ export default BookingMemberSelect;
 const Styles = stylex.create({
   Container: {
     position: 'relative',
+    cursor: 'pointer',
+  },
+  TeamListContainer: {
     display: 'flex',
     flexDirection: 'column',
     gap: '12px',
-    cursor: 'pointer',
   },
   TeamContainer: {
     alignItems: 'center',
