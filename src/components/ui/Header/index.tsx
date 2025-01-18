@@ -5,7 +5,7 @@ import { Typography, colors } from '../../../../public/styles/vars.stylex';
 import ArrowHeadOutlined from '@src/components/icons/ArrowHeadOutlined';
 
 type HeaderProps = {
-  title: string; // 제목
+  title?: string; // 제목
   prevUrl?: string; // 이전으로 이동할 url
   rightBtnInfo?: {
     name: string;
