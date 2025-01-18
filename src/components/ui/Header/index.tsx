@@ -7,6 +7,7 @@ import ArrowHeadOutlined from '@src/components/icons/ArrowHeadOutlined';
 type HeaderProps = {
   title?: string; // 제목
   prevUrl?: string; // 이전으로 이동할 url
+  prevOnClick?: () => void;
   rightBtnInfo?: {
     name: string;
     isActive: boolean;
@@ -15,7 +16,7 @@ type HeaderProps = {
 };
 
 const Header: FC<HeaderProps> = (props) => {
-  const { title, prevUrl, rightBtnInfo } = props;
+  const { title, prevUrl, prevOnClick, rightBtnInfo } = props;
 
   return (
     <div {...stylex.props(Styles.container, rightBtnInfo && Styles.withRightBtn)}>
@@ -23,6 +24,11 @@ const Header: FC<HeaderProps> = (props) => {
         <Link href={prevUrl}>
           <ArrowHeadOutlined width={24} height={24} />
         </Link>
+      )}
+      {prevOnClick && (
+        <button type="button" onClick={prevOnClick}>
+          <ArrowHeadOutlined width={24} height={24} />
+        </button>
       )}
       <h1 {...stylex.props(Typography.TitleSmallSemiBold)}>{title}</h1>
       {/* 오른쪽 상단에 배치되는 버튼 */}
