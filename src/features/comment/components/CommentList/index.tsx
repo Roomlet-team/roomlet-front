@@ -4,8 +4,13 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import { colors, Typography } from '../../../../../public/styles/vars.stylex';
-import useGetWorkspaceCongressCommentQuery from '../../queries/useGetWorkspaceCongressCommentQuery';
+import useGetWorkspaceCongressCommentQuery, {
+  CommentListItem,
+} from '../../queries/useGetWorkspaceCongressCommentQuery';
 import { useRouter } from 'next/router';
+import Dropdown from '@src/components/ui/Dropdown';
+import PencilOutlined from '@src/components/icons/PencilOutlined';
+import TrashcanOutlined from '@src/components/icons/TrashcanOutlined';
 
 // fromNow를 사용하기 위해 플러그인 사용
 dayjs.extend(relativeTime);
@@ -14,6 +19,23 @@ const CommentList = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data } = useGetWorkspaceCongressCommentQuery({ page: 1, perPage: 5, cgsid: Number(id) });
+
+  const getMenuList = (item: CommentListItem) => {
+    return [
+      {
+        id: '1',
+        label: '수정하기',
+        icon: <PencilOutlined width={16} height={16} />,
+        onClick: () => {},
+      },
+      {
+        id: '2',
+        label: '삭제하기',
+        icon: <TrashcanOutlined width={16} height={16} />,
+        onClick: () => {},
+      },
+    ];
+  };
 
   return (
     <div {...stylex.props(Styles.container)}>
@@ -28,13 +50,19 @@ const CommentList = () => {
               <ProfileImg src={item.member.profileImgUrl} size={32} />
 
               <div {...stylex.props(Styles.commentInfoContainer)}>
-                {/* 닉네임 및 작성일 */}
-                <div {...stylex.props(Styles.nicknameAndDateContainer)}>
-                  {/* 닉네임 */}
-                  <span {...stylex.props(Styles.nickname)}>{item.member.displayName}</span>
+                {/* 작성자 정보 및 드롭다운 */}
+                <div {...stylex.props(Styles.authorAndDropdownContainer)}>
+                  {/* 닉네임 및 작성일 */}
+                  <div {...stylex.props(Styles.nicknameAndDateContainer)}>
+                    {/* 닉네임 */}
+                    <span {...stylex.props(Styles.nickname)}>{item.member.displayName}</span>
 
-                  {/* 작성일 */}
-                  <span {...stylex.props(Styles.date)}>{dayjs(item.createdAt).fromNow()}</span>
+                    {/* 작성일 */}
+                    <span {...stylex.props(Styles.date)}>{dayjs(item.createdAt).fromNow()}</span>
+                  </div>
+
+                  {/* 수정하기 / 삭제하기 */}
+                  <Dropdown menuList={getMenuList(item)} />
                 </div>
 
                 {/* 내용 */}
@@ -72,6 +100,7 @@ const Styles = stylex.create({
     gap: '8px',
   },
   commentInfoContainer: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -100,5 +129,11 @@ const Styles = stylex.create({
     color: '#333',
     whiteSpace: 'normal', // 글이 끊김없이 표현될 경우에 사용
     wordBreak: 'break-all',
+  },
+  authorAndDropdownContainer: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
