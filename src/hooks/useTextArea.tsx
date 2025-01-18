@@ -5,14 +5,17 @@ import { useState } from 'react';
  * @param initValue state에 저장할 초기값
  * @returns
  */
-function useTextArea<T>(initValue: T): [T, (e: React.ChangeEvent<HTMLTextAreaElement>) => void] {
+function useTextArea<T>(initValue: T): [T, (e: React.ChangeEvent<HTMLTextAreaElement>) => void, (() => void)?] {
   const [value, setValue] = useState<T>(initValue);
 
   const handleTextAreaValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value as T);
   };
 
-  return [value, handleTextAreaValue];
+  // 입력했던 값 리셋
+  const reset = () => setValue(initValue);
+
+  return [value, handleTextAreaValue, reset];
 }
 
 export default useTextArea;
