@@ -5,10 +5,13 @@ import MainLayout from '@src/layouts/MainLayout';
 import CommentTextarea from '@src/features/comment/components/CommentTextarea';
 import CommentList from '@src/features/comment/components/CommentList';
 import ReservationInfo from '@src/features/reservation/components/ReservationInfo';
+import Header from '@src/components/ui/Header';
 
 const MeetingDetails = () => {
   return (
     <MainLayout isScroll>
+      {/* 직전 페이지로 이동할 수 잇게 구현하기 */}
+      <Header prevUrl="/calendar" />
       <ReservationInfo />
 
       {/* 경계선 */}
