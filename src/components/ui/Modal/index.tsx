@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, use, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import stylex from '@stylexjs/stylex';
 import { BackgroundColor } from '../../../../public/styles/vars.stylex';
@@ -10,6 +10,16 @@ const Portal = dynamic(() => import('../Portal'), {
 
 const Modal: FC<ModalProps> = (props) => {
   const { children, isOpen } = props;
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
 
   return (
     isOpen && (
