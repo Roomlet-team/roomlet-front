@@ -4,9 +4,19 @@ import useTextArea from '@src/hooks/useTextArea';
 import { colors } from '../../../../../public/styles/vars.stylex';
 import SendFilled from '@src/components/icons/SendFilled';
 import { title } from 'process';
+import usePostWorkspaceCongressCommentQuery from '../../queries/usePostWorkspaceCongressCommentQuery';
+import { useRouter } from 'next/router';
 
 const CommentTextarea = () => {
-  const [value, handleChangeValue] = useTextArea('');
+  const router = useRouter();
+  const { id } = router.query;
+  const [value, handleChangeValue, reset] = useTextArea('');
+  const mutation = usePostWorkspaceCongressCommentQuery({ cgsid: Number(id) });
+
+  const handleClickSubmit = () => {
+    mutation.mutate({ content: value });
+    reset();
+  };
 
   useEffect(() => {
     // 컨텐츠 양에 맞게 textarea가 자동으로 조절되게 하는 코드
@@ -26,9 +36,9 @@ const CommentTextarea = () => {
           rows={1}
           placeholder="댓글을 입력해주세요."
         />
-        <div {...stylex.props(Styles.iconWrapper)}>
+        <button type="button" {...stylex.props(Styles.iconWrapper)} onClick={handleClickSubmit}>
           <SendFilled width={32} height={32} />
-        </div>
+        </button>
       </div>
     </div>
   );
