@@ -20,6 +20,20 @@ const Dropdown: FC<DropdownProps> = (props) => {
     setIsOpen(!isOpen);
   };
 
+  /**
+   * 메뉴 클릭 시 실행되는 함수
+   * - 메뉴 클릭 시 모달 닫기
+   * @param func 클릭 시 실행되는 함수
+   * @returns 없음.
+   */
+  const handleClickItem = (func: () => void) => async () => {
+    await new Promise((resolve) => {
+      func();
+      resolve(true);
+    });
+    setIsOpen(false);
+  };
+
   return (
     <>
       <div {...stylex.props(Styles.dropdownContainer)}>
@@ -38,7 +52,7 @@ const Dropdown: FC<DropdownProps> = (props) => {
                 <button
                   type="button"
                   key={menu.id}
-                  onClick={menu.onClick}
+                  onClick={handleClickItem(menu.onClick)}
                   {...stylex.props(Styles.dropdownMenuButton, menuList.length - 1 === idx && Styles.lastMenuButton)}
                 >
                   <span>{menu.label}</span>
@@ -58,7 +72,6 @@ export default Dropdown;
 const Styles = stylex.create({
   dropdownContainer: {
     position: 'relative',
-    zIndex: 1,
   },
   dropdownBackground: {
     position: 'fixed',
@@ -67,6 +80,7 @@ const Styles = stylex.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1,
   },
   dropdownMenuContainer: {
     position: 'absolute',
@@ -78,6 +92,7 @@ const Styles = stylex.create({
     borderRadius: '8px',
     display: 'flex',
     flexDirection: 'column',
+    zIndex: 2,
   },
   dropdownMenuButton: {
     width: '100%',
