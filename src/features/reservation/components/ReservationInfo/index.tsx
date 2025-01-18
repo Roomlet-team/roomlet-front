@@ -2,15 +2,25 @@ import React from 'react';
 import stylex from '@stylexjs/stylex';
 import { colors, Typography } from '../../../../../public/styles/vars.stylex';
 import EllipsisOutlined from '@src/components/icons/EllipsisOutlined';
+import ProfileImg from '@src/components/ui/ProfileImg';
+import useGetWorkspaceCongressQuery from '../../queries/useGetWorkspaceCongressQuery';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 const ReservationInfo = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const { data } = useGetWorkspaceCongressQuery({ cgsid: Number(id) });
+
   return (
     <div>
       {/* 카테고리 태그 및 회의 제목 */}
       <div {...stylex.props(Styles.categoryAndTitleContainer)}>
-        <div {...stylex.props(Styles.categoryTag)}>디자인</div>
+        <div {...stylex.props(Styles.categoryTag(data?.congress.congressCategory.hexcode))}>
+          {data?.congress.congressCategory.categoryName}
+        </div>
         <div {...stylex.props(Styles.TitleAndShowMoreContainer)}>
-          <h1 {...stylex.props(Typography.TextLargeBold)}>사용성 관련 기획 회의</h1>
+          <h1 {...stylex.props(Typography.TextLargeBold)}>{data?.congress.congressTitle}</h1>
           <button type="button">
             <EllipsisOutlined width="24" height="24" />
           </button>
@@ -22,21 +32,37 @@ const ReservationInfo = () => {
         <ul {...stylex.props(Styles.List)}>
           <li {...stylex.props(Styles.horizonItem)}>
             <div {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.CommonItem)}>장소</div>
-            <div {...stylex.props(Typography.TextSmallRegular)}>C 회의실</div>
+            <div {...stylex.props(Typography.TextSmallRegular)}>{data?.congress.congressRoom.roomName}</div>
           </li>
           <li {...stylex.props(Styles.horizonItem)}>
             <div {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.CommonItem)}>날짜/시간</div>
-            <div {...stylex.props(Typography.TextSmallRegular)}>2024-03-06 10:00 ~ 11:00</div>
+            <div {...stylex.props(Typography.TextSmallRegular)}>
+              {dayjs(data?.congress.date).format('YY-MM-DD')} {data?.congress.startTime} ~ {data?.congress.endTime}
+            </div>
           </li>
           <li {...stylex.props(Styles.horizonItem)}>
             <div {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.CommonItem)}>참여자</div>
-            <div>
-              <div>기획팀</div>
+
+            {/* 팀목록 */}
+            <div {...stylex.props(Styles.TeamListContainer)}>
+              {data?.congress.attendTeamList.map((teamItem) => (
+                <div {...stylex.props(Styles.TeamContainer)}>
+                  <p {...stylex.props(Styles.TeamName)}>{teamItem.teamName}</p>
+                  <div {...stylex.props(Styles.MemberListContainer)}>
+                    {teamItem.memberList.map((memberItem) => (
+                      <div {...stylex.props(Styles.MemberInfoContainer)}>
+                        <ProfileImg size={20} src={memberItem.profileImgUrl} />
+                        <span {...stylex.props(Typography.TagLargeMedium)}>{memberItem.displayName}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </li>
           <li {...stylex.props(Styles.verticalItem)}>
             <div {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.CommonItem)}>상세내용</div>
-            <pre {...stylex.props(Styles.ContentWrapper)}>홍길동 인턴: 당뇨 관리앱 분석 조사 발표</pre>
+            <pre {...stylex.props(Styles.ContentWrapper)}>{data?.congress.congressDescription}</pre>
           </li>
         </ul>
       </div>
@@ -47,10 +73,36 @@ const ReservationInfo = () => {
 export default ReservationInfo;
 
 const Styles = stylex.create({
+  TeamListContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  TeamContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    gap: '16px',
+  },
+  MemberListContainer: {
+    display: 'inline-flex',
+    flexWrap: 'wrap',
+    gap: '6px',
+  },
+  MemberInfoContainer: {
+    display: 'flex',
+    gap: '4px',
+    alignContent: 'center',
+  },
+  TeamName: {
+    width: '56px',
+    fontWeight: 400,
+    fontSize: '1.6rem',
+    lineHeight: '2.4rem',
+  },
   categoryAndTitleContainer: {
     padding: '16px',
   },
-  categoryTag: {
+  categoryTag: (hexcode) => ({
     width: 'fit-content',
     padding: '4px 8px',
     marginBottom: '12px',
@@ -58,8 +110,8 @@ const Styles = stylex.create({
     fontSize: '1.2rem',
     fontWeight: 500,
     color: colors.white500,
-    background: colors.red300,
-  },
+    background: hexcode,
+  }),
   TitleAndShowMoreContainer: {
     display: 'flex',
     justifyContent: 'space-between',
