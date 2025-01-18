@@ -5,11 +5,11 @@ import { useQuery } from '@tanstack/react-query';
 interface CommentListInfo {
   success: boolean;
   code: number;
-  commentList: CommentItem[];
+  commentList: CommentListItem[];
   commentCount: number;
 }
 
-interface CommentItem {
+export interface CommentListItem {
   CommentId: number;
   content: string;
   createdAt: string;
