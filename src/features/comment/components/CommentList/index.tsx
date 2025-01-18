@@ -11,6 +11,8 @@ import { useRouter } from 'next/router';
 import Dropdown from '@src/components/ui/Dropdown';
 import PencilOutlined from '@src/components/icons/PencilOutlined';
 import TrashcanOutlined from '@src/components/icons/TrashcanOutlined';
+import useRenderModal from '@src/hooks/ui/useRenderModal';
+import CommentEditModal from '../CommentEditModal';
 
 // fromNow를 사용하기 위해 플러그인 사용
 dayjs.extend(relativeTime);
@@ -19,6 +21,7 @@ const CommentList = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data } = useGetWorkspaceCongressCommentQuery({ page: 1, perPage: 5, cgsid: Number(id) });
+  const { renderModal } = useRenderModal();
 
   const getMenuList = (item: CommentListItem) => {
     return [
@@ -26,7 +29,11 @@ const CommentList = () => {
         id: '1',
         label: '수정하기',
         icon: <PencilOutlined width={16} height={16} />,
-        onClick: () => {},
+        onClick: () => {
+          renderModal(CommentEditModal, {
+            data: item,
+          });
+        },
       },
       {
         id: '2',
