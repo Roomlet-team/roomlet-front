@@ -2,6 +2,9 @@ import React from 'react';
 import stylex from '@stylexjs/stylex';
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
+import useGetWorkspaceCongressListQuery from '@src/queries/workspace/useGetWorkspaceCongressListQuery';
+import dayjs from 'dayjs';
+import Link from 'next/link';
 
 /**
  * 홈 화면의 타임라인을 나타내는 컴포넌트
@@ -9,24 +12,32 @@ import { RootState } from '@src/store';
  */
 const TimeLine = () => {
   const { isWorkspace } = useSelector((state: RootState) => state.workspace);
+  const { data } = useGetWorkspaceCongressListQuery({ date: dayjs().format('YYYY-MM-DD') });
 
   return isWorkspace ? (
     // 워크스페이스가 존재할 때 보여지는 타임 라인
     <div {...stylex.props(Styles.container)}>
       <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />
       <div {...stylex.props(Styles.scrollContainer)}>
-        <div {...stylex.props(Styles.timeAndMeetingContent)}>
-          <div {...stylex.props(Styles.timeContent)}>
-            <span {...stylex.props(Styles.timeText)}>09:00</span>
-            <div {...stylex.props(Styles.timeDot)} />
-          </div>
-          <div {...stylex.props(Styles.meetingContent)}>
-            <div {...stylex.props(Styles.detailContent)}>
-              <p {...stylex.props(Styles.titleText)}>룸렛 회의</p>
-              <div {...stylex.props(Styles.categoryTag)}>기획</div>
+        {data.congressList.map((item) => (
+          <div {...stylex.props(Styles.timeAndMeetingContent)}>
+            <div {...stylex.props(Styles.timeContent)}>
+              <span {...stylex.props(Styles.timeText)}>{item.startTime}</span>
+              <div {...stylex.props(Styles.timeDot)} />
             </div>
+
+            <Link href={`/reservations/${item.CongressId}`} {...stylex.props(Styles.meetingLink)}>
+              <div {...stylex.props(Styles.meetingContent)}>
+                <div {...stylex.props(Styles.detailContent(item.congressCategory.hexcode))}>
+                  <p {...stylex.props(Styles.titleText)}>{item.congressTitle}</p>
+                  <div {...stylex.props(Styles.categoryTag(item.congressCategory.hexcode))}>
+                    {item.congressCategory.categoryName}
+                  </div>
+                </div>
+              </div>
+            </Link>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   ) : (
@@ -68,6 +79,9 @@ const Styles = stylex.create({
     borderTop: '1px solid #F2F2F2',
   },
   scrollContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '14px',
     width: '100%',
     height: 'calc(100vh - 374px)',
     paddingTop: '30px',
@@ -117,29 +131,29 @@ const Styles = stylex.create({
     flexDirection: 'column',
     gap: '14px',
   },
-  detailContent: {
+  detailContent: (hexcode) => ({
     padding: '16px',
     display: 'flex',
     justifyContent: 'space-between',
     backgroundColor: 'var(--Base-White)',
-    borderLeft: '2px solid var(--Blue-300)',
+    borderLeft: `2px solid ${hexcode}`,
     borderRadius: '0 16px 16px 0',
-  },
+  }),
   titleText: {
     fontSize: '1.4rem',
     fontWeight: 700,
     lineHeight: '2rem',
     color: '#61686D',
   },
-  categoryTag: {
+  categoryTag: (hexcode) => ({
     padding: '4px 8px',
-    backgroundColor: 'var(--Blue-300)',
+    backgroundColor: hexcode,
     borderRadius: '20px',
     fontSize: '1.2rem',
     fontWeight: 500,
     lineHeight: '100%',
     color: 'var(--Base-White)',
-  },
+  }),
   NoScheduleContainer: {
     width: '100%',
     height: '176px',
@@ -158,5 +172,9 @@ const Styles = stylex.create({
     paddingTop: '30px',
     height: '176px',
     overflowY: 'auto',
+  },
+  meetingLink: {
+    width: '100%',
+    textDecoration: 'none',
   },
 });
