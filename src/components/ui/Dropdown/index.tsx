@@ -22,7 +22,7 @@ const Dropdown: FC<DropdownProps> = (props) => {
 
   /**
    * 메뉴 클릭 시 실행되는 함수
-   * - 메뉴 클릭 시 모달 닫기
+   * - 메뉴 클릭 시 드롭박스 메뉴 닫기
    * @param func 클릭 시 실행되는 함수
    * @returns 없음.
    */
