@@ -106,6 +106,7 @@ const Booking = () => {
               name="congressTitle"
               control={control}
               defaultValue=""
+              rules={{ required: '회의 타이틀을 입력해주세요' }}
               render={({ field }) => (
                 <BookingTextInput
                   placeholder="회의 타이틀을 입력해주세요."
@@ -125,6 +126,7 @@ const Booking = () => {
                     name="RoomId"
                     control={control}
                     defaultValue=""
+                    rules={{ required: '장소를 선택해주세요' }}
                     render={({ field }) => (
                       <Radio
                         name="RoomId"
@@ -149,6 +151,7 @@ const Booking = () => {
                     name="CongressCategoryId"
                     control={control}
                     defaultValue=""
+                    rules={{ required: '카테고리를 선택해주세요' }}
                     render={({ field }) => (
                       <Radio
                         name="CongressCategoryId"
@@ -171,6 +174,7 @@ const Booking = () => {
               control={control}
               defaultValue={selectBookingDate}
               render={({ field }) => <BookingDatePicker />}
+              rules={{ required: '날짜를 선택해주세요' }}
             />
           </BookingFormItem>
 
@@ -181,6 +185,7 @@ const Booking = () => {
                 name="startTime"
                 control={control}
                 defaultValue=""
+                rules={{ required: '시작 시간을 선택해주세요' }}
                 render={({ field }) => (
                   <BookingTimePicker
                     placeholder="시작 시간"
@@ -195,6 +200,7 @@ const Booking = () => {
                 name="endTime"
                 control={control}
                 defaultValue=""
+                rules={{ required: '종료 시간을 선택해주세요' }}
                 render={({ field }) => (
                   <BookingTimePicker
                     placeholder="종료 시간"
@@ -214,6 +220,7 @@ const Booking = () => {
               name="attendMemberList"
               control={control}
               defaultValue=""
+              rules={{ required: '참석자를 선택해주세요' }}
               render={({ field }) => <BookingMemberSelect onSelect={field.onChange} />}
             />
           </BookingFormItem>
@@ -224,6 +231,7 @@ const Booking = () => {
               name="congressDescription"
               control={control}
               defaultValue=""
+              rules={{ required: '상세 내용을 입력해주세요' }}
               render={({ field }) => (
                 <BookingTextarea
                   placeholder="업무에 필요한 정보를 작성해주세요"
