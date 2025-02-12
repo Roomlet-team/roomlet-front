@@ -1,245 +1,95 @@
-import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
-import stylex from '@stylexjs/stylex';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import React, { useEffect, useRef, useState } from 'react';
+import Slider from 'react-slick';
 
-// Import Swiper styles
-import 'swiper/css';
+import Calendar from 'react-calendar';
+import stylex from '@stylexjs/stylex';
+
+import dayjs from 'dayjs';
+import { Typography } from 'public/styles/vars.stylex';
 
 const MonthlyCalendar = () => {
-  const currentMonth = dayjs().format('YYYY-MM');
-  const prevMonth = dayjs().subtract(1, 'M').format('YYYY-MM');
-  const nextMonth = dayjs().add(1, 'M').format('YYYY-MM');
-  const [monthList, setMonthList] = useState<string[]>([prevMonth, currentMonth, nextMonth]);
-  const [selectDate, setSelectDate] = useState<number>(dayjs().date());
-  const dayOfTheWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-  const getCurrentMonth = (ym) => dayjs(ym).month();
-  const getStartDay = (ym) => Number(dayjs(ym).startOf('month').month(getCurrentMonth(ym)).day()); // 1일에 해당하는 요일
-  //   const endDay = Number(dayjs('2024-03').endOf('month').month(currentMonth).day()); // 마지막날에 해당하는 요일
-  const getLastDateOfTheMonth = (ym) => Number(dayjs('2024-03').month(getCurrentMonth(ym)).endOf('month').format('DD')); // 이번달의 마지막 날
-  const getNumOfWeek = (ym) => Math.floor(getLastDateOfTheMonth(ym) / 7) + (getStartDay(ym) > 4 ? 2 : 1); // 1일이 금요일부터 시작되면 한 주를 더 해준다.
-  const getLastDateOfTheLastMonth = (ym) =>
-    Number(
-      dayjs(ym)
-        .subtract(1, 'month')
-        .endOf('month')
-        .month(0 - 1 === -1 ? 11 : 0)
-        .format('DD')
-    ); // 지난달의 마지막 날
+  const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
+  const [slides, setSlides] = useState([
+    dayjs().format('YYYY-MM-DD'),
+    dayjs().add(1, 'month').format('YYYY-MM-DD'),
+    dayjs().add(2, 'month').format('YYYY-MM-DD'),
+  ]);
+  let sliderRef = useRef(null);
 
-  const getColorDay = (day) => {
-    switch (day) {
-      // 일요일
-      case 0:
-        return 'var(--Red-300)';
-      // 토요일
-      case 6:
-        return 'var(--Blue-300)';
-      default:
-        return '#5F5656';
-    }
+  const handleChangeDate = (value) => {
+    const selectedDate = dayjs(value).format('YYYY-MM-DD');
+
+    setDate(selectedDate);
   };
 
-  const handleClickDate = (date) => {
-    setSelectDate(date);
+  const handleFormatDay = (locale, date) => dayjs(date).format('D');
+
+  const handleFormatShortWeekday = (locale, date) => {
+    const day = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+    return day[Number(dayjs(date).format('d'))];
   };
 
-  const handleSlideChange = (swiper) => {
-    const monthFormat = 'YYYY-MM';
+  const settings = {
+    slidesToShow: 1,
+    swipeToSlide: true,
+    infinite: false,
+    adaptiveHeight: true,
+    initialSlide: 0, // 기본적으로 1번 인덱스의 슬라이드 표시
+    afterChange: (current, next) => {
+      if (current === 0) {
+        const prevMonth = dayjs(slides[0]).subtract(1, 'month').format('YYYY-MM-DD');
 
-    // 첫번째 요소를 만났을 때, 미리 이전 2달치 로드
-    if (swiper.activeIndex === 0) {
-      const firstMonthIndex = monthList[0];
-      setMonthList([
-        dayjs(firstMonthIndex).subtract(2, 'M').format(monthFormat),
-        dayjs(firstMonthIndex).subtract(1, 'M').format(monthFormat),
-        ...monthList,
-      ]);
-      swiper.slideTo(2, 0);
-    }
+        setSlides([prevMonth, ...slides]);
+      }
+      if (current === slides.length - 1) {
+        const nextMonth = dayjs(slides[slides.length - 1])
+          .add(1, 'month')
+          .format('YYYY-MM-DD');
 
-    if (swiper.activeIndex === monthList.length - 1) {
-      // 마지막 요소를 만났을 때, 미리 뒤의 2달치 로드
-      const lastMonthIndex = monthList[monthList.length - 1];
-
-      setMonthList([
-        ...monthList,
-        dayjs(lastMonthIndex).add(1, 'M').format(monthFormat),
-        dayjs(lastMonthIndex).add(2, 'M').format(monthFormat),
-      ]);
-      swiper.slideTo(monthList.length, 0);
-    }
+        setSlides([...slides, nextMonth]);
+      }
+    },
   };
 
   return (
-    <Swiper spaceBetween={50} slidesPerView={1} initialSlide={1} onSlideChange={handleSlideChange}>
-      {monthList.map((ym) => (
-        <SwiperSlide {...stylex.props(Styles.scrollContent)}>
-          <div {...stylex.props(Styles.monthlyContent)}>
-            <h1 {...stylex.props(Styles.currentMonthText)}>{dayjs(ym).format('YYYY.MM')}</h1>
-            <table {...stylex.props(Styles.calenderContent)}>
-              <thead>
-                <tr {...stylex.props(Styles.daysContent)}>
-                  {React.Children.toArray(
-                    dayOfTheWeek.map((day, idx) => <th {...stylex.props(Styles.dayText(getColorDay(idx)))}>{day}</th>)
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {React.Children.toArray(
-                  Array(getNumOfWeek(ym))
-                    .fill('')
-                    .map((_, weekIdx) => (
-                      <tr {...stylex.props(Styles.weekContent)}>
-                        {React.Children.toArray(
-                          Array(7)
-                            .fill('')
-                            .map((_, dateIdx) => {
-                              const dateValue = weekIdx * 7 - getStartDay(ym) + (dateIdx + 1);
-                              // 이번달
-                              if (dateValue > 0 && dateValue <= getLastDateOfTheMonth(ym)) {
-                                return (
-                                  <td {...stylex.props(Styles.dateContent)}>
-                                    <button
-                                      type="button"
-                                      onClick={() => handleClickDate(dateValue)}
-                                      {...stylex.props(
-                                        Styles.currentMonthDateText(getColorDay(dateIdx)),
-                                        dateValue === selectDate && Styles.selectedDate
-                                      )}
-                                    >
-                                      <span {...stylex.props(Styles.dateText)}>{dateValue}</span>
-                                    </button>
-                                  </td>
-                                );
-                              }
-                              // 지난달
-                              if (dateValue <= 0) {
-                                return (
-                                  <td {...stylex.props(Styles.dateContent)}>
-                                    <button
-                                      type="button"
-                                      onClick={() => handleClickDate(dateValue)}
-                                      {...stylex.props(
-                                        Styles.notCurrentMonthDateText,
-                                        Styles.dateBtn,
-                                        dateValue === selectDate && Styles.selectedDate
-                                      )}
-                                    >
-                                      <span {...stylex.props(Styles.dateText)}>
-                                        {dateValue + getLastDateOfTheLastMonth(ym)}
-                                      </span>
-                                    </button>
-                                  </td>
-                                );
-                              }
-                              // 다음달
-                              if (dateValue > getLastDateOfTheMonth(ym)) {
-                                return (
-                                  <td {...stylex.props(Styles.dateContent)}>
-                                    <button
-                                      type="button"
-                                      onClick={() => handleClickDate(dateValue)}
-                                      {...stylex.props(
-                                        Styles.notCurrentMonthDateText,
-                                        Styles.dateBtn,
-                                        dateValue === selectDate && Styles.selectedDate
-                                      )}
-                                    >
-                                      <span {...stylex.props(Styles.dateText)}>
-                                        {dateValue - getLastDateOfTheMonth(ym)}
-                                      </span>
-                                    </button>
-                                  </td>
-                                );
-                              }
-                            })
-                        )}
-                      </tr>
-                    ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <>
+      <div {...stylex.props(Styles.SliderWrapper)}>
+        <Slider {...settings} ref={sliderRef}>
+          {slides.map((slideContent, index) => (
+            <div key={index}>
+              <div style={{ height: '460px' }}>
+                <p {...stylex.props(Styles.CurrentSlideMonth, Typography.TitleRegularBold)}>
+                  {dayjs(slideContent).format('YYYY.M')}
+                </p>
+                <Calendar
+                  onChange={handleChangeDate}
+                  value={dayjs(date).toDate()} // dayjs를 Date로 변환
+                  showNavigation={false}
+                  formatDay={handleFormatDay}
+                  formatShortWeekday={handleFormatShortWeekday} // 요일을 표현하는 방식 커스텀
+                  locale="en-GB"
+                  activeStartDate={dayjs(slideContent).toDate()} // dayjs를 Date로 변환
+                  calendarType="gregory" // 일주일의 시작이 sun으로 시작되게 수정
+                  tileClassName="main-calendar-title"
+                  className="main-calendar"
+                />
+              </div>
+            </div>
+          ))}
+        </Slider>
+      </div>
+    </>
   );
 };
 
 export default MonthlyCalendar;
 
 const Styles = stylex.create({
-  scrollWrapper: {
-    display: 'flex',
-    overflow: 'auto',
+  SliderWrapper: {
+    height: '406px',
   },
-  scrollContent: { width: '100%', height: 'auto', display: 'flex', flexShrink: 0 },
-  monthlyContent: { width: '100%', height: '100%' },
-  currentMonthText: {
-    padding: '16px 20px',
-    fontSize: '2rem',
-    fontWeight: '700',
-    lineHeight: '2.6rem',
-    color: '#333333',
-  },
-  calenderContent: {
-    width: '100%',
-    fontSize: '1.6rem',
-    fontWeight: '700',
-    lineHeight: '2.4rem',
-    color: '#5F5656',
-  },
-  daysContent: {
-    padding: '16px 20px',
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  dayText: (color) => ({
-    width: '24px',
-    height: '24px',
-    display: 'flex',
-    justifyContent: 'center',
-    color,
-  }),
-  weekContent: {
-    padding: '16px 20px',
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  dateContent: {
-    width: '24px',
-    height: '24px',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  currentMonthDateText: (color) => ({
-    color,
-  }),
-  notCurrentMonthDateText: {
-    color: '#E2E2E2',
-  },
-  dateText: {
-    paddingTop: '1px',
-  },
-  dateBtn: {
-    width: '24px',
-    height: '24px',
-    background: 'none',
-    border: 'none',
-  },
-  selectedDate: {
-    width: '24px',
-    height: '24px',
-    display: 'flex',
-    flexShrink: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: `var(--Base-White)`,
-    backgroundColor: '#191616',
-    borderRadius: '50%',
-    fontSize: '1.4rem',
-    lineHeight: '1rem',
-    fontWeight: '600',
+  CurrentSlideMonth: {
+    padding: '16px',
   },
 });
