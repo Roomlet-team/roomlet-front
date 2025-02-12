@@ -6,15 +6,20 @@ import stylex from '@stylexjs/stylex';
 
 import dayjs from 'dayjs';
 import { Typography } from 'public/styles/vars.stylex';
+import useGetWorkspaceCongressCalendarQuery from '../../queries/useGetWorkspaceCongressCalendarQuery';
 
 const MonthlyCalendar = () => {
   const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
+  const [activeSlide, setActiveSlide] = useState(0);
   const [slides, setSlides] = useState([
     dayjs().format('YYYY-MM-DD'),
     dayjs().add(1, 'month').format('YYYY-MM-DD'),
     dayjs().add(2, 'month').format('YYYY-MM-DD'),
   ]);
   let sliderRef = useRef(null);
+  const { data, isLoading } = useGetWorkspaceCongressCalendarQuery({
+    ym: dayjs(slides[activeSlide]).format('YYYYMM'),
+  });
 
   const handleChangeDate = (value) => {
     const selectedDate = dayjs(value).format('YYYY-MM-DD');
@@ -49,6 +54,8 @@ const MonthlyCalendar = () => {
 
         setSlides([...slides, nextMonth]);
       }
+
+      setActiveSlide(current);
     },
   };
 
@@ -73,6 +80,18 @@ const MonthlyCalendar = () => {
                   calendarType="gregory" // 일주일의 시작이 sun으로 시작되게 수정
                   tileClassName="main-calendar-title"
                   className="main-calendar"
+                  tileContent={({ activeStartDate, date, view }) => {
+                    // 날짜 밑에 dot로 회의 표시
+                    const congressHexcode = data?.congressCountByDayList.filter(
+                      (congressDateItem) => congressDateItem.day === dayjs(date).format('DD')
+                    )[0]?.hexcodeList;
+
+                    return congressHexcode?.length > 0 && !isLoading ? (
+                      <div {...stylex.props(Styles.DotContainer)}>
+                        {congressHexcode?.map((hexcode) => <span {...stylex.props(Styles.Dot(hexcode))} />)}
+                      </div>
+                    ) : null;
+                  }}
                 />
               </div>
             </div>
@@ -92,4 +111,18 @@ const Styles = stylex.create({
   CurrentSlideMonth: {
     padding: '16px',
   },
+  DotContainer: {
+    position: 'absolute',
+    top: '38px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    display: 'flex',
+    gap: '1px',
+  },
+  Dot: (hexcode) => ({
+    backgroundColor: hexcode,
+    width: '4px',
+    height: '4px',
+    borderRadius: '50%',
+  }),
 });
