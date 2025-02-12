@@ -179,9 +179,12 @@
 }
 
 .main-calendar-title.react-calendar__tile {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 4px;
   flex: 0 0 14%; /* flex가 디폴트로 약 14%로 설정되어 있음 (100% 에서 7개의 요일을 나눈 값이 14%) */
   max-width: 100%;
   /* margin: 16px 20px; */
@@ -205,6 +208,11 @@
 .main-calendar-title.react-calendar__decade-view__years__year--neighboringDecade:disabled,
 .main-calendar-title.react-calendar__century-view__decades__decade--neighboringCentury:disabled {
   color: #cdcdcd;
+}
+
+/* 날짜 텍스트 (1 ~ 31) */
+.main-calendar-title.react-calendar__tile abbr {
+  height: 22px;
 }
 
 /* 날짜 호버시 abbr 배경색 변경 */
