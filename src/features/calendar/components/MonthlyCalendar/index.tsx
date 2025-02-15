@@ -74,13 +74,15 @@ const MonthlyCalendar: FC<MonthlyCalendarProps> = ({ onSelectDate }) => {
     },
   };
 
+  console.log('data', data);
+
   return (
     <>
       <div {...stylex.props(Styles.SliderWrapper)}>
         <Slider {...settings}>
           {slides.map((slideContent, index) => (
             <div key={index}>
-              <div style={{ height: '460px' }}>
+              <div style={{ height: '406px' }}>
                 <p {...stylex.props(Styles.CurrentSlideMonth, Typography.TitleRegularBold)}>
                   {dayjs(slideContent).format('YYYY.M')}
                 </p>
@@ -128,7 +130,7 @@ const Styles = stylex.create({
   },
   DotContainer: {
     position: 'absolute',
-    top: '38px',
+    top: 'calc(50% + 16px)', // 중앙에서 16px 아래
     left: '50%',
     transform: 'translateX(-50%)',
     display: 'flex',
