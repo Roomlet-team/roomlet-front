@@ -1,41 +1,38 @@
-import React from 'react';
+import React, { FC } from 'react';
 import stylex from '@stylexjs/stylex';
+import useGetWorkspaceCongressListQuery from '@src/queries/workspace/useGetWorkspaceCongressListQuery';
+import dayjs from 'dayjs';
+import router from 'next/router';
 
-const MeetingSchedule = () => {
+const MeetingSchedule: FC<{ selectDate: string }> = ({ selectDate }) => {
+  const { data } = useGetWorkspaceCongressListQuery({
+    date: selectDate,
+  });
+
+  const handleMeetingClick = (congressId: number) => {
+    router.push(`/reservations/${congressId}`);
+  };
+
   return (
     <div {...stylex.props(Styles.container)}>
-      <h3 {...stylex.props(Styles.selectedDateTitle)}>7.수</h3>
+      <h3 {...stylex.props(Styles.selectedDateTitle)}>{dayjs(selectDate).format('D.ddd')}</h3>
       <div {...stylex.props(Styles.meetingListContent)}>
-        <div {...stylex.props(Styles.meetingContent)}>
-          <div {...stylex.props(Styles.meetingCategoryLine)} />
-          <div {...stylex.props(Styles.detailContent)}>
-            <div {...stylex.props(Styles.infoContent)}>
-              <p {...stylex.props(Styles.titleText)}>룸렛 회의</p>
-              <p {...stylex.props(Styles.timeText)}>9시 ~ 10시</p>
+        {data?.congressList.map((item) => (
+          <div {...stylex.props(Styles.meetingContent)} onClick={() => handleMeetingClick(item.CongressId)}>
+            <div {...stylex.props(Styles.meetingCategoryLine(item.congressCategory.hexcode))} />
+            <div {...stylex.props(Styles.detailContent)}>
+              <div {...stylex.props(Styles.infoContent)}>
+                <p {...stylex.props(Styles.titleText)}>{item.congressTitle}</p>
+                <p {...stylex.props(Styles.timeText)}>
+                  {item.startTime} ~ {item.endTime}
+                </p>
+              </div>
+              <div {...stylex.props(Styles.categoryTag(item.congressCategory.hexcode))}>
+                {item.congressCategory.categoryName}
+              </div>
             </div>
-            <div {...stylex.props(Styles.categoryTag)}>기획</div>
           </div>
-        </div>
-        <div {...stylex.props(Styles.meetingContent)}>
-          <div {...stylex.props(Styles.meetingCategoryLine)} />
-          <div {...stylex.props(Styles.detailContent)}>
-            <div {...stylex.props(Styles.infoContent)}>
-              <p {...stylex.props(Styles.titleText)}>룸렛 회의</p>
-              <p {...stylex.props(Styles.timeText)}>9시 ~ 10시</p>
-            </div>
-            <div {...stylex.props(Styles.categoryTag)}>기획</div>
-          </div>
-        </div>
-        <div {...stylex.props(Styles.meetingContent)}>
-          <div {...stylex.props(Styles.meetingCategoryLine)} />
-          <div {...stylex.props(Styles.detailContent)}>
-            <div {...stylex.props(Styles.infoContent)}>
-              <p {...stylex.props(Styles.titleText)}>룸렛 회의</p>
-              <p {...stylex.props(Styles.timeText)}>9시 ~ 10시</p>
-            </div>
-            <div {...stylex.props(Styles.categoryTag)}>기획</div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
@@ -67,24 +64,25 @@ const Styles = stylex.create({
     height: 'auto',
     display: 'flex',
     gap: '16px',
+    cursor: 'pointer',
   },
-  meetingCategoryLine: {
+  meetingCategoryLine: (hexcode) => ({
     width: '4px',
     borderRadius: '20px',
-    backgroundColor: 'var(--Red-300)',
-  },
+    backgroundColor: hexcode,
+  }),
   detailContent: { width: '100%', display: 'flex', justifyContent: 'space-between' },
   infoContent: { display: 'flex', flexDirection: 'column', gap: '8px' },
   titleText: { fontSize: '1.6rem', fontWeight: '500', lineHeight: '2.4rem' },
   timeText: { fontSize: '1.4rem', fontWeight: '400', lineHeight: '2rem', color: 'var(--Gray-10)' },
-  categoryTag: {
+  categoryTag: (hexcode) => ({
     padding: '4px 8px',
     alignSelf: 'center',
-    backgroundColor: 'var(--Red-300)',
+    backgroundColor: hexcode,
     borderRadius: '20px',
     fontSize: '1.2rem',
     fontWeight: 500,
     lineHeight: '100%',
     color: 'var(--Base-White)',
-  },
+  }),
 });
