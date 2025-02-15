@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 
 import Calendar from 'react-calendar';
@@ -8,7 +8,11 @@ import dayjs from 'dayjs';
 import { Typography } from 'public/styles/vars.stylex';
 import useGetWorkspaceCongressCalendarQuery from '../../queries/useGetWorkspaceCongressCalendarQuery';
 
-const MonthlyCalendar = () => {
+interface MonthlyCalendarProps {
+  onSelectDate: (date: string) => void;
+}
+
+const MonthlyCalendar: FC<MonthlyCalendarProps> = ({ onSelectDate }) => {
   const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const [activeSlide, setActiveSlide] = useState(0);
   const [slides, setSlides] = useState([
@@ -24,6 +28,7 @@ const MonthlyCalendar = () => {
   const handleChangeDate = (value) => {
     const selectedDate = dayjs(value).format('YYYY-MM-DD');
 
+    onSelectDate(selectedDate);
     setDate(selectedDate);
   };
 
