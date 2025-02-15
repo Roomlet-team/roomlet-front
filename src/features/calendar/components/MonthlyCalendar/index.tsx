@@ -20,7 +20,7 @@ const MonthlyCalendar: FC<MonthlyCalendarProps> = ({ onSelectDate }) => {
     dayjs().add(1, 'month').format('YYYY-MM-DD'),
     dayjs().add(2, 'month').format('YYYY-MM-DD'),
   ]);
-  let sliderRef = useRef(null);
+
   const { data, isLoading } = useGetWorkspaceCongressCalendarQuery({
     ym: dayjs(slides[activeSlide]).format('YYYYMM'),
   });
@@ -47,18 +47,28 @@ const MonthlyCalendar: FC<MonthlyCalendarProps> = ({ onSelectDate }) => {
     adaptiveHeight: true,
     initialSlide: 0, // 기본적으로 1번 인덱스의 슬라이드 표시
     afterChange: (current, next) => {
+      let newDateList = slides;
+
       if (current === 0) {
         const prevMonth = dayjs(slides[0]).subtract(1, 'month').format('YYYY-MM-DD');
+        newDateList = [prevMonth, ...slides];
 
-        setSlides([prevMonth, ...slides]);
+        setSlides(newDateList);
       }
       if (current === slides.length - 1) {
         const nextMonth = dayjs(slides[slides.length - 1])
           .add(1, 'month')
           .format('YYYY-MM-DD');
+        newDateList = [...slides, nextMonth];
 
         setSlides([...slides, nextMonth]);
       }
+
+      // 현재 보고 있는 슬라이드 month의 첫번째 날짜 선택
+      const firstDate = dayjs(newDateList[current]).format('YYYY-MM-01');
+
+      onSelectDate(firstDate);
+      setDate(firstDate);
 
       setActiveSlide(current);
     },
@@ -67,7 +77,7 @@ const MonthlyCalendar: FC<MonthlyCalendarProps> = ({ onSelectDate }) => {
   return (
     <>
       <div {...stylex.props(Styles.SliderWrapper)}>
-        <Slider {...settings} ref={sliderRef}>
+        <Slider {...settings}>
           {slides.map((slideContent, index) => (
             <div key={index}>
               <div style={{ height: '460px' }}>
