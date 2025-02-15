@@ -1,3 +1,8 @@
+/* 컴포넌트 높이 조정 (정해진 높이 안에서 6주 혹은 5주가 표현되도록 높이 조정) */
+.main-calendar {
+  height: calc(100% - 58px);
+}
+
 .main-calendar-title.react-calendar {
   width: 767px;
   max-width: 100%;
@@ -9,6 +14,11 @@
 
 .main-calendar-title.react-calendar--doubleView {
   width: 700px;
+}
+
+/* 컴포넌트 높이 조정 (정해진 높이 안에서 6주 혹은 5주가 표현되도록 높이 조정) */
+.react-calendar__viewContainer {
+  height: 100%;
 }
 
 .main-calendar-title.react-calendar--doubleView .main-calendar-title.react-calendar__viewContainer {
@@ -71,6 +81,17 @@
 /* 달력 사이드 여백 */
 .main-calendar .react-calendar__month-view {
   padding: 12px;
+  height: 100%;
+
+  /* 컴포넌트 높이 조정 (정해진 높이 안에서 6주 혹은 5주가 표현되도록 높이 조정) */
+  > div {
+    align-items: flex-start !important;
+    height: 100%;
+  }
+
+  > div > div {
+    height: 100%;
+  }
 }
 
 /* 요일 간격 */
@@ -83,6 +104,8 @@
 /* 일자별 간격 */
 .main-calendar .react-calendar__month-view__days {
   /* gap: 20px; */
+  /* 컴포넌트 높이 조정 (정해진 높이 안에서 6주 혹은 5주가 표현되도록 높이 조정) */
+  height: calc(100% - 58px) !important;
 }
 
 /* 360px 미만 화면 */
@@ -185,12 +208,11 @@
   align-items: center;
   flex-direction: column;
   gap: 4px;
-  flex: 0 0 14%; /* flex가 디폴트로 약 14%로 설정되어 있음 (100% 에서 7개의 요일을 나눈 값이 14%) */
+  flex: 1; /* 날짜가 정해진 높이 및 너비 안에서 공간을 모두 사용하여 균등하게 분배되도록 설정 */
   max-width: 100%;
   /* margin: 16px 20px; */
   /* gap: 20px; */
   /* padding: 10px 6.6667px; */
-  padding: 12px 0 20px;
   background: none;
   text-align: center;
   line-height: 16px;
