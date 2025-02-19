@@ -1,70 +1,51 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import stylex from '@stylexjs/stylex';
-import Switch from 'react-switch';
 import ProfileImg from '@src/components/ui/ProfileImg';
+import { CongressListResponse } from '@src/queries/workspace/useGetWorkspaceCongressListQuery';
+import { useRouter } from 'next/router';
 
-const ReservationList = () => {
-  const [isHidden, setIsHidden] = useState<boolean>(false);
-  const handleChangeLastMeetingHidden = () => {
-    setIsHidden(!isHidden);
-  };
+interface ReservationListProps {
+  data: CongressListResponse;
+}
+
+const ReservationList: FC<ReservationListProps> = (props) => {
+  const { data } = props;
+  const router = useRouter();
 
   return (
     <section {...stylex.props(Styles.wrapper)}>
-      <h1 {...stylex.props(Styles.dateTitle)}>2월 5일 월요일</h1>
-      <p {...stylex.props(Styles.totalCountText)}>
-        총 <span {...stylex.props(Styles.totalCountTextEmphasis)}>6</span>건의 회의가 있어요
-      </p>
-      <div {...stylex.props(Styles.hidePastMeetingToggleContent)}>
-        <span>지난 회의 숨기기</span>
-        <Switch
-          onChange={handleChangeLastMeetingHidden}
-          checked={isHidden}
-          offColor="#D9D9D9"
-          onColor="#242c33"
-          uncheckedIcon={false}
-          checkedIcon={false}
-          borderRadius={13}
-          width={34}
-          height={20}
-          handleDiameter={16}
-          activeBoxShadow={null}
-        />
-      </div>
       <div {...stylex.props(Styles.meetingListContent)}>
-        <div {...stylex.props(Styles.meetingContent, isHidden && Styles.meetingContentHidden)}>
-          <div {...stylex.props(Styles.detailContent)}>
-            <div {...stylex.props(Styles.infoContent)}>
-              <p {...stylex.props(Styles.titleText)}>룸렛 회의</p>
-              <p {...stylex.props(Styles.timeText)}>9시 ~ 10시</p>
-              <p {...stylex.props(Styles.placeText)}>대회의실</p>
-              <div {...stylex.props(Styles.profileListContent)}>
-                <span>
-                  <ProfileImg
-                    src={null}
-                    size={34}
-                    borderProperties={{ color: '#D9D9D9', width: '1px', radius: '50%' }}
-                  />
-                </span>
-                <span {...stylex.props(Styles.profileContent)}>
-                  <ProfileImg
-                    src={null}
-                    size={34}
-                    borderProperties={{ color: '#D9D9D9', width: '1px', radius: '50%' }}
-                  />
-                </span>
-                <span {...stylex.props(Styles.profileContent)}>
-                  <ProfileImg
-                    src={null}
-                    size={34}
-                    borderProperties={{ color: '#D9D9D9', width: '1px', radius: '50%' }}
-                  />
-                </span>
+        {data?.congressList.map((item) => (
+          <div
+            {...stylex.props(Styles.meetingContent(item.congressCategory.hexcode))}
+            onClick={() => router.push(`/reservations/${item.CongressId}`)}
+          >
+            <div {...stylex.props(Styles.detailContent)}>
+              <div {...stylex.props(Styles.infoContent)}>
+                <p {...stylex.props(Styles.titleText)}>{item.congressTitle}</p>
+                <p {...stylex.props(Styles.timeText)}>
+                  {item.startTime} ~ {item.endTime}
+                </p>
+                <p {...stylex.props(Styles.placeText)}>{item.congressRoom.roomName}</p>
+                <div {...stylex.props(Styles.profileListContent)}>
+                  {/* {console.log(item.attendMemberList)} */}
+                  {item.attendMemberList.map((item) => (
+                    <div {...stylex.props(Styles.profileContent)}>
+                      <ProfileImg
+                        src={item?.profileImgUrl}
+                        size={34}
+                        borderProperties={{ color: '#D9D9D9', width: '1px', radius: '50%' }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div {...stylex.props(Styles.categoryTag(item.congressCategory.hexcode))}>
+                {item.congressCategory.categoryName}
               </div>
             </div>
-            <div {...stylex.props(Styles.categoryTag)}>기획</div>
           </div>
-        </div>
+        ))}
       </div>
     </section>
   );
@@ -75,25 +56,8 @@ export default ReservationList;
 const Styles = stylex.create({
   wrapper: {
     height: 'calc(100vh - 77px)',
-    padding: '16px',
+    padding: '0 16px 16px',
     overflowY: 'auto',
-  },
-  dateTitle: {
-    marginBottom: '16px',
-    paddingBottom: '16px',
-    fontSize: '2rem',
-    fontWeight: 700,
-    lineHeight: '2.6rem',
-    color: '#333333',
-  },
-  totalCountText: {
-    fontSize: '1.8rem',
-    lineHeight: '2.6rem',
-    fontWeight: 600,
-    color: '#333333',
-  },
-  totalCountTextEmphasis: {
-    color: 'var(--Red-300)',
   },
   hidePastMeetingToggleContent: {
     marginBottom: '24px',
@@ -112,18 +76,16 @@ const Styles = stylex.create({
     flexDirection: 'column',
     gap: '12px',
   },
-  meetingContentHidden: {
-    opacity: 0.6,
-  },
-  meetingContent: {
+  meetingContent: (hexcode) => ({
+    cursor: 'pointer',
     padding: '16px',
     display: 'flex',
     justifyContent: 'space-between',
     backgroundColor: 'var(--Base-White)',
-    borderLeft: '2px solid var(--Blue-300)',
+    borderLeft: `2px solid ${hexcode}`,
     borderRadius: '0 16px 16px 0',
     boxShadow: '0 4px 24px 0 rgba(44, 42, 61, 0.08)',
-  },
+  }),
   detailContent: {
     width: '100%',
     display: 'flex',
@@ -152,17 +114,17 @@ const Styles = stylex.create({
     lineHeight: '1.4rem',
     color: '#BBBBBB',
   },
-  categoryTag: {
+  categoryTag: (hexcode) => ({
     display: 'flex',
     alignSelf: 'flex-start',
     padding: '4px 8px',
-    backgroundColor: 'var(--Blue-300)',
+    backgroundColor: hexcode,
     borderRadius: '20px',
     fontSize: '1.2rem',
     fontWeight: 500,
     lineHeight: '100%',
     color: 'var(--Base-White)',
-  },
+  }),
   profileListContent: {
     marginTop: '8px',
     display: 'flex',
