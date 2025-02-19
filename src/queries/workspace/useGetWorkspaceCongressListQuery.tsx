@@ -2,7 +2,7 @@ import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceList
 import clientInstance from '@src/utils/api/clientInstance';
 import { useQuery } from '@tanstack/react-query';
 
-interface CongressInfo {
+export interface CongressListResponse {
   success: boolean;
   code: number;
   congressList: CongressListItem[];
@@ -52,7 +52,7 @@ interface Params {
   rct?: string;
 }
 
-const getWorkspaceCongressListApi = async (WorkspaceId: number, params: Params): Promise<CongressInfo> => {
+const getWorkspaceCongressListApi = async (WorkspaceId: number, params: Params): Promise<CongressListResponse> => {
   const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/congress/list`, { params });
 
   return response.data;
