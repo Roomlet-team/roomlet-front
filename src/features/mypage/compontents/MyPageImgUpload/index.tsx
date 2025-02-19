@@ -16,7 +16,7 @@ const MyPageImgUpload: FC<MyPageImgUploadProps> = (props) => {
   const { onSelect, initialImgUrl } = props;
 
   const [profileImg, setProfileImg] = useState<string>('');
-  const [imgUrl, setImgUrl] = useState<string | Blob>(initialImgUrl);
+  const [imgUrl, setImgUrl] = useState<string | null>(initialImgUrl);
   const imageUploadRef = useRef(null);
 
   const handleClickImgUpload = () => {
@@ -37,10 +37,8 @@ const MyPageImgUpload: FC<MyPageImgUploadProps> = (props) => {
         alert('파일 사이즈가 5MB를 초과합니다.');
       } else {
         const reader = new FileReader();
-        {
-          /* [ ] setImgUrl 타입 수정하기 */
-        }
-        reader.onload = () => setImgUrl(reader.result);
+
+        reader.onload = () => setImgUrl(reader.result as string); // string 타입의 base64 형식
         reader.readAsDataURL(file['0']);
         setProfileImg(file);
         onSelect(file['0']);

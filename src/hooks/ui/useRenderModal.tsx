@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { hideModal, showModal } from '@src/slices/modal';
 
 type ReturnType = {
-  renderModal: (Component: () => React.JSX.Element, props: { [key in string]: any }) => () => void;
+  renderModal: (Component: React.ComponentType<any>, props: { [key in string]: any }) => () => void;
 };
 
 /**
@@ -12,7 +12,7 @@ type ReturnType = {
 function useRenderModal(): ReturnType {
   const dispatch = useDispatch();
 
-  const renderModal = (Component, props) => {
+  const renderModal = (Component: React.ComponentType<any>, props: { [key in string]: any }) => {
     dispatch(showModal(<Component {...props} />));
 
     return () => {

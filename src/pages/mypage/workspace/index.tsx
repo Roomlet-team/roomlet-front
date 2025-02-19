@@ -43,7 +43,7 @@ const WorkspaceHome = () => {
 
       {/* 이미지 업로드 및 이름 입력 */}
       <div {...stylex.props(Styles.SettingContainer)}>
-        <MyPageImgUpload onSelect={null} />
+        <MyPageImgUpload onSelect={null} initialImgUrl={null} />
         <MyPageInput label="워크스페이스 이름" value={workspaceName} onChange={handleChangeWorkspaceName} />
       </div>
 

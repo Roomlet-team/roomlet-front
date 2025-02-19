@@ -14,7 +14,7 @@ interface TeamListInfo {
   deleteTeamList: TeamInfoItem[];
 }
 
-const putTeamApi = async (WorkspaceId, data: TeamListInfo): ResponseData => {
+const putTeamApi = async (WorkspaceId, data: TeamListInfo): Promise<ResponseData> => {
   const response = await clientInstance.put(`/v1/workspace/@${WorkspaceId}/team`, data);
 
   return response.data;

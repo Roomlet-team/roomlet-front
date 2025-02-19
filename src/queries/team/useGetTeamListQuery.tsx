@@ -43,7 +43,7 @@ const getTeamListApi = async (WorkspaceId: number, skeywd: string): Promise<Team
  *   - `isLoading`: 데이터 로딩 여부
  *   - `refetch`: 데이터를 수동으로 다시 가져오는 함수
  */
-const useGetTeamListQuery = (skeywd: string) => {
+const useGetTeamListQuery = (skeywd?: string) => {
   const { data } = useGetWorkspaceListQuery();
   const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 

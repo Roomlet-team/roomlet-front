@@ -21,7 +21,7 @@ interface CongressRoomListInfo {
   }[];
 }
 
-const putCongressRoomApi = async (WorkspaceId, data: CongressRoomListInfo): ResponseData => {
+const putCongressRoomApi = async (WorkspaceId, data: CongressRoomListInfo): Promise<ResponseData> => {
   const response = await clientInstance.put(`/v1/workspace/@${WorkspaceId}/congress/room`, data);
 
   return response.data;
