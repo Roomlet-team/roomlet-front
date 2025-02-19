@@ -125,7 +125,7 @@ const Booking = () => {
                   <Controller
                     name="RoomId"
                     control={control}
-                    defaultValue=""
+                    defaultValue={null}
                     rules={{ required: '장소를 선택해주세요' }}
                     render={({ field }) => (
                       <Radio
@@ -150,7 +150,7 @@ const Booking = () => {
                   <Controller
                     name="CongressCategoryId"
                     control={control}
-                    defaultValue=""
+                    defaultValue={null}
                     rules={{ required: '카테고리를 선택해주세요' }}
                     render={({ field }) => (
                       <Radio
@@ -184,7 +184,7 @@ const Booking = () => {
               <Controller
                 name="startTime"
                 control={control}
-                defaultValue=""
+                defaultValue={null}
                 rules={{ required: '시작 시간을 선택해주세요' }}
                 render={({ field }) => (
                   <BookingTimePicker
@@ -199,7 +199,7 @@ const Booking = () => {
               <Controller
                 name="endTime"
                 control={control}
-                defaultValue=""
+                defaultValue={null}
                 rules={{ required: '종료 시간을 선택해주세요' }}
                 render={({ field }) => (
                   <BookingTimePicker
@@ -219,7 +219,7 @@ const Booking = () => {
             <Controller
               name="attendMemberList"
               control={control}
-              defaultValue=""
+              defaultValue={null}
               rules={{ required: '참석자를 선택해주세요' }}
               render={({ field }) => <BookingMemberSelect onSelect={field.onChange} />}
             />
