@@ -16,7 +16,7 @@ interface CongressCategoryListInfo {
   deleteCongressCategoryList: CongressCategoryItem[];
 }
 
-const putCongressCategoryApi = async (WorkspaceId, data: CongressCategoryListInfo): ResponseData => {
+const putCongressCategoryApi = async (WorkspaceId, data: CongressCategoryListInfo): Promise<ResponseData> => {
   const response = await clientInstance.put(`/v1/workspace/@${WorkspaceId}/congress/cateogy`, data);
 
   return response.data;
