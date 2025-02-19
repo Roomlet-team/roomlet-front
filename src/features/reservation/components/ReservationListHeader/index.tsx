@@ -35,6 +35,7 @@ const Styles = stylex.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: '24px',
+    padding: '0 16px',
   },
   totalCountText: {
     fontSize: '1.8rem',
