@@ -3,6 +3,8 @@ import stylex from '@stylexjs/stylex';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import { CongressListResponse } from '@src/queries/workspace/useGetWorkspaceCongressListQuery';
 import { useRouter } from 'next/router';
+import MarkerPinFilled from '@src/components/icons/MarkerPinFilled';
+import ClockFilled from '@src/components/icons/ClockFilled';
 
 interface ReservationListProps {
   data: CongressListResponse;
@@ -23,10 +25,20 @@ const ReservationList: FC<ReservationListProps> = (props) => {
             <div {...stylex.props(Styles.detailContent)}>
               <div {...stylex.props(Styles.infoContent)}>
                 <p {...stylex.props(Styles.titleText)}>{item.congressTitle}</p>
-                <p {...stylex.props(Styles.timeText)}>
-                  {item.startTime} ~ {item.endTime}
-                </p>
-                <p {...stylex.props(Styles.placeText)}>{item.congressRoom.roomName}</p>
+
+                {/* 시간 */}
+                <div {...stylex.props(Styles.textContainer)}>
+                  <ClockFilled width={14} height={14} />
+                  <p {...stylex.props(Styles.timeText)}>
+                    {item.startTime} ~ {item.endTime}
+                  </p>
+                </div>
+
+                {/* 회의실 */}
+                <div {...stylex.props(Styles.textContainer)}>
+                  <MarkerPinFilled width={14} height={14} />
+                  <p {...stylex.props(Styles.placeText)}>{item.congressRoom.roomName}</p>
+                </div>
                 <div {...stylex.props(Styles.profileListContent)}>
                   {/* {console.log(item.attendMemberList)} */}
                   {item.attendMemberList.map((item) => (
@@ -131,5 +143,10 @@ const Styles = stylex.create({
   },
   profileContent: {
     marginInlineStart: '-8px',
+  },
+  textContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
   },
 });
