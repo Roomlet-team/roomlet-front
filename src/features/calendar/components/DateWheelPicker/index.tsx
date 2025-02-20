@@ -107,7 +107,7 @@ export default DateWheelPicker;
 
 const Styles = stylex.create({
   container: {
-    width: '208px',
+    width: '312px',
     background: colors.white500,
     borderRadius: '4px',
     border: `1px solid ${colors.gray40}`,
@@ -119,11 +119,11 @@ const Styles = stylex.create({
     textAlign: 'center',
   },
   pickerContainer: {
-    width: '100%',
+    width: '181px',
+    margin: '0 auto',
     padding: '0 32px',
     gap: '8px',
     display: 'flex',
-    justifyContent: 'space-between',
   },
   selectedPickerItemWrapper: {
     color: colors.black400,
