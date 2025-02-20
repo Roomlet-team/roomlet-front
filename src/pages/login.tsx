@@ -1,4 +1,5 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import stylex from '@stylexjs/stylex';
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
@@ -6,8 +7,12 @@ import RoomletLogo from '@assets/logo_roomlet.svg';
 import RoomletTextLogo from '@assets/logo_text_roomlet.svg';
 import GoogleLogo from '@features/authentication/assets/google_logo.svg';
 import MainLayout from '@src/layouts/MainLayout';
-import OnboardingSlider from '@src/features/onboarding/components/OnboardingSlider';
+// import OnboardingSlider from '@src/features/onboarding/components/OnboardingSlider';
 import { useRouter } from 'next/router';
+
+const OnboardingSlider = dynamic(() => import('@src/features/onboarding/components/OnboardingSlider'), {
+  ssr: false,
+});
 
 const Login = () => {
   const router = useRouter();

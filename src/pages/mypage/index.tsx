@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Header from '@src/components/ui/Header';
 import GnbNavLayout from '@src/layouts/GnbNavLayout';
 import { colors } from '../.../../../../public/styles/vars.stylex';
-import MypageSummaryProfile from '@src/features/mypage/compontents/MypageSummaryProfile';
-import MypageMenu from '@src/features/mypage/compontents/MypageMenu';
+// import MypageSummaryProfile from '@src/features/mypage/compontents/MypageSummaryProfile';
+// import MypageMenu from '@src/features/mypage/compontents/MypageMenu';
+// import MyPageInviteModal from '@src/features/mypage/compontents/MyPageInviteModal';
 import SettingOutlined from '@src/components/icons/SettingOutlined';
 import AddUserOutlined from '@src/components/icons/AddUserOutlined';
 import BellOutlined from '@src/components/icons/BellOutlined';
 import ExitOutlined from '@src/components/icons/ExitOutlined';
 import BoundaryArea from '@src/components/ui/BoundaryArea';
 import { confirm } from '@src/components/ui/Modal/confirm';
-import MyPageInviteModal from '@src/features/mypage/compontents/MyPageInviteModal';
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
 import AddOutlined from '@src/components/icons/AddOutlined';
 import EntranceOutlined from '@src/components/icons/EntranceOutlined';
+
+const MyPageInviteModal = dynamic(() => import('@src/features/mypage/compontents/MyPageInviteModal'), {
+  ssr: false,
+});
+const MypageSummaryProfile = dynamic(() => import('@src/features/mypage/compontents/MypageSummaryProfile'), {
+  ssr: false,
+});
+const MypageMenu = dynamic(() => import('@src/features/mypage/compontents/MypageMenu'), {
+  ssr: false,
+});
 
 const MyPageHome = () => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
