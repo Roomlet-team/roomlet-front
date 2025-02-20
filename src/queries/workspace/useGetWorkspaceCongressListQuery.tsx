@@ -47,7 +47,7 @@ interface CongressCategory {
 
 interface Params {
   date?: string;
-  cc?: number;
+  cc?: string; // [ ] 택 1로 하나만 선택하는 건지 확인 후, 택 1이면 number로 변경
   my?: number | string;
   rct?: string;
 }
