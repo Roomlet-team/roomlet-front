@@ -1,22 +1,39 @@
 import React, { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import stylex from '@stylexjs/stylex';
 import Header from '@src/components/ui/Header';
-import BookingDatePicker from '@src/features/booking/components/BookingDatePicker';
 import BookingFormItem from '@src/features/booking/components/BookingFormItem';
-import BookingTextInput from '@src/features/booking/components/BookingTextInput';
-import BookingTimePicker from '@src/features/booking/components/BookingTimePicker';
+// import BookingDatePicker from '@src/features/booking/components/BookingDatePicker';
+// import BookingTextInput from '@src/features/booking/components/BookingTextInput';
+// import BookingTimePicker from '@src/features/booking/components/BookingTimePicker';
+// import BookingTextarea from '@src/features/booking/components/BookingTextarea';
+// import BookingMemberSelect from '@src/features/booking/components/BookingMemberSelect';
 import { Typography, colors } from '../.../../../public/styles/vars.stylex';
 import Radio from '@src/components/ui/Radio';
 import MainLayout from '@src/layouts/MainLayout';
-import BookingTextarea from '@src/features/booking/components/BookingTextarea';
 import useGetCongressRoomListQuery from '@src/queries/congress/useGetCongressRoomListQuery';
 import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQuery';
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
-import BookingMemberSelect from '@src/features/booking/components/BookingMemberSelect';
 import usePostWorkspaceCongressQuery from '@src/features/booking/queries/usePostWorkspaceCongressQuery';
 import { TimeItemType } from '@src/features/booking/types';
+
+const BookingMemberSelect = dynamic(() => import('@src/features/booking/components/BookingMemberSelect'), {
+  ssr: false,
+});
+const BookingTextarea = dynamic(() => import('@src/features/booking/components/BookingTextarea'), {
+  ssr: false,
+});
+const BookingTextInput = dynamic(() => import('@src/features/booking/components/BookingTextInput'), {
+  ssr: false,
+});
+const BookingTimePicker = dynamic(() => import('@src/features/booking/components/BookingTimePicker'), {
+  ssr: false,
+});
+const BookingDatePicker = dynamic(() => import('@src/features/booking/components/BookingDatePicker'), {
+  ssr: false,
+});
 
 type BookingForm = {
   date: string;

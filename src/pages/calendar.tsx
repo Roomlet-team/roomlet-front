@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import stylex from '@stylexjs/stylex';
 import GnbNavLayout from '@src/layouts/GnbNavLayout';
-import MonthlyCalendar from '@src/features/calendar/components/MonthlyCalendar';
-import MeetingSchedule from '@src/features/calendar/components/MeetingSchedule';
+// import MonthlyCalendar from '@src/features/calendar/components/MonthlyCalendar';
+// import MeetingSchedule from '@src/features/calendar/components/MeetingSchedule';
 import CirclePlusFilled from '@src/components/icons/CirclePlusFilled';
 import Link from 'next/link';
 import dayjs from 'dayjs';
+
+const MonthlyCalendar = dynamic(() => import('@src/features/calendar/components/MonthlyCalendar'), {
+  ssr: false,
+});
+const MeetingSchedule = dynamic(() => import('@src/features/calendar/components/MeetingSchedule'), {
+  ssr: false,
+});
 
 const Calendar = () => {
   const [selectDate, setSelectDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
