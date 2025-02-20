@@ -17,6 +17,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../features/authentication/assets/onboarding-slider.css';
 import '../features/booking/assets/custom-react-calendar.css';
+import '../features/calendar/styles/custom-react-calendar.css';
+// import '../features/calendar/styles/styles.css';
 
 // client 생성
 const queryClient = new QueryClient();
