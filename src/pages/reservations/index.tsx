@@ -18,8 +18,9 @@ const Reservations = () => {
   const [day, setDay] = useState<number>(dayjs().date());
   const { data } = useGetWorkspaceCongressListQuery({
     date: year && month && day ? dayjs(`${year}-${month}-${day}`).format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD'),
-    ...(queryMy ? { my: +queryMy } : {}),
-    ...(queryCc ? { cc: +queryCc } : {}),
+    ...(queryMy ? { my: queryMy as string } : {}),
+    ...(queryCc ? { cc: queryCc as string } : {}), // [ ] 택 1로 하나만 선택하는 건지 확인하기
+    // [ ] 회의실 필터 추가
   });
 
   const handleClickDateWheel = () => {
