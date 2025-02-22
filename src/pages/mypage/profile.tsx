@@ -4,7 +4,7 @@ import stylex from '@stylexjs/stylex';
 import { colors } from '../../../public/styles/vars.stylex';
 import React, { useState } from 'react';
 import BoundaryArea from '@src/components/ui/BoundaryArea';
-import MyPagePersonalDataList from '@src/features/mypage/compontents/MyPagePersonalDataList';
+import ProfilePersonalDataList from '@src/features/profile/components/ProfilePersonalDataList';
 import DataflowOutlined from '@src/components/icons/DataflowOutlined';
 import UserSquareOutlined from '@src/components/icons/UserSquareOutlined';
 import MailOutlined from '@src/components/icons/MailOutlined';
@@ -22,7 +22,6 @@ const MyPageProfile = () => {
 
   const dataList = [
     { id: 1, name: data?.myInfo?.teamInfo?.teamName, icon: <DataflowOutlined width={24} height={24} /> },
-    { id: 2, name: data?.myInfo?.position || '직책 없음', icon: <UserSquareOutlined width={24} height={24} /> },
     { id: 3, name: data?.myInfo?.email, icon: <MailOutlined width={24} height={24} /> },
   ];
 
@@ -58,7 +57,7 @@ const MyPageProfile = () => {
       <BoundaryArea />
 
       {/* 개인 정보 리스트 */}
-      <MyPagePersonalDataList dataList={dataList} title="기타 설정" />
+      <ProfilePersonalDataList dataList={dataList} title="기타 설정" />
     </GnbNavLayout>
   );
 };
