@@ -2,7 +2,7 @@ import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceList
 import clientInstance from '@src/utils/api/clientInstance';
 import { useQuery } from '@tanstack/react-query';
 
-interface MypageInfo {
+export interface MypageInfo {
   myInfo: {
     MemberId: number;
     displayName: string;
