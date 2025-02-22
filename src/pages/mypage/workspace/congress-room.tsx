@@ -13,8 +13,10 @@ import MainLayout from '@src/layouts/MainLayout';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import AddCongressRoomBottomSheet from '@src/features/mypage/workspace/congress-room/components/AddCongressRoomBottomSheet';
 import usePutCongressRoomQuery from '@src/features/mypage/workspace/congress-room/queries/usePutCongressRoomQuery';
+import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 
 const MeetingRoom = () => {
+  const { data: myInfoData } = useGetMypageInfoQuery();
   const { data } = useGetCongressRoomListQuery();
   const mutation = usePutCongressRoomQuery();
   const dispatch = useDispatch();
@@ -54,7 +56,11 @@ const MeetingRoom = () => {
 
   return (
     <MainLayout backgroundColor="#FAFAFA">
-      <Header title="회의실" prevUrl="/mypage/workspace" rightBtnInfo={completeBtnProps} />
+      <Header
+        title="회의실"
+        prevUrl="/mypage/workspace"
+        {...(myInfoData?.myInfo?.isAdmin ? { rightBtnInfo: completeBtnProps } : {})}
+      />
 
       <div {...stylex.props(Styles.Container)}>
         {/* 회의실 개수 */}
