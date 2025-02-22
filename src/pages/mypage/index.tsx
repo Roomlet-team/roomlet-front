@@ -15,6 +15,10 @@ import { confirm } from '@src/components/ui/Modal/confirm';
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
 import AddOutlined from '@src/components/icons/AddOutlined';
 import EntranceOutlined from '@src/components/icons/EntranceOutlined';
+import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGetMyPageProfileQuery';
+import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
+import { useSelector } from 'react-redux';
+import { RootState } from '@src/store';
 
 const MyPageInviteModal = dynamic(() => import('@src/features/mypage/compontents/MyPageInviteModal'), {
   ssr: false,
@@ -27,8 +31,11 @@ const MypageMenu = dynamic(() => import('@src/features/mypage/compontents/Mypage
 });
 
 const MyPageHome = () => {
+  const { isWorkspace } = useSelector((state: RootState) => state.workspace);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
   const { data } = useGetWorkspaceListQuery();
+  const { data: profileData } = useGetMyPageProfileQuery();
+  const { data: mypageInfoData } = useGetMypageInfoQuery();
   const commonUrl = 'mypage';
 
   // 멤버 초대 모달을 열고 닫게하는 함수
@@ -89,7 +96,11 @@ const MyPageHome = () => {
       <GnbNavLayout backgroundColor={colors.white500}>
         <Header title="마이페이지" />
         {/* 프로필 페이지로 이동 */}
-        <MypageSummaryProfile />
+        {isWorkspace ? (
+          <MypageSummaryProfile data={mypageInfoData?.myInfo} />
+        ) : (
+          <MypageSummaryProfile data={profileData?.profile} />
+        )}
 
         {/* 경계선 */}
         <BoundaryArea />
