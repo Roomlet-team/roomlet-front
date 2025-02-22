@@ -10,10 +10,16 @@ import MyPageImgUpload from '@src/features/mypage/compontents/MyPageImgUpload';
 import MyPageInput from '@src/features/mypage/compontents/MyPageInput';
 import BoundaryArea from '@src/components/ui/BoundaryArea';
 import useInput from '@src/hooks/useInput';
+import useGetWorkspaceMainInfoQuery from '@src/features/home/queries/useGetWorkspaceMainInfoQuery';
+import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
+import ProfileImg from '@src/components/ui/ProfileImg';
+import { Typography } from '../../../../public/styles/vars.stylex';
 
 const WorkspaceHome = () => {
-  const [isEditComplete, setIsEditComplete] = useState<boolean>(false);
-  const [workspaceName, handleChangeWorkspaceName] = useInput<string>('');
+  const { data: myInfoData } = useGetMypageInfoQuery();
+  const { data } = useGetWorkspaceMainInfoQuery();
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [workspaceName, handleChangeWorkspaceName] = useInput<string>(data?.workspace.workspaceName);
   const commonUrl = 'mypage/workspace';
   const menuList = [
     {
@@ -31,21 +37,43 @@ const WorkspaceHome = () => {
     },
   ];
 
-  const completeBtnProps = {
-    name: '완료',
-    isActive: isEditComplete,
-    onClick: () => console.log(''),
+  const editBtnProps = {
+    update: {
+      name: '수정',
+      isActive: isEdit,
+      onClick: () => {
+        setIsEdit(true);
+      },
+    },
+    complete: {
+      name: '완료',
+      isActive: isEdit,
+      onClick: () => {
+        setIsEdit(false);
+      },
+    },
   };
 
   return (
     <MainLayout>
-      <Header title="워크스페이스 설정" prevUrl="/mypage" rightBtnInfo={completeBtnProps} />
+      <Header
+        title="워크스페이스 설정"
+        prevUrl="/mypage"
+        {...(myInfoData?.myInfo.isAdmin ? { rightBtnInfo: isEdit ? editBtnProps.complete : editBtnProps.update } : {})}
+      />
 
       {/* 이미지 업로드 및 이름 입력 */}
-      <div {...stylex.props(Styles.SettingContainer)}>
-        <MyPageImgUpload onSelect={null} initialImgUrl={null} />
-        <MyPageInput label="워크스페이스 이름" value={workspaceName} onChange={handleChangeWorkspaceName} />
-      </div>
+      {isEdit ? (
+        <div {...stylex.props(Styles.ProfileContainer)}>
+          <MyPageImgUpload onSelect={null} initialImgUrl={null} />
+          <MyPageInput label="워크스페이스 이름" value={workspaceName} onChange={handleChangeWorkspaceName} />
+        </div>
+      ) : (
+        <div {...stylex.props(Styles.ProfileContainer)}>
+          <ProfileImg src={null} size={68} />
+          <p {...stylex.props(Typography.TitleRegularBold)}>{data.workspace.workspaceName}</p>
+        </div>
+      )}
 
       {/* 경계선 */}
       <BoundaryArea />
@@ -59,11 +87,11 @@ const WorkspaceHome = () => {
 export default WorkspaceHome;
 
 const Styles = stylex.create({
-  SettingContainer: {
+  ProfileContainer: {
     width: '100%',
-    padding: '0 16px 24px',
+    padding: '24px 16px',
     display: 'flex',
-    gap: '24px',
+    gap: '16px',
     flexDirection: 'column',
     alignItems: 'center',
   },
