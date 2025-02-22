@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import stylex from '@stylexjs/stylex';
 import BottomSheet from '@src/components/ui/BottomSheet';
@@ -7,14 +7,28 @@ import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import { hideModal } from '@src/slices/modal';
 import { addTeam } from '../../slices/member';
+import useGetTeamListQuery from '@src/queries/team/useGetTeamListQuery';
 
 let bottomSheetId = 'add-congress-room-bottom-sheet';
 
 const AddTeamBottomSheet = () => {
   const [name, handleChangeName] = useInput<string>('');
+  const [validMsg, setValidMsg] = useState<string>('');
   const dispatch = useDispatch();
+  const { data } = useGetTeamListQuery();
+
+  useEffect(() => {
+    if (name.length > 0) {
+      setValidMsg('');
+    }
+  }, [name]);
 
   const handleClickRegister = () => {
+    if (data?.teamList.find((item) => item.teamName === name)) {
+      setValidMsg('이미 존재하는 팀입니다.');
+      return;
+    }
+
     dispatch(addTeam({ teamName: name }));
     dispatch(hideModal());
   };
@@ -25,6 +39,7 @@ const AddTeamBottomSheet = () => {
         <p {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.Title)}>팀 추가</p>
         <div {...stylex.props(Styles.InputContainer)}>
           <Input type="text" placeholder="팀명을 입력해주세요" value={name} onChange={handleChangeName} />
+          {validMsg && <p {...stylex.props(Styles.ValidMsg, Typography.CaptionRegularRegular)}>{validMsg}</p>}
         </div>
         <div {...stylex.props(Styles.ButtonContainer)}>
           <button
@@ -80,5 +95,8 @@ const Styles = stylex.create({
   RegisterButton: {
     background: colors.red500,
     color: colors.white500,
+  },
+  ValidMsg: {
+    color: colors.red500,
   },
 });
