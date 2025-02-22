@@ -116,7 +116,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
                 </li>
               ))
             ) : (
-              <li {...stylex.props(Typography.SubTextLargeRegular)}>멤버가 존재하지 않습니다.</li>
+              <li {...stylex.props(Typography.SubTextLargeRegular)}>멤버 없음</li>
             )}
           </ul>
         </div>
