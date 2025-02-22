@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import stylex from '@stylexjs/stylex';
 import BottomSheet from '@src/components/ui/BottomSheet';
@@ -7,14 +7,29 @@ import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import { hideModal } from '@src/slices/modal';
 import { addCategory } from '../../slices/category';
+import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQuery';
 
 let bottomSheetId = 'add-category-bottom-sheet';
 
 const AddCategoryBottomSheet = () => {
   const [name, handleChangeName] = useInput<string>('');
+  const [validMsg, setValidMsg] = useState<string>('');
   const dispatch = useDispatch();
+  const { data } = useGetCategoryListQuery();
+
+  useEffect(() => {
+    // 카테고리 이름이 입력되면 경고 메시지 초기화
+    if (name.length > 0) {
+      setValidMsg('');
+    }
+  }, [name]);
 
   const handleClickRegister = () => {
+    if (data?.congressCategoryList.find((item) => item.categoryName === name)) {
+      setValidMsg('이미 존재하는 카테고리입니다.');
+      return;
+    }
+
     dispatch(addCategory({ categoryName: name }));
     dispatch(hideModal());
   };
@@ -25,6 +40,7 @@ const AddCategoryBottomSheet = () => {
         <p {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.Title)}>카테고리 추가</p>
         <div {...stylex.props(Styles.InputContainer)}>
           <Input type="text" placeholder="카테고리 명을 입력해주세요" value={name} onChange={handleChangeName} />
+          {validMsg && <p {...stylex.props(Styles.ValidMsg, Typography.CaptionRegularRegular)}>{validMsg}</p>}
         </div>
         <div {...stylex.props(Styles.ButtonContainer)}>
           <button
@@ -80,5 +96,8 @@ const Styles = stylex.create({
   RegisterButton: {
     background: colors.red500,
     color: colors.white500,
+  },
+  ValidMsg: {
+    color: colors.red500,
   },
 });
