@@ -12,8 +12,10 @@ import useRenderModal from '@src/hooks/ui/useRenderModal';
 import MainLayout from '@src/layouts/MainLayout';
 import AddTeamBottomSheet from '@src/features/mypage/workspace/member/components/AddTeamBottomSheet';
 import usePutTeamQuery from '@src/features/mypage/workspace/member/queries/usePutTeamQuery';
+import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 
 const Member = () => {
+  const { data: myInfoData } = useGetMypageInfoQuery();
   const { data } = useGetTeamListQuery();
   const mutation = usePutTeamQuery();
   const dispatch = useDispatch();
@@ -58,7 +60,11 @@ const Member = () => {
 
   return (
     <MainLayout>
-      <Header title="멤버" prevUrl="/mypage/workspace" rightBtnInfo={completeBtnProps} />
+      <Header
+        title="멤버"
+        prevUrl="/mypage/workspace"
+        {...(myInfoData?.myInfo?.isAdmin ? { rightBtnInfo: completeBtnProps } : {})}
+      />
       {/* 검색 */}
 
       <div {...{ ...stylex.props(Styles.Container) }}>

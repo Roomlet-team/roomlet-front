@@ -12,8 +12,10 @@ import { saveCategoryList } from '@src/features/mypage/workspace/category/slices
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import AddCategoryBottomSheet from '@src/features/mypage/workspace/category/components/AddCategoryBottomSheet';
 import usePutCongressCategory from '@src/features/mypage/workspace/category/queries/usePutCongressCategory';
+import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 
 const Category = () => {
+  const { data: myInfoData } = useGetMypageInfoQuery();
   const { data } = useGetCategoryListQuery();
   const mutation = usePutCongressCategory();
   const dispatch = useDispatch();
@@ -55,7 +57,11 @@ const Category = () => {
 
   return (
     <MainLayout>
-      <Header title={isEdit ? '수정하기' : '카테고리'} prevUrl="/mypage/workspace" rightBtnInfo={completeBtnProps} />
+      <Header
+        title={isEdit ? '수정하기' : '카테고리'}
+        prevUrl="/mypage/workspace"
+        {...(myInfoData?.myInfo?.isAdmin ? { rightBtnInfo: completeBtnProps } : {})}
+      />
       {/* 검색 */}
 
       <div {...{ ...stylex.props(Styles.Container) }}>
