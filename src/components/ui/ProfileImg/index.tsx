@@ -30,6 +30,7 @@ const Styles = stylex.create({
     width: `${size}px`,
     height: `${size}px`,
     backgroundSize: 'cover',
+    flexShrink: 0,
     borderWidth: borderProperties?.width,
     borderRadius: borderProperties?.radius || '50%',
     borderColor: borderProperties?.color,
