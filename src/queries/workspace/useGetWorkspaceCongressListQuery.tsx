@@ -70,7 +70,7 @@ const getWorkspaceCongressListApi = async (WorkspaceId: number, params: Params):
  */
 const useGetWorkspaceCongressListQuery = (params: Params) => {
   const { data } = useGetWorkspaceListQuery();
-  const WorkspaceId = data?.workspaceList[0].WorkspaceId;
+  const WorkspaceId = data?.workspaceList[0]?.WorkspaceId;
 
   const result = useQuery({
     queryKey: ['congressList', ...Object.values(params)],
