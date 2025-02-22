@@ -1,7 +1,7 @@
 import clientInstance from '@src/utils/api/clientInstance';
 import { useQuery } from '@tanstack/react-query';
 
-interface ProfileInfo {
+export interface ProfileInfo {
   success: boolean;
   code: number;
   profile: {
