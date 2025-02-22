@@ -11,6 +11,8 @@ import useRenderModal from '@src/hooks/ui/useRenderModal';
 import MoveMemberBottomSheet from '../MoveMemberBottomSheet';
 import { EditTeamItem } from '../../types/member';
 import { confirm } from '@src/components/ui/Modal/confirm';
+import ProfileImg from '@src/components/ui/ProfileImg';
+import Link from 'next/link';
 
 interface TeamToggleProps {
   data: EditTeamItem;
@@ -24,7 +26,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
   const dispatch = useDispatch();
   const { renderModal } = useRenderModal();
   const { editTeamList } = useSelector((state: RootState) => state.member);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const handleClickToggle = () => {
     setIsOpen(!isOpen);
@@ -92,23 +94,30 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
       {/* 토글이 열렸을 떄 */}
       {isOpen && (
         <div {...stylex.props(Styles.MemberListWrapper)}>
-          <ul {...stylex.props(Styles.MemberList)}>
-            {data.memberList.map((item, idx) => (
-              <li {...stylex.props(Typography.SubtitleRegularSemiBold)}>
-                <div {...stylex.props(Styles.MemberItemContainer)}>
-                  <span>{item.displayName}</span>
-                  {isEdit && (
-                    <button
-                      type="button"
-                      onClick={() => handleClickMoveMember(item, idx)}
-                      {...stylex.props(Styles.MoveButton, Typography.SubTextRegularSemiBold)}
-                    >
-                      이동
-                    </button>
-                  )}
-                </div>
-              </li>
-            ))}
+          <ul {...stylex.props(Styles.MemberList(data.memberList.length === 0))}>
+            {data.memberList.length > 0 ? (
+              data.memberList.map((item, idx) => (
+                <li {...stylex.props(Typography.SubtitleRegularSemiBold)}>
+                  <div {...stylex.props(Styles.MemberItemContainer)}>
+                    <Link {...stylex.props(Styles.MemberInfoLink)} href={`/profiles/${item.MemberId}`}>
+                      <ProfileImg src={item.profileImgUrl} size={42} borderProperties={{ radius: '12px' }} />
+                      <span>{item.displayName}</span>
+                    </Link>
+                    {isEdit && (
+                      <button
+                        type="button"
+                        onClick={() => handleClickMoveMember(item, idx)}
+                        {...stylex.props(Styles.MoveButton, Typography.SubTextRegularSemiBold)}
+                      >
+                        이동
+                      </button>
+                    )}
+                  </div>
+                </li>
+              ))
+            ) : (
+              <li {...stylex.props(Typography.SubTextLargeRegular)}>멤버가 존재하지 않습니다.</li>
+            )}
           </ul>
         </div>
       )}
@@ -135,14 +144,14 @@ const Styles = stylex.create({
     background: colors.gray20,
     borderRadius: '12px',
   },
-  MemberList: {
-    padding: '12px 16px',
+  MemberList: (isListStyle) => ({
+    padding: isListStyle ? '0 12px' : 0,
     width: '100%',
     display: 'flex',
     gap: '8px',
     flexDirection: 'column',
-    listStyle: 'disc',
-  },
+    listStyle: isListStyle ? 'disc' : 'none',
+  }),
   TextInput: {
     width: '100%',
     marginRight: '8px',
@@ -168,5 +177,13 @@ const Styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    padding: '8px 0',
+  },
+  MemberInfoLink: {
+    display: 'flex',
+    gap: '8px',
+    alignItems: 'center',
+    textDecoration: 'none',
+    color: colors.black300,
   },
 });
