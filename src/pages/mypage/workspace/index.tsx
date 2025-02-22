@@ -57,7 +57,7 @@ const WorkspaceHome = () => {
   return (
     <MainLayout>
       <Header
-        title="워크스페이스 설정"
+        title="워크스페이스 정보"
         prevUrl="/mypage"
         {...(myInfoData?.myInfo.isAdmin ? { rightBtnInfo: isEdit ? editBtnProps.complete : editBtnProps.update } : {})}
       />
