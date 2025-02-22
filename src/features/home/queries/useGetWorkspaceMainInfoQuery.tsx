@@ -11,8 +11,16 @@ interface WorkspaceInfo {
     isAdmin: boolean;
   };
   workspaceCongressStatus: {
-    workspaceCongressCount: number;
     myCongressCount: number;
+    workspaceCongressCount: number;
+  };
+  workspace: {
+    WorkspaceId: number;
+    workspaceName: string;
+    congressInfo: {
+      myCongressCount: number;
+      workspaceCongressCount: number;
+    };
   };
 }
 
@@ -47,6 +55,14 @@ const useGetWorkspaceMainInfoQuery = () => {
         isAdmin: false,
       },
       workspaceCongressStatus: { workspaceCongressCount: 0, myCongressCount: 0 },
+      workspace: {
+        WorkspaceId: null,
+        workspaceName: '',
+        congressInfo: {
+          myCongressCount: 0,
+          workspaceCongressCount: 0,
+        },
+      },
     },
     enabled: Boolean(workspaceId), // workspaceId가 정의되어 있지 않은 경우, 첫 렌더링시 요청이 이뤄지지 않게 함.
   });
