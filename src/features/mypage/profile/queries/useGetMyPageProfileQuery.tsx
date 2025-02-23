@@ -1,3 +1,4 @@
+import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
 import clientInstance from '@src/utils/api/clientInstance';
 import { useQuery } from '@tanstack/react-query';
 
@@ -26,9 +27,13 @@ const getMyPageProfileApi = async (): Promise<ProfileInfo> => {
  *   - `refetch`: 데이터를 수동으로 다시 가져오는 함수
  */
 const useGetMyPageProfileQuery = () => {
+  const { data } = useGetWorkspaceListQuery();
+  const workspaceId = data?.workspaceList[0]?.WorkspaceId;
+
   const result = useQuery({
     queryKey: ['profile'],
     queryFn: () => getMyPageProfileApi(),
+    enabled: Boolean(!workspaceId),
   });
 
   return result;
