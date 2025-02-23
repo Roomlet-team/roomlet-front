@@ -89,7 +89,7 @@ const Booking = () => {
       attendMemberList: mappedAttendMemberList,
       CongressCategoryId: Number(data.CongressCategoryId),
       RoomId: Number(data.RoomId),
-      startTime: data.endTime.value,
+      startTime: data.startTime.value,
       endTime: data.endTime.value,
     });
   };
