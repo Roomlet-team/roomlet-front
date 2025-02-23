@@ -15,7 +15,7 @@ const TimeOptionList: FC<TimeOptionListProps> = (props) => {
   const { onSelect, data, reserDate } = props;
   const optionList = data?.timeList
     .map((item, idx) => {
-      const displayTime = `${item.time.slice(0, 2)}:${item.time.slice(2, 4)}`;
+      const displayTime = item.time;
 
       // 현재 시간 이후의 시간들만 출력되게 구현
       return (
