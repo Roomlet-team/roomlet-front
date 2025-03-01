@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
   let isAccessToken = request.cookies.has('access_token');
 
   const path = request.nextUrl.pathname;
+  const prevUrl = request.nextUrl.href; // 로그인 페이지 이전에 있었던 url
 
   if (isRefreshToken) {
     if (path === '/login') {
@@ -21,7 +22,7 @@ export async function middleware(request: NextRequest) {
 
   // 로그인을 하지 않은 경우, 로그인 페이지로 이동 (로그인 페이지를 제외한 모든 페이지 접근 불가)
   if (!isRefreshToken && path !== '/login') {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL(`/login?prev_url=${encodeURIComponent(prevUrl)}`, request.url));
   }
 
   return null;
