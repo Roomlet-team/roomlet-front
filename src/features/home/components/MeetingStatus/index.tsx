@@ -17,14 +17,14 @@ const MeetingStatus = () => {
         <img {...stylex.props(Styles.img)} src={myMeetingImgUrl} alt="나의 회의" />
         <div {...stylex.props(Styles.textContent)}>
           <p {...stylex.props(Styles.titleText)}>나의 회의</p>
-          <p {...stylex.props(Styles.countText('var(--Red-600)'))}>{data.workspaceCongressStatus.myCongressCount}</p>
+          <p {...stylex.props(Styles.countText('var(--Red-600)'))}>{data?.workspaceCongressStatus.myCongressCount}</p>
         </div>
       </div>
       <div {...stylex.props(Styles.content)}>
         <img {...stylex.props(Styles.img)} src={allMeetingImgUrl} alt="전체 회의" />
         <div {...stylex.props(Styles.textContent)}>
           <p {...stylex.props(Styles.titleText)}>전체 회의</p>
-          <p {...stylex.props(Styles.countText('#444444'))}>{data.workspaceCongressStatus.workspaceCongressCount}</p>
+          <p {...stylex.props(Styles.countText('#444444'))}>{data?.workspaceCongressStatus.workspaceCongressCount}</p>
         </div>
       </div>
     </div>
