@@ -81,7 +81,8 @@ const OnboardingSlider = () => {
 
   const handleClickRunMeeting = () => {
     dispatch(changeHiddenStatus());
-    router.push('/login');
+
+    router.push({ pathname: '/login', query: router.query });
   };
 
   return (
