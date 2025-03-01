@@ -24,9 +24,7 @@ const Modal: FC<ModalProps> = (props) => {
   return (
     isOpen && (
       <Portal>
-        <div {...stylex.props(Styles.container)}>
-          <div className="modal-content">{children}</div>
-        </div>
+        <div {...stylex.props(Styles.container)}>{children}</div>
       </Portal>
     )
   );
