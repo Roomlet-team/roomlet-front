@@ -7,6 +7,7 @@ import { colors } from '../../../../../public/styles/vars.stylex';
 import { useDispatch } from 'react-redux';
 import { hideModal } from '@src/slices/modal';
 import useTextArea from '@src/hooks/useTextArea';
+import usePatchCongressCommentQuery from '../../queries/usePatchCongressCommentQuery';
 
 interface CommentEditModalProps {
   data: CommentListItem;
@@ -15,10 +16,18 @@ interface CommentEditModalProps {
 const CommentEditModal: FC<CommentEditModalProps> = (props) => {
   const { data } = props;
   const [content, handleChangeContent] = useTextArea(data.content);
+  const mutation = usePatchCongressCommentQuery();
   const dispatch = useDispatch();
 
   const prevOnClick = () => {
     dispatch(hideModal());
+  };
+
+  const handleClickComplete = () => {
+    mutation.mutate({
+      CommentId: data.CommentId,
+      content,
+    });
   };
 
   return (
@@ -27,7 +36,7 @@ const CommentEditModal: FC<CommentEditModalProps> = (props) => {
         <Header
           title="댓글 수정"
           prevOnClick={prevOnClick}
-          rightBtnInfo={{ name: '완료', isActive: true, onClick: () => {} }}
+          rightBtnInfo={{ name: '완료', isActive: true, onClick: handleClickComplete }}
         />
 
         {/* 수정할 댓글 내용 */}
