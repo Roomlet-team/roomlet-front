@@ -41,6 +41,7 @@ export default CommentEditModal;
 
 const Styles = stylex.create({
   container: {
+    width: '767px',
     maxWidth: '100%',
     height: '100vh',
     background: colors.white500,
