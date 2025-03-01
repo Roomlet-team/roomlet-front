@@ -13,6 +13,8 @@ import PencilOutlined from '@src/components/icons/PencilOutlined';
 import TrashcanOutlined from '@src/components/icons/TrashcanOutlined';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import CommentEditModal from '../CommentEditModal';
+import useDeleteCongressCommentQuery from '../../queries/useDeleteCongressCommentQuery';
+import { confirm } from '@src/components/ui/Modal/confirm';
 
 // fromNow를 사용하기 위해 플러그인 사용
 dayjs.extend(relativeTime);
@@ -21,6 +23,7 @@ const CommentList = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data } = useGetWorkspaceCongressCommentQuery({ page: 1, perPage: 5, cgsid: Number(id) });
+  const mutation = useDeleteCongressCommentQuery();
   const { renderModal } = useRenderModal();
 
   const getMenuList = (item: CommentListItem) => {
@@ -39,7 +42,14 @@ const CommentList = () => {
         id: '2',
         label: '삭제하기',
         icon: <TrashcanOutlined width={16} height={16} />,
-        onClick: () => {},
+        onClick: () => {
+          confirm({
+            content: '댓글을 삭제하시겠어요? \n삭제한 댓글은 복구가 불가능해요.',
+            cancelBtnName: '취소',
+            okBtnName: '확인',
+            onOk: () => mutation.mutate({ CommentId: item.CommentId }),
+          });
+        },
       },
     ];
   };
@@ -69,6 +79,7 @@ const CommentList = () => {
                   </div>
 
                   {/* 수정하기 / 삭제하기 */}
+                  {/* [ ] 본인 댓글에만 드롭박스가 나타나게 수정 필요 */}
                   <Dropdown menuList={getMenuList(item)} />
                 </div>
 
