@@ -119,7 +119,7 @@ const Styles = stylex.create({
     textAlign: 'center',
   },
   pickerContainer: {
-    width: '181px',
+    width: '192px',
     margin: '0 auto',
     padding: '0 32px',
     gap: '8px',
