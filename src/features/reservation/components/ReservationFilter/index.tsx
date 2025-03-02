@@ -6,8 +6,8 @@ import { hideModal } from '@src/slices/modal';
 import stylex from '@stylexjs/stylex';
 import { colors, Typography } from '../../../../../public/styles/vars.stylex';
 import useGetCongressRoomListQuery from '@src/queries/congress/useGetCongressRoomListQuery';
-import RoundCheckbox from '@src/components/ui/RoundCheckbox';
 import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQuery';
+import Radio from '@src/components/ui/Radio';
 
 const MEETING_TYPE: { id: string; label: string; value: 0 | 1 }[] = [
   {
@@ -42,7 +42,7 @@ const ReservationFilter = () => {
     if (selectedRoomIdList.includes(value)) {
       setSelectedRoomIdList((prevState) => prevState.filter((item) => item !== value));
     } else {
-      setSelectedRoomIdList((prevState) => [...prevState, value]);
+      setSelectedRoomIdList((prevState) => [value]);
     }
   };
 
@@ -50,7 +50,7 @@ const ReservationFilter = () => {
     if (selectedCategoryIdList.includes(value)) {
       setSelectedCategoryIdList((prevState) => prevState.filter((item) => item !== value));
     } else {
-      setSelectedCategoryIdList((prevState) => [...prevState, value]);
+      setSelectedCategoryIdList((prevState) => [value]);
     }
   };
 
@@ -94,16 +94,16 @@ const ReservationFilter = () => {
         <p {...stylex.props(Typography.SubTextLargeSemiBold, Styles.Title)}>필터</p>
         <div {...stylex.props(Styles.RadioContainer)}>
           {MEETING_TYPE.map((item) => (
-            <RoundCheckbox
+            <Radio
               name="meetingType"
               id={`meetingType${item.id}`}
               // label={item.roomName}
+              theme="white"
+              label={item.label}
               value={item.value}
               checked={isOnlyMy ? item.value === 1 : item.value === 0}
               onChange={() => handleChangeMeetingType(item.value)}
-            >
-              {item.label}
-            </RoundCheckbox>
+            />
           ))}
         </div>
 
@@ -111,16 +111,15 @@ const ReservationFilter = () => {
         <p {...stylex.props(Typography.SubTextLargeSemiBold, Styles.Title)}>회의실</p>
         <div {...stylex.props(Styles.RadioContainer)}>
           {congressRoomData?.congressRoomList?.map((item) => (
-            <RoundCheckbox
+            <Radio
               name="congressRoom"
               id={`congressRoom${item.RoomId}`}
-              // label={item.roomName}
+              theme="white"
+              label={item.roomName}
               value={item.RoomId}
               checked={selectedRoomIdList?.includes(item.RoomId)}
               onChange={() => handleChangeMeetingRoom(item.RoomId)}
-            >
-              {item.roomName}
-            </RoundCheckbox>
+            />
           ))}
         </div>
 
@@ -128,16 +127,15 @@ const ReservationFilter = () => {
         <p {...stylex.props(Typography.SubTextLargeSemiBold, Styles.Title)}>카테고리</p>
         <div {...stylex.props(Styles.RadioContainer)}>
           {congressCategoryData?.congressCategoryList?.map((item) => (
-            <RoundCheckbox
+            <Radio
               name="category"
               id={`category${item.CongressCategoryId}`}
-              // label={item.roomName}
+              theme="white"
+              label={item.categoryName}
               value={item.CongressCategoryId}
               checked={selectedCategoryIdList?.includes(item.CongressCategoryId)}
               onChange={() => handleChangeCategory(item.CongressCategoryId)}
-            >
-              {item.categoryName}
-            </RoundCheckbox>
+            />
           ))}
         </div>
 
