@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 import useGetWorkspaceCongressListQuery from '@src/queries/workspace/useGetWorkspaceCongressListQuery';
 import dayjs from 'dayjs';
 import Link from 'next/link';
+import { Typography } from 'public/styles/vars.stylex';
+import Toggle from '@src/components/ui/Toggle';
 
 /**
  * 홈 화면의 타임라인을 나타내는 컴포넌트
@@ -12,61 +14,96 @@ import Link from 'next/link';
  */
 const TimeLine = () => {
   const { isWorkspace } = useSelector((state: RootState) => state.workspace);
-  const { data } = useGetWorkspaceCongressListQuery({ date: dayjs().format('YYYY-MM-DD') });
+  const [isMyMeeting, setIsMyMeeting] = useState<boolean>(false);
+  const { data } = useGetWorkspaceCongressListQuery({
+    date: dayjs().format('YYYY-MM-DD'),
+    ...(isMyMeeting ? { my: 1 } : {}),
+  });
 
-  return isWorkspace ? (
-    // 워크스페이스가 존재할 때 보여지는 타임 라인
-    <div {...stylex.props(Styles.container)}>
-      <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />
-      <div {...stylex.props(Styles.scrollContainer)}>
-        {data?.congressList.map((item) => (
-          <div {...stylex.props(Styles.timeAndMeetingContent)}>
-            <div {...stylex.props(Styles.timeContent)}>
-              <span {...stylex.props(Styles.timeText)}>{item.startTime}</span>
-              <div {...stylex.props(Styles.timeDot)} />
-            </div>
+  const handleChangeToggle = () => {
+    setIsMyMeeting(!isMyMeeting);
+  };
 
-            <Link href={`/reservations/${item.CongressId}`} {...stylex.props(Styles.meetingLink)}>
-              <div {...stylex.props(Styles.meetingContent)}>
-                <div {...stylex.props(Styles.detailContent(item.congressCategory.hexcode))}>
-                  <p {...stylex.props(Styles.titleText)}>{item.congressTitle}</p>
-                  <div {...stylex.props(Styles.categoryTag(item.congressCategory.hexcode))}>
-                    {item.congressCategory.categoryName}
-                  </div>
+  return (
+    <>
+      <div {...stylex.props(Styles.timeLineSectionHeader)}>
+        <h2 {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.sectionTitle)}>타임라인</h2>
+        <div {...stylex.props(Typography.SubTextLargeMedium, Styles.timeLineSectionToggle)}>
+          <span>나의 회의만 보기</span>
+          <Toggle theme="black400" onChange={handleChangeToggle} />
+        </div>
+      </div>
+      {isWorkspace ? (
+        // 워크스페이스가 존재할 때 보여지는 타임 라인
+        <div {...stylex.props(Styles.container)}>
+          <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />
+          <div {...stylex.props(Styles.scrollContainer)}>
+            {data?.congressList.map((item) => (
+              <div {...stylex.props(Styles.timeAndMeetingContent)}>
+                <div {...stylex.props(Styles.timeContent)}>
+                  <span {...stylex.props(Styles.timeText)}>{item.startTime}</span>
+                  <div {...stylex.props(Styles.timeDot)} />
                 </div>
+
+                <Link href={`/reservations/${item.CongressId}`} {...stylex.props(Styles.meetingLink)}>
+                  <div {...stylex.props(Styles.meetingContent)}>
+                    <div {...stylex.props(Styles.detailContent(item.congressCategory.hexcode))}>
+                      <p {...stylex.props(Styles.titleText)}>{item.congressTitle}</p>
+                      <div {...stylex.props(Styles.categoryTag(item.congressCategory.hexcode))}>
+                        {item.congressCategory.categoryName}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
               </div>
-            </Link>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
-  ) : (
-    // 워크스페이스가 존재하지 않을 때 보여지는 타임라인 (시간만 보여주고 스케줄 상세 설명 영역은 비어있음)
-    <div {...stylex.props(Styles.NoScheduleContainer)}>
-      <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />
-      <div {...stylex.props(Styles.NoContentScrollContainer)}>
-        <div {...stylex.props(Styles.timeAndMeetingContent)}>
-          <div {...stylex.props(Styles.timeContent)}>
-            <span {...stylex.props(Styles.timeText)}>09:00</span>
-            <div {...stylex.props(Styles.timeDot)} />
-          </div>
-          <div {...stylex.props(Styles.NoMeetingContent)} />
         </div>
-        <div {...stylex.props(Styles.timeAndMeetingContent)}>
-          <div {...stylex.props(Styles.timeContent)}>
-            <span {...stylex.props(Styles.timeText)}>10:00</span>
-            <div {...stylex.props(Styles.timeDot)} />
+      ) : (
+        // 워크스페이스가 존재하지 않을 때 보여지는 타임라인 (시간만 보여주고 스케줄 상세 설명 영역은 비어있음)
+        <div {...stylex.props(Styles.NoScheduleContainer)}>
+          <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />
+          <div {...stylex.props(Styles.NoContentScrollContainer)}>
+            <div {...stylex.props(Styles.timeAndMeetingContent)}>
+              <div {...stylex.props(Styles.timeContent)}>
+                <span {...stylex.props(Styles.timeText)}>09:00</span>
+                <div {...stylex.props(Styles.timeDot)} />
+              </div>
+              <div {...stylex.props(Styles.NoMeetingContent)} />
+            </div>
+            <div {...stylex.props(Styles.timeAndMeetingContent)}>
+              <div {...stylex.props(Styles.timeContent)}>
+                <span {...stylex.props(Styles.timeText)}>10:00</span>
+                <div {...stylex.props(Styles.timeDot)} />
+              </div>
+              <div {...stylex.props(Styles.NoMeetingContent)} />
+            </div>
           </div>
-          <div {...stylex.props(Styles.NoMeetingContent)} />
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
 export default TimeLine;
 
 const Styles = stylex.create({
+  timeLineSectionHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: '16px',
+    padding: '2px 16px',
+  },
+  timeLineSectionToggle: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    color: '#818181',
+  },
+  sectionTitle: {
+    color: '#616161',
+  },
   container: {
     width: '100%',
     height: '100%',

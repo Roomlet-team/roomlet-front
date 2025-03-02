@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import GnbNavLayout from '@src/layouts/GnbNavLayout';
 import WorkspaceUserGreeting from '@src/features/home/components/UserGreeting/workspaceUser';
@@ -27,7 +27,6 @@ const Home = () => {
       </section>
       {/* 타임 라인 섹션 */}
       <section {...stylex.props(Styles.timeLineSection)}>
-        <h2 {...stylex.props(Styles.sectionTitle, Styles.timeLineSectionTitle)}>타임라인</h2>
         <TimeLine />
       </section>
 
@@ -71,9 +70,6 @@ const Styles = stylex.create({
     fontWeight: '600',
     lineHeight: '2.4rem',
     color: '#616161',
-  },
-  timeLineSectionTitle: {
-    padding: '0 16px',
   },
   CreateWorkspaceBtnWrapper: {
     position: 'relative',
