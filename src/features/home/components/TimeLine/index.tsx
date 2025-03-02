@@ -36,31 +36,44 @@ const TimeLine = () => {
       {isWorkspace ? (
         // 워크스페이스가 존재할 때 보여지는 타임 라인
         <div {...stylex.props(Styles.container)}>
-          <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />
-          <div {...stylex.props(Styles.scrollContainer)}>
-            {data?.congressList.map((item) => (
-              <div {...stylex.props(Styles.timeAndMeetingContent)}>
-                <div {...stylex.props(Styles.timeContent)}>
-                  <span {...stylex.props(Styles.timeText)}>{item.startTime}</span>
-                  <div {...stylex.props(Styles.timeDot)} />
-                </div>
+          {/* 회의가 있는 경우에만 타임라인 구분선 표시 */}
+          {data?.congressList.length > 0 && <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />}
 
-                <Link href={`/reservations/${item.CongressId}`} {...stylex.props(Styles.meetingLink)}>
-                  <div {...stylex.props(Styles.meetingContent)}>
-                    <div {...stylex.props(Styles.detailContent(item.congressCategory.hexcode))}>
-                      <p {...stylex.props(Styles.titleText)}>{item.congressTitle}</p>
-                      <div {...stylex.props(Styles.categoryTag(item.congressCategory.hexcode))}>
-                        {item.congressCategory.categoryName}
+          <div {...stylex.props(Styles.scrollContainer)}>
+            {/* 회의가 있는 경우에만 타임라인 내용 표시 */}
+            {data?.congressList.length > 0 ? (
+              data?.congressList.map((item) => (
+                <div {...stylex.props(Styles.timeAndMeetingContent)}>
+                  <div {...stylex.props(Styles.timeContent)}>
+                    <span {...stylex.props(Styles.timeText)}>{item.startTime}</span>
+                    <div {...stylex.props(Styles.timeDot)} />
+                  </div>
+
+                  <Link href={`/reservations/${item.CongressId}`} {...stylex.props(Styles.meetingLink)}>
+                    <div {...stylex.props(Styles.meetingContent)}>
+                      <div {...stylex.props(Styles.detailContent(item.congressCategory.hexcode))}>
+                        <p {...stylex.props(Styles.titleText)}>{item.congressTitle}</p>
+                        <div {...stylex.props(Styles.categoryTag(item.congressCategory.hexcode))}>
+                          {item.congressCategory.categoryName}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
+              ))
+            ) : (
+              // 회의가 존재하지 않을 때 보여지는 문구
+              <div {...stylex.props(Styles.NoScheduleContainer)}>
+                <p {...stylex.props(Typography.SubTextLargeRegular)}>
+                  오늘 예정된 회의가 없어요. <br />
+                  새로운 회의를 생성해보세요
+                </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       ) : (
-        // 워크스페이스가 존재하지 않을 때 보여지는 타임라인 (시간만 보여주고 스케줄 상세 설명 영역은 비어있음)
+        // 워크스페이스가 존재하지 않을 때 보여지는 문구
         <div {...stylex.props(Styles.NoScheduleContainer)}>
           <p {...stylex.props(Typography.SubTextLargeRegular)}>
             오늘 예정된 회의가 없어요. <br />
