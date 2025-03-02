@@ -25,8 +25,12 @@
   transition: left 0.3s;
 }
 
-.common-toggle:checked {
+.red500:checked {
   background-color: #b5312c;
+}
+
+.black400:checked {
+  background-color: #242c33;
 }
 
 .common-toggle:checked::after {
