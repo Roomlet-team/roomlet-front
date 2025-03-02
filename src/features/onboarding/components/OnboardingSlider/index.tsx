@@ -3,7 +3,7 @@ import stylex from '@stylexjs/stylex';
 import { useRouter } from 'next/router';
 import Slider from 'react-slick';
 import { useDispatch } from 'react-redux';
-import { changeHiddenStatus } from '../../slices/onboarding';
+import onboarding, { changeHiddenStatus } from '../../slices/onboarding';
 
 const OnboardingSlider = () => {
   const router = useRouter();
@@ -26,7 +26,7 @@ const OnboardingSlider = () => {
   const onboardingList = [
     {
       id: 1,
-      imgUrl: 'https://roomlet-front.s3.ap-northeast-2.amazonaws.com/public/images/onboarding/CALENDAR.png',
+      imgUrl: `${process.env.NEXT_PUBLIC_S3_URL}/public/images/onboarding/CALENDAR.png`,
       name: 'onboarding_01',
       title: '실시간 회의실 예약',
       description: (
@@ -41,7 +41,7 @@ const OnboardingSlider = () => {
     },
     {
       id: 2,
-      imgUrl: 'https://roomlet-front.s3.ap-northeast-2.amazonaws.com/public/images/onboarding/PICTURES.png',
+      imgUrl: `${process.env.NEXT_PUBLIC_S3_URL}/public/images/onboarding/FOLDER.png`,
       name: 'onboarding_02',
       title: '스케쥴 관리 간소화',
       description: (
@@ -56,7 +56,7 @@ const OnboardingSlider = () => {
     },
     {
       id: 3,
-      imgUrl: 'https://roomlet-front.s3.ap-northeast-2.amazonaws.com/public/images/onboarding/CLOCK.png',
+      imgUrl: `${process.env.NEXT_PUBLIC_S3_URL}/public/images/onboarding/CLOCK.png`,
       name: 'onboarding_03',
       title: '효율적인 회의 관리',
       description: (
