@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 import Slider from 'react-slick';
 
 import Calendar from 'react-calendar';
@@ -74,8 +74,6 @@ const MonthlyCalendar: FC<MonthlyCalendarProps> = ({ onSelectDate }) => {
     },
   };
 
-  console.log('data', data);
-
   return (
     <>
       <div {...stylex.props(Styles.SliderWrapper)}>
@@ -100,7 +98,7 @@ const MonthlyCalendar: FC<MonthlyCalendarProps> = ({ onSelectDate }) => {
                   tileContent={({ activeStartDate, date, view }) => {
                     // 날짜 밑에 dot로 회의 표시
                     const congressHexcode = data?.congressCountByDayList.filter(
-                      (congressDateItem) => congressDateItem.day === dayjs(date).format('DD')
+                      (congressDateItem) => congressDateItem.date === dayjs(date).format('YYYY-MM-DD')
                     )[0]?.hexcodeList;
 
                     return congressHexcode?.length > 0 && !isLoading ? (
