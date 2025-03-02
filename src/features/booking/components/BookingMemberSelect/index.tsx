@@ -40,7 +40,7 @@ const BookingMemberSelect: FC<BookingMemberSelectProps> = (props) => {
     // 선택된 멤버 리스트에서 id만 추출해서 저장한 배열
     const memberIds = Object.values(selectBookingMemberObj)
       .flat()
-      .map((memberItem) => memberItem.MemberId);
+      .map((memberItem) => memberItem?.MemberId);
 
     // 선택한 멤버의 id만 저장한 배열을 전달
     onSelect(memberIds);
