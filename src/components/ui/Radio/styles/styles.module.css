@@ -17,8 +17,15 @@
   display: none;
 }
 
-.common-radio-label:has(.common-radio-input[type='radio']:checked) {
+.common-radio-label.red500:has(.common-radio-input[type='radio']:checked) {
   box-shadow: none;
   background-color: #b5312c;
   color: #ffffff;
+}
+
+.common-radio-label.white:has(.common-radio-input[type='radio']:checked) {
+  box-shadow: none;
+  border: 1px solid #b5312c;
+  color: #b5312c;
+  background-color: #ffffff;
 }
