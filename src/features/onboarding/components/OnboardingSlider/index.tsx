@@ -104,20 +104,21 @@ const OnboardingSlider = () => {
               <div {...stylex.props(SliderStyles.textContent)}>
                 <p {...stylex.props(SliderStyles.title)}>{item.title}</p>
                 <p {...stylex.props(SliderStyles.description)}>{item.description}</p>
+
+                <div {...stylex.props(SliderStyles.buttonContent)}>
+                  <button
+                    {...stylex.props(SliderStyles.button)}
+                    onClick={dotIndex < onboardingList.length - 1 ? handleClickSkip : handleClickRunMeeting}
+                    type="button"
+                  >
+                    {dotIndex < onboardingList.length - 1 ? 'Skip' : '회의 진행하기'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         ))}
       </Slider>
-      <div {...stylex.props(SliderStyles.buttonContent)}>
-        <button
-          {...stylex.props(SliderStyles.button)}
-          onClick={dotIndex < onboardingList.length - 1 ? handleClickSkip : handleClickRunMeeting}
-          type="button"
-        >
-          {dotIndex < onboardingList.length - 1 ? 'Skip' : '회의 진행하기'}
-        </button>
-      </div>
     </div>
   );
 };
@@ -150,7 +151,7 @@ const SliderStyles = stylex.create({
   }),
   slideContent: {
     width: '100%',
-    height: '100vh',
+    height: 'calc(100vh - 48px)',
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
@@ -172,7 +173,7 @@ const SliderStyles = stylex.create({
   },
   textContent: {
     width: '100%',
-    padding: '46px 35px 140px',
+    padding: '46px 0 140px',
     background: 'var( --Base-White)',
     borderRadius: '16px 16px  0 0',
   },
