@@ -5,7 +5,7 @@ import { RootState } from '@src/store';
 import useGetWorkspaceCongressListQuery from '@src/queries/workspace/useGetWorkspaceCongressListQuery';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { Typography } from 'public/styles/vars.stylex';
+import { colors, Typography } from '../../../../../public/styles/vars.stylex';
 import Toggle from '@src/components/ui/Toggle';
 
 /**
@@ -62,23 +62,10 @@ const TimeLine = () => {
       ) : (
         // 워크스페이스가 존재하지 않을 때 보여지는 타임라인 (시간만 보여주고 스케줄 상세 설명 영역은 비어있음)
         <div {...stylex.props(Styles.NoScheduleContainer)}>
-          <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />
-          <div {...stylex.props(Styles.NoContentScrollContainer)}>
-            <div {...stylex.props(Styles.timeAndMeetingContent)}>
-              <div {...stylex.props(Styles.timeContent)}>
-                <span {...stylex.props(Styles.timeText)}>09:00</span>
-                <div {...stylex.props(Styles.timeDot)} />
-              </div>
-              <div {...stylex.props(Styles.NoMeetingContent)} />
-            </div>
-            <div {...stylex.props(Styles.timeAndMeetingContent)}>
-              <div {...stylex.props(Styles.timeContent)}>
-                <span {...stylex.props(Styles.timeText)}>10:00</span>
-                <div {...stylex.props(Styles.timeDot)} />
-              </div>
-              <div {...stylex.props(Styles.NoMeetingContent)} />
-            </div>
-          </div>
+          <p {...stylex.props(Typography.SubTextLargeRegular)}>
+            오늘 예정된 회의가 없어요. <br />
+            새로운 회의를 생성해보세요
+          </p>
         </div>
       )}
     </>
@@ -193,22 +180,17 @@ const Styles = stylex.create({
   }),
   NoScheduleContainer: {
     width: '100%',
-    height: '176px',
+    height: 'calc(100vh - 374px)',
     display: 'flex',
-    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: '24px',
+    color: colors.gray900,
     backgroundColor: '#FAFAFA',
     position: 'relative',
     borderTop: '1px solid #F2F2F2',
     borderBottom: '1px solid #F2F2F2',
-  },
-  NoMeetingContent: {
-    height: '52px',
-  },
-  NoContentScrollContainer: {
-    paddingTop: '30px',
-    height: '176px',
-    overflowY: 'auto',
+    textAlign: 'center',
   },
   meetingLink: {
     width: '100%',
