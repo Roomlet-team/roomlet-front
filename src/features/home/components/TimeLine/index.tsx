@@ -19,7 +19,7 @@ const TimeLine = () => {
     <div {...stylex.props(Styles.container)}>
       <div {...stylex.props(Styles.timeAndMeetingDivider(isWorkspace))} />
       <div {...stylex.props(Styles.scrollContainer)}>
-        {data.congressList.map((item) => (
+        {data?.congressList.map((item) => (
           <div {...stylex.props(Styles.timeAndMeetingContent)}>
             <div {...stylex.props(Styles.timeContent)}>
               <span {...stylex.props(Styles.timeText)}>{item.startTime}</span>
