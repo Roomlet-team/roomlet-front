@@ -5,6 +5,8 @@ import { CongressListResponse } from '@src/queries/workspace/useGetWorkspaceCong
 import { useRouter } from 'next/router';
 import MarkerPinFilled from '@src/components/icons/MarkerPinFilled';
 import ClockFilled from '@src/components/icons/ClockFilled';
+import CircleAlertFilled from '@src/components/icons/CircleAlertFilled';
+import { Typography } from '../../../../../public/styles/vars.stylex';
 
 interface ReservationListProps {
   data: CongressListResponse;
@@ -17,47 +19,58 @@ const ReservationList: FC<ReservationListProps> = (props) => {
   return (
     <section {...stylex.props(Styles.wrapper)}>
       <div {...stylex.props(Styles.meetingListContent)}>
-        {data?.congressList.map((item) => (
-          <div
-            {...stylex.props(Styles.meetingContent(item.congressCategory.hexcode))}
-            onClick={() => router.push(`/reservations/${item.CongressId}`)}
-          >
-            <div {...stylex.props(Styles.detailContent)}>
-              <div {...stylex.props(Styles.infoContent)}>
-                <p {...stylex.props(Styles.titleText)}>{item.congressTitle}</p>
+        {data?.congressList.length > 0 ? (
+          data?.congressList.map((item) => (
+            <div
+              {...stylex.props(Styles.meetingContent(item.congressCategory.hexcode))}
+              onClick={() => router.push(`/reservations/${item.CongressId}`)}
+            >
+              <div {...stylex.props(Styles.detailContent)}>
+                <div {...stylex.props(Styles.infoContent)}>
+                  <p {...stylex.props(Styles.titleText)}>{item.congressTitle}</p>
 
-                {/* 시간 */}
-                <div {...stylex.props(Styles.textContainer)}>
-                  <ClockFilled width={14} height={14} />
-                  <p {...stylex.props(Styles.timeText)}>
-                    {item.startTime} ~ {item.endTime}
-                  </p>
-                </div>
+                  {/* 시간 */}
+                  <div {...stylex.props(Styles.textContainer)}>
+                    <ClockFilled width={14} height={14} />
+                    <p {...stylex.props(Styles.timeText)}>
+                      {item.startTime} ~ {item.endTime}
+                    </p>
+                  </div>
 
-                {/* 회의실 */}
-                <div {...stylex.props(Styles.textContainer)}>
-                  <MarkerPinFilled width={14} height={14} />
-                  <p {...stylex.props(Styles.placeText)}>{item.congressRoom.roomName}</p>
+                  {/* 회의실 */}
+                  <div {...stylex.props(Styles.textContainer)}>
+                    <MarkerPinFilled width={14} height={14} />
+                    <p {...stylex.props(Styles.placeText)}>{item.congressRoom.roomName}</p>
+                  </div>
+                  <div {...stylex.props(Styles.profileListContent)}>
+                    {/* {console.log(item.attendMemberList)} */}
+                    {item.attendMemberList.map((item) => (
+                      <div {...stylex.props(Styles.profileContent)}>
+                        <ProfileImg
+                          src={item?.profileImgUrl}
+                          size={34}
+                          borderProperties={{ color: '#D9D9D9', width: '1px', radius: '50%' }}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div {...stylex.props(Styles.profileListContent)}>
-                  {/* {console.log(item.attendMemberList)} */}
-                  {item.attendMemberList.map((item) => (
-                    <div {...stylex.props(Styles.profileContent)}>
-                      <ProfileImg
-                        src={item?.profileImgUrl}
-                        size={34}
-                        borderProperties={{ color: '#D9D9D9', width: '1px', radius: '50%' }}
-                      />
-                    </div>
-                  ))}
+                <div {...stylex.props(Styles.categoryTag(item.congressCategory.hexcode))}>
+                  {item.congressCategory.categoryName}
                 </div>
-              </div>
-              <div {...stylex.props(Styles.categoryTag(item.congressCategory.hexcode))}>
-                {item.congressCategory.categoryName}
               </div>
             </div>
+          ))
+        ) : (
+          <div {...stylex.props(Styles.emptyContentContainer)}>
+            <CircleAlertFilled width={64} height={64} />
+            <p {...stylex.props(Typography.TextSmallRegular)}>
+              참여한 회의가 없습니다.
+              <br />
+              워크스페이스를 생성하여 회의를 만들어주세요!
+            </p>
           </div>
-        ))}
+        )}
       </div>
     </section>
   );
@@ -148,5 +161,14 @@ const Styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
+  },
+  emptyContentContainer: {
+    marginTop: '124px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '22px',
+    textAlign: 'center',
   },
 });
