@@ -10,6 +10,11 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // redux
 import { Provider } from 'react-redux';
 import { store } from '../store';
+// redux-persist
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+export const persistor = persistStore(store);
+
 // etc
 import '@assets/global.css';
 import '@assets/reset.css';
@@ -36,7 +41,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <Component {...pageProps} />
+        <PersistGate loading={null} persistor={persistor}>
+          <Component {...pageProps} />
+        </PersistGate>
       </Provider>
 
       {/* react-query devtools - devtools 폰트 사이즈가 너무 작아서 16px로 설정 */}
