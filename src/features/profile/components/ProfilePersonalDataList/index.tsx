@@ -57,7 +57,7 @@ const ProfilePersonalDataList: FC<ProfilePersonalDataListProps> = (props) => {
         ))}
 
         {/* 내보내기 - 자기 자신에게는 안보임 */}
-        {isPublicProfile && data.myInfo.isAdmin && !isMyProfile && (
+        {isPublicProfile && data?.myInfo.isAdmin && !isMyProfile && (
           <li {...stylex.props(Styles.Item)}>
             <span>
               <RemoveUserOutlined width={24} height={24} />
