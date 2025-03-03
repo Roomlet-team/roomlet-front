@@ -6,6 +6,7 @@ import ProfileImg from '@src/components/ui/ProfileImg';
 import useGetWorkspaceCongressQuery from '../../queries/useGetWorkspaceCongressQuery';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const ReservationInfo = () => {
   const router = useRouter();
@@ -50,10 +51,16 @@ const ReservationInfo = () => {
                   <p {...stylex.props(Styles.TeamName)}>{teamItem.teamName}</p>
                   <div {...stylex.props(Styles.MemberListContainer)}>
                     {teamItem.memberList.map((memberItem) => (
-                      <div {...stylex.props(Styles.MemberInfoContainer)}>
-                        <ProfileImg size={20} src={memberItem.profileImgUrl} />
-                        <span {...stylex.props(Typography.TagLargeMedium)}>{memberItem.displayName}</span>
-                      </div>
+                      <Link
+                        href={`/profile/${memberItem.MemberId}`}
+                        key={memberItem.MemberId}
+                        {...stylex.props(Styles.memberLink)}
+                      >
+                        <div {...stylex.props(Styles.MemberInfoContainer)}>
+                          <ProfileImg size={20} src={memberItem.profileImgUrl} />
+                          <span {...stylex.props(Typography.TagLargeMedium)}>{memberItem.displayName}</span>
+                        </div>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -92,6 +99,7 @@ const Styles = stylex.create({
     display: 'flex',
     gap: '4px',
     alignContent: 'center',
+    color: colors.black400,
   },
   TeamName: {
     width: '56px',
@@ -146,5 +154,9 @@ const Styles = stylex.create({
     background: colors.gray20,
     fontSize: '1.4rem',
     color: colors.black300,
+  },
+  memberLink: {
+    width: '100%',
+    textDecoration: 'none',
   },
 });
