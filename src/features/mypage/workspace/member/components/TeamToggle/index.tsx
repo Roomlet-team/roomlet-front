@@ -99,7 +99,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
               data.memberList.map((item, idx) => (
                 <li {...stylex.props(Typography.SubtitleRegularSemiBold)}>
                   <div {...stylex.props(Styles.MemberItemContainer)}>
-                    <Link {...stylex.props(Styles.MemberInfoLink)} href={`/profiles/${item.MemberId}`}>
+                    <Link {...stylex.props(Styles.MemberInfoLink)} href={`/profile/${item.MemberId}`}>
                       <ProfileImg src={item.profileImgUrl} size={42} borderProperties={{ radius: '12px' }} />
                       <span>{item.displayName}</span>
                     </Link>
