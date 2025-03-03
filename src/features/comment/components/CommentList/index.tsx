@@ -15,6 +15,7 @@ import useRenderModal from '@src/hooks/ui/useRenderModal';
 import CommentEditModal from '../CommentEditModal';
 import useDeleteCongressCommentQuery from '../../queries/useDeleteCongressCommentQuery';
 import { confirm } from '@src/components/ui/Modal/confirm';
+import Link from 'next/link';
 
 // fromNow를 사용하기 위해 플러그인 사용
 dayjs.extend(relativeTime);
@@ -64,7 +65,9 @@ const CommentList = () => {
           <li key={item.CommentId}>
             <div {...stylex.props(Styles.profileAndCommentInfoContainer)}>
               {/* 프로필 이미지 */}
-              <ProfileImg src={item.member.profileImgUrl} size={32} />
+              <Link href={`/profile/${item.member.MemberId}`}>
+                <ProfileImg src={item.member.profileImgUrl} size={32} />
+              </Link>
 
               <div {...stylex.props(Styles.commentInfoContainer)}>
                 {/* 작성자 정보 및 드롭다운 */}
@@ -72,7 +75,9 @@ const CommentList = () => {
                   {/* 닉네임 및 작성일 */}
                   <div {...stylex.props(Styles.nicknameAndDateContainer)}>
                     {/* 닉네임 */}
-                    <span {...stylex.props(Styles.nickname)}>{item.member.displayName}</span>
+                    <Link href={`/profile/${item.member.MemberId}`} {...stylex.props(Styles.nicknameLink)}>
+                      <span {...stylex.props(Styles.nickname)}>{item.member.displayName}</span>
+                    </Link>
 
                     {/* 작성일 */}
                     <span {...stylex.props(Styles.date)}>{dayjs(item.createdAt).fromNow()}</span>
@@ -153,5 +158,9 @@ const Styles = stylex.create({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  nicknameLink: {
+    width: '100%',
+    textDecoration: 'none',
   },
 });
