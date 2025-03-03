@@ -8,6 +8,8 @@ import AlertModal from '@src/components/ui/Modal/alert';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import { hideModal } from '@src/slices/modal';
 import { useDispatch } from 'react-redux';
+import useDeleteWorkspaceMemberQuery from '@src/features/mypage/profile/queries/useDeleteWorkspaceMemberQuery';
+import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 
 type ProfilePersonalDataListProps = {
   dataList: { id: number; name: string; icon: React.JSX.Element }[];
@@ -15,13 +17,14 @@ type ProfilePersonalDataListProps = {
   isPublicProfile?: boolean;
   memberId?: number;
   isMyProfile?: boolean;
-  isAdmin?: boolean;
 };
 
 const ProfilePersonalDataList: FC<ProfilePersonalDataListProps> = (props) => {
-  const { dataList, isPublicProfile, title, memberId, isMyProfile, isAdmin } = props;
+  const { dataList, isPublicProfile, title, memberId, isMyProfile } = props;
   const { renderModal } = useRenderModal();
   const dispatch = useDispatch();
+  const { data } = useGetMypageInfoQuery();
+  const mutation = useDeleteWorkspaceMemberQuery();
 
   const handleClickRemoveUser = () => {
     if (isMyProfile) {
@@ -34,7 +37,7 @@ const ProfilePersonalDataList: FC<ProfilePersonalDataListProps> = (props) => {
     confirm({
       content: '내보내면 더이상 회의록을 공유할 수 없어요.\n그래도 괜찮으신가요?',
       onOk: () => {
-        console.log('내보내기');
+        mutation.mutate({ MemberId: memberId });
       },
       okBtnName: '내보낼게요',
       cancelBtnName: '같이할래요',
@@ -53,8 +56,8 @@ const ProfilePersonalDataList: FC<ProfilePersonalDataListProps> = (props) => {
           </li>
         ))}
 
-        {/* 내보내기 */}
-        {isPublicProfile && isAdmin && (
+        {/* 내보내기 - 자기 자신에게는 안보임 */}
+        {isPublicProfile && data.myInfo.isAdmin && !isMyProfile && (
           <li {...stylex.props(Styles.Item)}>
             <span>
               <RemoveUserOutlined width={24} height={24} />
