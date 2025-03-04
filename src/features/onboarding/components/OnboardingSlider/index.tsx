@@ -81,6 +81,7 @@ const OnboardingSlider = () => {
 
   const handleClickRunMeeting = () => {
     dispatch(changeHiddenStatus());
+    localStorage.setItem('isOnboardingHidden', '1');
 
     router.push({ pathname: '/login', query: router.query });
   };
