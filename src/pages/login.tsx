@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import stylex from '@stylexjs/stylex';
 import { useSelector } from 'react-redux';
@@ -26,6 +26,15 @@ const Login = () => {
     },
   ];
   const { isOnboardingHidden } = useSelector((state: RootState) => state.onboarding);
+  const [isHidden, setIsHidden] = useState<boolean>(false);
+
+  // [ ] react-persist로 리팩토링 진행하기
+  useEffect(() => {
+    const storedValue = localStorage.getItem('isOnboardingHidden');
+    if (storedValue) {
+      setIsHidden(storedValue === '1');
+    }
+  }, [isOnboardingHidden]);
 
   const handleClickSnsLogin = (url) => {
     router.push(url);
@@ -34,7 +43,7 @@ const Login = () => {
   return (
     <MainLayout>
       {/* 로그인 페이지를 새로 고침할 때마다 온보딩 화면이 보임 */}
-      {isOnboardingHidden ? (
+      {isHidden ? (
         <>
           {/* 온보딩이 히든 상태이면 SNS 로그인 화면이 보임 */}
           <div {...stylex.props(LogoStyles.content)}>
