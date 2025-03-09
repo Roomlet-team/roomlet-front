@@ -7,6 +7,8 @@ import GnbNavLayout from '@src/layouts/GnbNavLayout';
 import CirclePlusFilled from '@src/components/icons/CirclePlusFilled';
 import Link from 'next/link';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
+import { RootState } from '@src/store';
 
 const MonthlyCalendar = dynamic(() => import('@src/features/calendar/components/MonthlyCalendar'), {
   ssr: false,
@@ -16,6 +18,7 @@ const MeetingSchedule = dynamic(() => import('@src/features/calendar/components/
 });
 
 const Calendar = () => {
+  const { isWorkspace } = useSelector((state: RootState) => state.workspace);
   const [selectDate, setSelectDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
 
   const handleSelectDate = (date: string) => {
@@ -30,11 +33,13 @@ const Calendar = () => {
       <MeetingSchedule selectDate={selectDate} />
 
       {/* 예약하기 링크 (플로팅) */}
-      <div {...stylex.props(Styles.CreateReservationWrapper)}>
-        <Link href="/booking">
-          <CirclePlusFilled width={56} height={56} />
-        </Link>
-      </div>
+      {isWorkspace && (
+        <div {...stylex.props(Styles.CreateReservationWrapper)}>
+          <Link href="/booking">
+            <CirclePlusFilled width={56} height={56} />
+          </Link>
+        </div>
+      )}
     </GnbNavLayout>
   );
 };
