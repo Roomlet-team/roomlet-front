@@ -18,6 +18,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import '../features/authentication/assets/onboarding-slider.css';
 import '../features/booking/assets/custom-react-calendar.css';
 import '../features/calendar/styles/custom-react-calendar.css';
+import { ToastContainer } from 'react-toastify';
 // import '../features/calendar/styles/styles.css';
 
 // client 생성
@@ -36,6 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
+        <ToastContainer />
         <Component {...pageProps} />
       </Provider>
 
