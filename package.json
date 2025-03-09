@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next dev -p 3050",
-    "build": "next build",
+    "build": "rm -rf .next && next build",
     "start": "next start -p 3050",
     "lint": "next lint"
   },
