@@ -44,6 +44,6 @@ const Styles = stylex.create({
     alignItems: 'center',
     background: 'rgba(0, 0, 0, 0.5)',
     color: BackgroundColor.gradientBlackBg,
-    zIndex: 9999,
+    zIndex: 100, // 9999는 토스트 메시지를 사용하는 경우를 고려해서 사용하지 말 것
   },
 });
