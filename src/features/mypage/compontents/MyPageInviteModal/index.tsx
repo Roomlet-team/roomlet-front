@@ -5,6 +5,7 @@ import Modal from '@src/components/ui/Modal';
 import usePostInviteCodeQuery from '../../queries/usePostInviteCodeQuery';
 import CopyOutlined from '@src/components/icons/CopyOutlined';
 import { colors, Typography } from '../../../../../public/styles/vars.stylex';
+import Toast from '@src/components/ui/Toast';
 
 interface MyPageInviteModalProps {
   isOpen: boolean;
@@ -23,6 +24,10 @@ const MyPageInviteModal: FC<MyPageInviteModalProps> = (props) => {
     onClose();
   };
 
+  const handleCopy = () => {
+    Toast({ message: '초대링크가 복사되었습니다.' });
+  };
+
   return (
     <Modal isOpen={isOpen}>
       <div {...stylex.props(Styles.Container)}>
@@ -35,7 +40,7 @@ const MyPageInviteModal: FC<MyPageInviteModalProps> = (props) => {
             value={copyUrl}
           />
           {/* 복사 버튼 */}
-          <CopyToClipboard text={copyUrl}>
+          <CopyToClipboard text={copyUrl} onCopy={handleCopy}>
             <button>
               <CopyOutlined width={24} height={24} />
             </button>
