@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   let isAccessToken = request.cookies.has('access_token');
 
   const path = request.nextUrl.pathname;
-  const prevUrl = request.nextUrl.href; // 로그인 페이지 이전에 있었던 url
+  const prevUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}${request.nextUrl.pathname}${request.nextUrl.search}`; // 로그인 페이지 이전에 있었던 url
 
   if (isRefreshToken) {
     if (path === '/login') {
