@@ -20,8 +20,8 @@ const MainLayout: FC<MainLayoutProps> = (props) => {
 
   useEffect(() => {
     // 워크스페이스 존재 여부 체크
-    dispatch(workspaceExists(!!data?.workspaceCount));
-  }, []);
+    dispatch(workspaceExists(data?.workspaceCount > 0));
+  }, [data?.workspaceList?.length]);
 
   return (
     <div id="main-layout" {...stylex.props(Styles.container(isScroll, backgroundColor))}>
