@@ -14,6 +14,7 @@
   "description": "",
   "dependencies": {
     "@reduxjs/toolkit": "^2.1.0",
+    "@sentry/nextjs": "^9.5.0",
     "@stylexjs/nextjs-plugin": "^0.4.1",
     "@stylexjs/stylex": "^0.4.1",
     "@tanstack/react-query": "^5.59.15",
