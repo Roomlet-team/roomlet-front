@@ -18,8 +18,8 @@ import { Typography } from '../../../../public/styles/vars.stylex';
 const WorkspaceHome = () => {
   const { data: myInfoData } = useGetMypageInfoQuery();
   const { data } = useGetWorkspaceMainInfoQuery();
-  const [isEdit, setIsEdit] = useState<boolean>(false);
   const [workspaceName, handleChangeWorkspaceName] = useInput<string>(data?.workspace.workspaceName);
+  const isAdmin = myInfoData?.myInfo.isAdmin;
   const commonUrl = 'mypage/workspace';
   const menuList = [
     {
@@ -37,33 +37,24 @@ const WorkspaceHome = () => {
     },
   ];
 
-  const editBtnProps = {
-    update: {
-      name: '수정',
-      isActive: isEdit,
-      onClick: () => {
-        setIsEdit(true);
-      },
-    },
-    complete: {
-      name: '완료',
-      isActive: isEdit,
-      onClick: () => {
-        setIsEdit(false);
-      },
-    },
-  };
-
   return (
     <MainLayout>
       <Header
         title="워크스페이스 정보"
         prevUrl="/mypage"
-        {...(myInfoData?.myInfo.isAdmin ? { rightBtnInfo: isEdit ? editBtnProps.complete : editBtnProps.update } : {})}
+        {...(isAdmin
+          ? {
+              rightBtnInfo: {
+                name: '완료',
+                isActive: data?.workspace?.workspaceName !== workspaceName,
+                onClick: () => {},
+              },
+            }
+          : {})}
       />
 
       {/* 이미지 업로드 및 이름 입력 */}
-      {isEdit ? (
+      {isAdmin ? (
         <div {...stylex.props(Styles.ProfileContainer)}>
           <MyPageImgUpload onSelect={null} initialImgUrl={null} />
           <MyPageInput label="워크스페이스 이름" value={workspaceName} onChange={handleChangeWorkspaceName} />
