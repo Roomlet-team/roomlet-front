@@ -9,13 +9,20 @@ import Button from '@src/components/ui/Button';
 import useGetInviteInfoQuery from '@src/features/invite/queries/useGetInviteInfoQuery';
 import usePostWorkspaceJoinQuery from '@src/features/invite/queries/usePostWorkspaceJoinQuery';
 import { useRouter } from 'next/router';
+import ProfileImg from '@src/components/ui/ProfileImg';
+import EllipsisImg from '@public/img/ellipsis.svg';
 
 const Invite = () => {
   const [displayName, handleChangeDisplayName] = useInput('');
   const { data } = useGetInviteInfoQuery();
   const mutation = usePostWorkspaceJoinQuery();
   const router = useRouter();
-  const letterImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/invite/invite-letter.png';
+  const memberCount = data?.inviteInfo?.workspace?.memberCount;
+  const isMemberCountGreaterThanLimit = (limit: number) => memberCount > limit;
+  const displayedMemberNames = data?.inviteInfo?.workspace?.memberList
+    .slice(0, 2)
+    .map((item) => item.displayName)
+    .join(isMemberCountGreaterThanLimit(1) ? ', ' : '');
 
   const handleClickJoin = () => {
     mutation.mutate({
@@ -36,17 +43,63 @@ const Invite = () => {
             {/* 룸렛 텍스트 로고 */}
             <div className="logo-wrapper" {...stylex.props(Styles.logoWrapper)}>
               <RoomletTextLogo width={164} height={24} />
+              <p {...stylex.props(Typography.SubtitleRegularBold)}>룸렛에서 회의를 함께 준비해 보세요</p>
             </div>
 
             {/* 초대 내용 */}
-            <div {...stylex.props(Typography.M3BodyLarge)}>
-              <img src={letterImgUrl} alt="편지 이미지" {...stylex.props(Styles.letterImg)} />
-              <div {...stylex.props(Styles.contentWrapper, Typography.M3BodyLarge)}>
-                [{data?.inviteInfo?.invitedMember.displayName}]님이 초대했어요.
-                <br />
-                <br />
-                룸렛에서 [{data?.inviteInfo?.workspace?.workspaceName}] 회의를 <br />
-                함께 준비해보세요.
+            <div {...stylex.props(Styles.inviteContentContainer)}>
+              <p {...stylex.props(Typography.TextSmallRegular, Styles.workspaceNameContent)}>
+                {data?.inviteInfo?.workspace?.workspaceName}의 회의를 준비하고
+                <br /> 일정을 관리해보세요.
+              </p>
+
+              {/* 멤버 프로필 이미지 리스트 */}
+              <div {...stylex.props(Styles.memberInfoContainer)}>
+                {isMemberCountGreaterThanLimit(5) ? (
+                  <div {...stylex.props(Styles.greaterThanFiveMemberContainer)}>
+                    <div {...stylex.props(Styles.memberProfileImgGroupContainer)}>
+                      {data?.inviteInfo?.workspace?.memberList.slice(0, 2).map((item) => (
+                        <div {...stylex.props(Styles.memberGroupItemWrapper)}>
+                          <ProfileImg
+                            src={item.profileImgUrl}
+                            alt={`${item.displayName}의 프로필 사진`}
+                            size={60}
+                            borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    <EllipsisImg />
+                    <div {...stylex.props(Styles.memberGroupItemWrapper)}>
+                      <ProfileImg
+                        src={data?.inviteInfo?.workspace?.memberList?.slice(-1)[0]?.profileImgUrl}
+                        alt="프로필 사진"
+                        size={60}
+                        borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div {...stylex.props(Styles.memberProfileImgGroupContainer)}>
+                    {data?.inviteInfo?.workspace?.memberList.map((item) => (
+                      <div {...stylex.props(Styles.memberGroupItemWrapper)}>
+                        <ProfileImg
+                          src={item.profileImgUrl}
+                          alt={`${item.displayName}의 프로필 사진`}
+                          size={60}
+                          borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* 멤버 닉네임 */}
+                <p {...stylex.props(Styles.nicknameContent, Typography.SubTextLargeRegular)}>
+                  {displayedMemberNames}
+                  {isMemberCountGreaterThanLimit(3) ? ` 님 외 ${memberCount - 2}명` : ' 님'}이 이미 함께하고 있어요..
+                </p>
               </div>
             </div>
           </div>
@@ -99,15 +152,43 @@ const Styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'column',
+    gap: '32px',
     marginBottom: '56px',
   },
-  letterImg: {
-    margin: '0 auto',
-    marginBottom: '52px',
-    width: '220px',
-    height: '189px',
+  inviteContentContainer: {
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
   },
-  contentWrapper: {
+  workspaceNameContent: {
+    color: colors.black500,
+    textAlign: 'center',
+    marginBottom: '32px',
+  },
+  memberInfoContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    gap: '24px',
+  },
+  memberProfileImgGroupContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  memberGroupItemWrapper: {
+    margin: '0 -10px',
+  },
+  greaterThanFiveMemberContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '41px',
+  },
+  nicknameContent: {
     marginBottom: '75px',
     textAlign: 'center',
   },
