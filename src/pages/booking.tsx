@@ -38,8 +38,8 @@ const BookingDatePicker = dynamic(() => import('@src/features/booking/components
 type BookingForm = {
   date: string;
   RoomId: number;
-  startTime: TimeItemType;
-  endTime: TimeItemType;
+  startDt: TimeItemType;
+  endDt: TimeItemType;
   attendMemberList: string[];
   CongressCategoryId: number;
   congressTitle: string;
@@ -58,14 +58,14 @@ const Booking = () => {
   const { data: congressRoomData } = useGetCongressRoomListQuery();
   const { data: categoryData } = useGetCategoryListQuery();
   const mutation = usePostWorkspaceCongressQuery();
-  // 시간 선택시 roomId, date, startTime 값이 필요해서 해당 값들은 실시간 추적이 가능하도록 함.
+  // 시간 선택시 roomId, date, startDt 값이 필요해서 해당 값들은 실시간 추적이 가능하도록 함.
   const RoomId = useWatch({ control, name: 'RoomId' });
   const date = useWatch({ control, name: 'date' });
-  const startTime = useWatch({ control, name: 'startTime' });
+  const startDt = useWatch({ control, name: 'startDt' });
   // selectBookingDate 설정시 값이 초기화 되는 문제가 있어서 제목, 카테고리, 종료 시간, 참석자, 상세 내용도 추적이 가능하게 함
   const congressTitle = useWatch({ control, name: 'congressTitle' });
   const CongressCategoryId = useWatch({ control, name: 'CongressCategoryId' });
-  const endTime = useWatch({ control, name: 'endTime' });
+  const endDt = useWatch({ control, name: 'endDt' });
   const congressDescription = useWatch({ control, name: 'congressDescription' });
   const attendMemberList = useWatch({ control, name: 'attendMemberList' });
 
@@ -89,21 +89,22 @@ const Booking = () => {
       attendMemberList: mappedAttendMemberList,
       CongressCategoryId: Number(data.CongressCategoryId),
       RoomId: Number(data.RoomId),
-      startTime: data.startTime.value,
-      endTime: data.endTime.value,
+      startDt: data.startDt.value,
+      endDt: data.endDt.value,
     });
   };
 
   // Redux 상태 변경 시 React Hook Form의 값 동기화
   useEffect(() => {
     if (selectBookingDate) {
+      // 예약 날짜가 변경되면 예약 시간 초기화
       reset({
         date: selectBookingDate,
         RoomId,
-        startTime,
+        startDt: null,
         congressTitle,
         CongressCategoryId,
-        endTime,
+        endDt: null,
         congressDescription,
         attendMemberList,
       });
@@ -199,7 +200,7 @@ const Booking = () => {
           <BookingFormItem label="시간 선택" required>
             <div {...stylex.props(Styles.TimePickerContainer)}>
               <Controller
-                name="startTime"
+                name="startDt"
                 control={control}
                 defaultValue={null}
                 rules={{ required: '시작 시간을 선택해주세요' }}
@@ -214,7 +215,7 @@ const Booking = () => {
               />
               <span {...stylex.props(Styles.Hyphen)} />
               <Controller
-                name="endTime"
+                name="endDt"
                 control={control}
                 defaultValue={null}
                 rules={{ required: '종료 시간을 선택해주세요' }}
@@ -224,7 +225,7 @@ const Booking = () => {
                     onSelect={field.onChange}
                     roomId={RoomId}
                     reserDate={date}
-                    startTime={startTime}
+                    startDt={startDt}
                   />
                 )}
               />

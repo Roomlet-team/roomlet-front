@@ -15,13 +15,13 @@ const TimeOptionList: FC<TimeOptionListProps> = (props) => {
   const { onSelect, data, reserDate } = props;
   const optionList = data?.timeList
     .map((item, idx) => {
-      const displayTime = item.time;
+      const displayTime = item.dateTime;
 
       // 현재 시간 이후의 시간들만 출력되게 구현
       return (
         item.isValid &&
-        dayjs().isBefore(dayjs(`${reserDate} ${displayTime}`).format('YYYY-MM-DD HH:mm')) && {
-          name: `${Number(item.time.slice(0, 2)) < 12 ? '오전' : '오후'} ${displayTime}`, // 오전, 오후를 시간과 함께 나타냄
+        dayjs().isBefore(dayjs(displayTime)) && {
+          name: `${dayjs(displayTime).format('A HH:mm')}`, // 오전, 오후를 시간과 함께 나타냄
           value: displayTime,
         }
       );
@@ -35,12 +35,23 @@ const TimeOptionList: FC<TimeOptionListProps> = (props) => {
   return (
     <div {...stylex.props(Styles.TimeListWrapper)}>
       <ul {...stylex.props(Styles.TimeList)}>
-        {React.Children.toArray(
-          optionList?.map((item) => (
-            <li {...stylex.props(Styles.TimeItem, Typography.SubTextLargeMedium)} onClick={() => handleClickTime(item)}>
-              {item.name}
-            </li>
-          ))
+        {optionList?.length > 0 ? (
+          React.Children.toArray(
+            optionList?.map((item) => (
+              <li
+                {...stylex.props(Styles.TimeItem, Typography.SubTextLargeMedium)}
+                onClick={() => handleClickTime(item)}
+              >
+                {item.name}
+              </li>
+            ))
+          )
+        ) : (
+          <li {...stylex.props(Styles.TimeItem, Styles.NoTime, Typography.SubTextLargeMedium)}>
+            예약 가능한
+            <br />
+            시간이 없어요.
+          </li>
         )}
       </ul>
     </div>
@@ -74,5 +85,9 @@ const Styles = stylex.create({
     outline: 'none',
     color: colors.gray900,
     cursor: 'pointer',
+  },
+  NoTime: {
+    textAlign: 'center',
+    color: colors.gray50,
   },
 });

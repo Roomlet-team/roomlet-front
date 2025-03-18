@@ -5,24 +5,25 @@ import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 import TimeOptionList from './TimeOptionList';
 import type { TimeItemType } from '../../types';
 import useGetWorkspaceCongressRoomTimQuery from '../../queries/useGetMemberListQuery copy';
+import dayjs from 'dayjs';
 
 type BookingTimePickerProps = {
   placeholder: string;
   roomId: number;
   reserDate: string;
-  startTime?: TimeItemType;
+  startDt?: TimeItemType;
   onSelect: (value: TimeItemType) => void;
 };
 
 const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
-  const { placeholder, onSelect, roomId, reserDate, startTime } = props;
+  const { placeholder, onSelect, roomId, reserDate, startDt } = props;
   const [isTimeOptionOpen, setIsTimeOptionOpen] = useState<boolean>(false);
   const [selectTime, setSelectTime] = useState<TimeItemType>(null);
   const timeRef = useRef<HTMLDivElement>(null);
   const reserDateWithoutHyphens = reserDate?.split('-').join('');
 
   const { data } = useGetWorkspaceCongressRoomTimQuery(roomId, reserDateWithoutHyphens, {
-    ...(startTime ? { startTime: startTime.value } : {}),
+    ...(startDt ? { startDtNumber: dayjs(startDt.value).valueOf() } : {}),
   });
 
   const handleClickTime = () => {
@@ -47,6 +48,13 @@ const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
       window.removeEventListener('click', handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    // 예약 시간 날짜가 변경되면 선택된 시간 초기화
+    if (reserDate) {
+      setSelectTime(null);
+    }
+  }, [reserDate]);
 
   return (
     <div {...stylex.props(BookingStyles.formItemInputWrapper, Styles.Wrapper)} ref={timeRef}>
