@@ -11,6 +11,7 @@ import usePostWorkspaceJoinQuery from '@src/features/invite/queries/usePostWorks
 import { useRouter } from 'next/router';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import EllipsisImg from '@public/img/ellipsis.svg';
+import Link from 'next/link';
 
 const Invite = () => {
   const [displayName, handleChangeDisplayName] = useInput('');
@@ -42,7 +43,9 @@ const Invite = () => {
           <div {...stylex.props(Styles.logoAndInfoContainer)}>
             {/* 룸렛 텍스트 로고 */}
             <div className="logo-wrapper" {...stylex.props(Styles.logoWrapper)}>
-              <RoomletTextLogo width={164} height={24} />
+              <Link href="/">
+                <RoomletTextLogo width={164} height={24} />
+              </Link>
               <p {...stylex.props(Typography.SubtitleRegularBold)}>룸렛에서 회의를 함께 준비해 보세요</p>
             </div>
 
