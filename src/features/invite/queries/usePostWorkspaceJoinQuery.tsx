@@ -1,6 +1,9 @@
 import { confirm } from '@src/components/ui/Modal/confirm';
 import useCustomMutation from '@src/hooks/react-query/useCustomMutation';
+import { hideModal } from '@src/slices/modal';
 import clientInstance from '@src/utils/api/clientInstance';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 
 interface WorkspaceInfo {
   code: number;
@@ -36,11 +39,30 @@ const postWorkspaceJoinApi = async (data: JoinInfo): Promise<WorkspaceInfo> => {
  *   - `isSuccess`: mutation이 성공했고, mutation data를 사용할 수 있는지에 대한 여부
  */
 const usePostWorkspaceJoinQuery = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const asPath = router.asPath;
+
   const mutation = useCustomMutation({
     mutationFn: (data: JoinInfo) => postWorkspaceJoinApi(data),
+    onSuccess: () => {
+      // 가입 성공 시 홈 화면으로 이동
+      router.push('/');
+    },
     onError: (error, variables, context) => {
+      console.log('error', error);
+      if (error?.status === 401) {
+        return confirm({
+          content: '로그인 후 참가하실 수 있습니다. 로그인 페이지로 이동할까요?',
+          onOk: () => router.push(`/login?prev_url=${process.env.NEXT_PUBLIC_FRONTEND_URL}${asPath}`),
+          onCancel: () => dispatch(hideModal()),
+        });
+      }
+
       // 에러가 발생한 경우, 에러 내용이 담긴 confirm 모달 띄우기
-      confirm({ content: error?.response.data.message.errMsg });
+      return confirm({
+        content: error?.response.data.message.errMsg || `서버 에러가 발생했습니다. (code: ${error?.status})`,
+      });
     },
   });
 
