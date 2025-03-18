@@ -16,7 +16,6 @@ const TimeLine = () => {
   const { isWorkspace } = useSelector((state: RootState) => state.workspace);
   const [isMyMeeting, setIsMyMeeting] = useState<boolean>(false);
   const { data } = useGetWorkspaceCongressListQuery({
-    date: dayjs().format('YYYY-MM-DD'),
     ...(isMyMeeting ? { my: 1 } : {}),
   });
 
