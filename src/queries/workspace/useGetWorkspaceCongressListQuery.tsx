@@ -12,8 +12,8 @@ export interface CongressListResponse {
 }
 
 interface CongressListItem {
-  startTime: string;
-  endTime: string;
+  startDt: string;
+  endDt: string;
   date: string;
   CongressId: number;
   congressTitle: string;
