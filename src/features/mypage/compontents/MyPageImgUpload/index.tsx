@@ -16,7 +16,7 @@ const MyPageImgUpload: FC<MyPageImgUploadProps> = (props) => {
   const { onSelect, initialImgUrl } = props;
 
   const [profileImg, setProfileImg] = useState<string>('');
-  const [imgUrl, setImgUrl] = useState<string | null>(initialImgUrl);
+  const [imgUrl, setImgUrl] = useState<string | null>(null);
   const imageUploadRef = useRef(null);
 
   const handleClickImgUpload = () => {
@@ -58,7 +58,7 @@ const MyPageImgUpload: FC<MyPageImgUploadProps> = (props) => {
     <div {...stylex.props(Styles.Container)}>
       <div {...stylex.props(Styles.ImgContainer)}>
         {/* [ ] src 타입 수정하기 */}
-        <ProfileImg src={imgUrl} size={68} />
+        <ProfileImg src={imgUrl || initialImgUrl} size={68} />
         <input
           type="file"
           style={{ display: 'none' }}
