@@ -14,7 +14,9 @@ const MessageContent: FC<ToastProps> = (props) => {
 
   return (
     <div {...stylex.props(Styles.Message, Typography.TextSmallMedium)}>
-      <CircleCheckmarkFilled width={24} height={24} />
+      <div {...stylex.props(Styles.IconWrapper)}>
+        <CircleCheckmarkFilled width={24} height={24} />
+      </div>
       <span>{message}</span>
     </div>
   );
@@ -44,5 +46,8 @@ const Styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
+  },
+  IconWrapper: {
+    flexShrink: 0,
   },
 });
