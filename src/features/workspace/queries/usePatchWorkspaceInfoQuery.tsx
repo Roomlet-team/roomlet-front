@@ -39,7 +39,7 @@ const usePatchWorkspaceInfoQuery = () => {
   const mutation = useCustomMutation({
     mutationFn: (data: FormData) => patchWorkspaceInfoApi(workspaceId, data),
     onSuccess: () => {
-      Toast({ message: '정보 수정이 완료되었습니다.' });
+      Toast({ message: '워크스페이스 정보 수정이 완료되었습니다.' });
     },
     onError: (error, variables, context) => {
       const errorCode = error?.status;
