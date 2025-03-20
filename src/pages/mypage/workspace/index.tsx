@@ -55,15 +55,23 @@ const WorkspaceHome = () => {
           ? {
               rightBtnInfo: {
                 name: '완료',
-                isActive: !!workspaceImgFile || data?.workspace?.workspaceName !== workspaceName,
-                onClick: () => {
-                  const formData = new FormData();
+                // 이미지 파일이 있거나 워크스페이스 이름이 변경되었을 때 버튼 활성화
+                ...(!!workspaceImgFile || data?.workspace?.workspaceName !== workspaceName
+                  ? {
+                      isActive: true,
+                      onClick: () => {
+                        const formData = new FormData();
 
-                  formData.append('workspaceName', workspaceName);
-                  formData.append('image', workspaceImgFile);
+                        formData.append('workspaceName', workspaceName);
 
-                  mutation.mutate(formData);
-                },
+                        if (workspaceImgFile) {
+                          formData.append('image', workspaceImgFile);
+                        }
+
+                        mutation.mutate(formData);
+                      },
+                    }
+                  : { isActive: false, onClick: null }),
               },
             }
           : {})}
