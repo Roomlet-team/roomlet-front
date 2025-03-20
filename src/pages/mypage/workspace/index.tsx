@@ -14,12 +14,17 @@ import useGetWorkspaceMainInfoQuery from '@src/features/home/queries/useGetWorks
 import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import { Typography } from '../../../../public/styles/vars.stylex';
+import usePatchWorkspaceInfoQuery from '@src/features/workspace/queries/usePatchWorkspaceInfoQuery';
+import Toast from '@src/components/ui/Toast';
 
 const WorkspaceHome = () => {
   const { data: myInfoData } = useGetMypageInfoQuery();
   const { data } = useGetWorkspaceMainInfoQuery();
+  const mutation = usePatchWorkspaceInfoQuery();
   const [workspaceName, handleChangeWorkspaceName] = useInput<string>(data?.workspace.workspaceName);
+  const [workspaceImgFile, setWorkspaceImgFile] = useState<Blob | null>(null);
   const isAdmin = myInfoData?.myInfo.isAdmin;
+  const workspaceImgUrl = `${process.env.NEXT_PUBLIC_S3_URL}/${data?.workspace.workspaceImgKey}`;
   const commonUrl = 'mypage/workspace';
   const menuList = [
     {
@@ -37,6 +42,10 @@ const WorkspaceHome = () => {
     },
   ];
 
+  const handleSelectWorkspaceImg = (file: Blob) => {
+    setWorkspaceImgFile(file);
+  };
+
   return (
     <MainLayout>
       <Header
@@ -46,8 +55,15 @@ const WorkspaceHome = () => {
           ? {
               rightBtnInfo: {
                 name: '완료',
-                isActive: data?.workspace?.workspaceName !== workspaceName,
-                onClick: () => {},
+                isActive: !!workspaceImgFile || data?.workspace?.workspaceName !== workspaceName,
+                onClick: () => {
+                  const formData = new FormData();
+
+                  formData.append('workspaceName', workspaceName);
+                  formData.append('image', workspaceImgFile);
+
+                  mutation.mutate(formData);
+                },
               },
             }
           : {})}
@@ -56,12 +72,12 @@ const WorkspaceHome = () => {
       {/* 이미지 업로드 및 이름 입력 */}
       {isAdmin ? (
         <div {...stylex.props(Styles.ProfileContainer)}>
-          <MyPageImgUpload onSelect={null} initialImgUrl={null} />
+          <MyPageImgUpload onSelect={handleSelectWorkspaceImg} initialImgUrl={workspaceImgUrl} />
           <MyPageInput label="워크스페이스 이름" value={workspaceName} onChange={handleChangeWorkspaceName} />
         </div>
       ) : (
         <div {...stylex.props(Styles.ProfileContainer)}>
-          <ProfileImg src={null} size={68} />
+          <ProfileImg src={workspaceImgUrl} size={68} />
           <p {...stylex.props(Typography.TitleRegularBold)}>{data.workspace.workspaceName}</p>
         </div>
       )}
