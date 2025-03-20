@@ -18,6 +18,7 @@ interface WorkspaceInfo {
   workspace: {
     WorkspaceId: number;
     workspaceName: string;
+    workspaceImgKey: string;
     congressInfo: {
       myCongressCount: number;
       workspaceCongressCount: number;
@@ -61,6 +62,7 @@ const useGetWorkspaceMainInfoQuery = () => {
       workspace: {
         WorkspaceId: null,
         workspaceName: '',
+        workspaceImgKey: '',
         congressInfo: {
           myCongressCount: 0,
           workspaceCongressCount: 0,
