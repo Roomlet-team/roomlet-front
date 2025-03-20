@@ -16,7 +16,6 @@ const TimeLine = () => {
   const { isWorkspace } = useSelector((state: RootState) => state.workspace);
   const [isMyMeeting, setIsMyMeeting] = useState<boolean>(false);
   const { data } = useGetWorkspaceCongressListQuery({
-    date: dayjs().format('YYYY-MM-DD'),
     ...(isMyMeeting ? { my: 1 } : {}),
   });
 
@@ -45,7 +44,7 @@ const TimeLine = () => {
               data?.congressList.map((item) => (
                 <div {...stylex.props(Styles.timeAndMeetingContent)}>
                   <div {...stylex.props(Styles.timeContent)}>
-                    <span {...stylex.props(Styles.timeText)}>{item.startTime}</span>
+                    <span {...stylex.props(Styles.timeText)}>{item.startDt}</span>
                     <div {...stylex.props(Styles.timeDot)} />
                   </div>
 

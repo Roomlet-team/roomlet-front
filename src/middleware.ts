@@ -20,8 +20,8 @@ export async function middleware(request: NextRequest) {
     return null;
   }
 
-  // 로그인을 하지 않은 경우, 로그인 페이지로 이동 (로그인 페이지를 제외한 모든 페이지 접근 불가)
-  if (!isRefreshToken && path !== '/login') {
+  // 로그인을 하지 않은 경우, 로그인 페이지로 이동 (초대 페이지, 로그인 페이지를 제외한 모든 페이지 접근 불가)
+  if (!isRefreshToken && !['/login', '/invite'].includes(path)) {
     return NextResponse.redirect(new URL(`/login?prev_url=${encodeURIComponent(prevUrl)}`, request.url));
   }
 

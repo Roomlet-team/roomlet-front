@@ -2,14 +2,16 @@ import clientInstance from '@src/utils/api/clientInstance';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
-interface InviteInfo {
-  code: number;
+interface InviteInfoResponse {
   success: boolean;
+  code: number;
   inviteInfo: {
     InviteId: string;
     workspace: {
       WorkspaceId: number;
       workspaceName: string;
+      memberCount: number;
+      memberList: MemberListItem[];
     };
     invitedMember: {
       displayName: string;
@@ -18,7 +20,12 @@ interface InviteInfo {
   };
 }
 
-const getInviteInfoApi = async (InviteId: string): Promise<InviteInfo> => {
+interface MemberListItem {
+  displayName: string;
+  profileImgUrl: null | string;
+}
+
+const getInviteInfoApi = async (InviteId: string): Promise<InviteInfoResponse> => {
   const response = await clientInstance.get(`/v1/workspace/invite/${InviteId}`);
 
   return response.data;

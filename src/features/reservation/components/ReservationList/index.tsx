@@ -33,7 +33,7 @@ const ReservationList: FC<ReservationListProps> = (props) => {
                   <div {...stylex.props(Styles.textContainer)}>
                     <ClockFilled width={14} height={14} />
                     <p {...stylex.props(Styles.timeText)}>
-                      {item.startTime} ~ {item.endTime}
+                      {item.startDt} ~ {item.endDt}
                     </p>
                   </div>
 

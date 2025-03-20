@@ -26,7 +26,7 @@ const MeetingSchedule: FC<{ selectDate: string }> = ({ selectDate }) => {
                 <div {...stylex.props(Styles.infoContent)}>
                   <p {...stylex.props(Styles.titleText('#333'))}>{item.congressTitle}</p>
                   <p {...stylex.props(Styles.timeText)}>
-                    {item.startTime} ~ {item.endTime}
+                    {dayjs(item.startDt).format('HH:mm')} ~ {dayjs(item.endDt).format('HH:mm')}
                   </p>
                 </div>
                 <div {...stylex.props(Styles.categoryTag(item.congressCategory.hexcode))}>

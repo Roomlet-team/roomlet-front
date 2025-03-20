@@ -1,5 +1,6 @@
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
 import clientInstance from '@src/utils/api/clientInstance';
+import getUserTimeZone from '@src/utils/timezone/getUserTimeZone';
 import { useQuery } from '@tanstack/react-query';
 
 export interface CongressListResponse {
@@ -11,8 +12,8 @@ export interface CongressListResponse {
 }
 
 interface CongressListItem {
-  startTime: string;
-  endTime: string;
+  startDt: string;
+  endDt: string;
   date: string;
   CongressId: number;
   congressTitle: string;
@@ -53,7 +54,9 @@ interface Params {
 }
 
 const getWorkspaceCongressListApi = async (WorkspaceId: number, params: Params): Promise<CongressListResponse> => {
-  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/congress/list`, { params });
+  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/congress/list`, {
+    params: { ...params, timezone: getUserTimeZone() },
+  });
 
   return response.data;
 };

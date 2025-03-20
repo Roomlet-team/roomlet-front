@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import clientInstance from '@src/utils/api/clientInstance';
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
+import getUserTimeZone from '@src/utils/timezone/getUserTimeZone';
 
 export interface CongressRoomTimeList {
   success: boolean;
@@ -9,12 +10,12 @@ export interface CongressRoomTimeList {
 }
 
 export interface CongressRoomTimeItem {
-  time: string;
+  dateTime: string;
   isValid: boolean;
 }
 
 interface Params {
-  startTime?: string;
+  startDtNumber?: number;
 }
 
 const getWorkspaceCongressRoomTimeApi = async (
@@ -24,7 +25,7 @@ const getWorkspaceCongressRoomTimeApi = async (
   params: Params
 ): Promise<CongressRoomTimeList> => {
   const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/congress/room/${RoomId}/${date}/time`, {
-    params,
+    params: { ...params, timezone: getUserTimeZone() },
   });
 
   return response.data;
@@ -47,7 +48,7 @@ const useGetWorkspaceCongressRoomTimQuery = (RoomId, date, params: Params) => {
   const WorkspaceId = data?.workspaceList[0].WorkspaceId;
 
   const result = useQuery({
-    queryKey: ['workspaceCongressRoomTime', ...Object.values(params)],
+    queryKey: ['workspaceCongressRoomTime', RoomId, date, ...Object.values(params)],
     queryFn: () => getWorkspaceCongressRoomTimeApi(WorkspaceId, RoomId, date, params),
     enabled: Boolean(WorkspaceId) && Boolean(date) && Boolean(RoomId), // WorkspaceId가 정의되어 있지 않은 경우, 첫 렌더링시 요청이 이뤄지지 않게 함.
   });

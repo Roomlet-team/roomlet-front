@@ -1,5 +1,6 @@
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
 import clientInstance from '@src/utils/api/clientInstance';
+import getUserTimeZone from '@src/utils/timezone/getUserTimeZone';
 import { useQuery } from '@tanstack/react-query';
 
 interface WorkspaceInfo {
@@ -25,7 +26,9 @@ interface WorkspaceInfo {
 }
 
 const getWorkspaceInfoApi = async (WorkspaceId: number): Promise<WorkspaceInfo> => {
-  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}`);
+  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}`, {
+    params: { timezone: getUserTimeZone() },
+  });
 
   return response.data;
 };
