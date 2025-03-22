@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { AppProps } from 'next/app';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -5,7 +6,7 @@ import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 // react-query
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // redux
 import { Provider } from 'react-redux';
@@ -21,10 +22,20 @@ import '../features/calendar/styles/custom-react-calendar.css';
 import { ToastContainer } from 'react-toastify';
 // import '../features/calendar/styles/styles.css';
 
-// client 생성
-const queryClient = new QueryClient();
-
 export default function App({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            // With SSR, we usually want to set some default staleTime
+            // above 0 to avoid refetching immediately on the client
+            staleTime: 60 * 1000,
+          },
+        },
+      })
+  );
+
   dayjs.extend(utc);
   dayjs.extend(timezone);
 
@@ -36,10 +47,12 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <ToastContainer />
-        <Component {...pageProps} />
-      </Provider>
+      <HydrationBoundary state={pageProps.dehydratedState}>
+        <Provider store={store}>
+          <ToastContainer />
+          <Component {...pageProps} />
+        </Provider>
+      </HydrationBoundary>
 
       {/* react-query devtools - devtools 폰트 사이즈가 너무 작아서 16px로 설정 */}
       <div className="react-query-devtools" style={{ fontSize: '16px' }}>
