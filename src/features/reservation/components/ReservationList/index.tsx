@@ -7,6 +7,7 @@ import MarkerPinFilled from '@src/components/icons/MarkerPinFilled';
 import ClockFilled from '@src/components/icons/ClockFilled';
 import CircleAlertFilled from '@src/components/icons/CircleAlertFilled';
 import { Typography } from '../../../../../public/styles/vars.stylex';
+import dayjs from 'dayjs';
 
 interface ReservationListProps {
   data: CongressListResponse;
@@ -33,7 +34,7 @@ const ReservationList: FC<ReservationListProps> = (props) => {
                   <div {...stylex.props(Styles.textContainer)}>
                     <ClockFilled width={14} height={14} />
                     <p {...stylex.props(Styles.timeText)}>
-                      {item.startDt} ~ {item.endDt}
+                      {dayjs(item.startDt).format('HH:mm')} ~ {dayjs(item.endDt).format('HH:mm')}
                     </p>
                   </div>
 
