@@ -19,6 +19,7 @@ import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGe
 import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
+import usePostLogoutQuery from '@src/features/authentication/queries/usePostLogoutQuery';
 
 const MyPageInviteModal = dynamic(() => import('@src/features/mypage/compontents/MyPageInviteModal'), {
   ssr: false,
@@ -32,6 +33,7 @@ const MypageMenu = dynamic(() => import('@src/features/mypage/compontents/Mypage
 
 const MyPageHome = () => {
   const { isWorkspace } = useSelector((state: RootState) => state.workspace);
+  const mutation = usePostLogoutQuery();
   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
   const { data } = useGetWorkspaceListQuery();
   const { data: profileData } = useGetMyPageProfileQuery();
@@ -42,6 +44,10 @@ const MyPageHome = () => {
   const handleClickInviteModal = () => {
     setIsInviteModalOpen(!isInviteModalOpen);
   };
+
+  const commonMenuList = [
+    { id: 6, name: '로그아웃', icon: <ExitOutlined width={24} height={24} />, onClick: () => mutation.mutate() },
+  ];
 
   const menuList = data?.workspaceCount
     ? [
@@ -74,6 +80,7 @@ const MyPageHome = () => {
             });
           },
         },
+        ...commonMenuList,
       ]
     : [
         // 워크 스페이스가 존재하지 않는 경우
@@ -89,6 +96,7 @@ const MyPageHome = () => {
           icon: <EntranceOutlined width={24} height={24} />,
           href: `/${commonUrl}/workspace`,
         },
+        ...commonMenuList,
       ];
 
   return (
