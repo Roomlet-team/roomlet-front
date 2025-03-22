@@ -25,7 +25,7 @@ interface MemberListItem {
   profileImgUrl: null | string;
 }
 
-const getInviteInfoApi = async (InviteId: string): Promise<InviteInfoResponse> => {
+export const getInviteInfoApi = async (InviteId: string): Promise<InviteInfoResponse> => {
   const response = await clientInstance.get(`/v1/workspace/invite/${InviteId}`);
 
   return response.data;
