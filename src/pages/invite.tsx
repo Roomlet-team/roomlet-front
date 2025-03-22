@@ -6,12 +6,15 @@ import { colors, Typography } from '../../public/styles/vars.stylex';
 import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import Button from '@src/components/ui/Button';
-import useGetInviteInfoQuery from '@src/features/invite/queries/useGetInviteInfoQuery';
+import useGetInviteInfoQuery, { getInviteInfoApi } from '@src/features/invite/queries/useGetInviteInfoQuery';
 import usePostWorkspaceJoinQuery from '@src/features/invite/queries/usePostWorkspaceJoinQuery';
 import { useRouter } from 'next/router';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import EllipsisImg from '@public/img/ellipsis.svg';
 import Link from 'next/link';
+import SEOHead from '@src/components/ui/SEOHead';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 const Invite = () => {
   const [displayName, handleChangeDisplayName] = useInput('');
@@ -38,6 +41,12 @@ const Invite = () => {
 
   return (
     <MainLayout isScroll>
+      <SEOHead
+        title={`💌 ${data?.inviteInfo?.workspace?.workspaceName}에서 초대장이 도착했어요 | 룸렛`}
+        description="룸렛에서 회의를 함께 준비해 보세요"
+        url={{ pathname: '/invite' }}
+      />
+
       <div {...stylex.props(Styles.Container)}>
         <div {...stylex.props(Styles.logoAndInfoWrapper)}>
           <div {...stylex.props(Styles.logoAndInfoContainer)}>
@@ -130,6 +139,28 @@ const Invite = () => {
 };
 
 export default Invite;
+
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+      },
+    },
+  });
+  const InviteId = context.query.InviteId as string;
+
+  await queryClient.prefetchQuery({
+    queryKey: ['inviteInfo', InviteId],
+    queryFn: () => getInviteInfoApi(InviteId),
+  });
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+};
 
 const Styles = stylex.create({
   Container: {
