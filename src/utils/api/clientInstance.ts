@@ -5,7 +5,7 @@ const setInterceptors = (instance: AxiosInstance) => {
   // 요청 인터셉트
   instance.interceptors.request.use(
     async (config) => {
-      const result = await axios.get('/api/auth');
+      const result = await axios.get(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/auth`);
       const token = result.headers.authorization;
 
       // Authorization에 access token 저장
