@@ -44,7 +44,7 @@ const Invite = () => {
       <SEOHead
         title={`💌 ${data?.inviteInfo?.workspace?.workspaceName}에서 초대장이 도착했어요 | 룸렛`}
         description="룸렛에서 회의를 함께 준비해 보세요"
-        url={{ pathname: '/invite' }}
+        url={{ pathname: '/invite', query: `InviteId=${data?.inviteInfo?.InviteId}` }}
       />
 
       <div {...stylex.props(Styles.Container)}>
