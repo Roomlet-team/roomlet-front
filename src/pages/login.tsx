@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import stylex from '@stylexjs/stylex';
 import { useSelector } from 'react-redux';
@@ -8,7 +9,7 @@ import RoomletTextLogo from '@assets/logo_text_roomlet.svg';
 import GoogleLogo from '@features/authentication/assets/google_logo.svg';
 import MainLayout from '@src/layouts/MainLayout';
 // import OnboardingSlider from '@src/features/onboarding/components/OnboardingSlider';
-import { useRouter } from 'next/router';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const OnboardingSlider = dynamic(() => import('@src/features/onboarding/components/OnboardingSlider'), {
   ssr: false,
@@ -42,6 +43,8 @@ const Login = () => {
 
   return (
     <MainLayout>
+      <SEOHead title="로그인 | 룸렛" description="룸렛 로그인 페이지 입니다." url={{ pathname: '/login' }} />
+
       {/* 로그인 페이지를 새로 고침할 때마다 온보딩 화면이 보임 */}
       {isHidden ? (
         <>
