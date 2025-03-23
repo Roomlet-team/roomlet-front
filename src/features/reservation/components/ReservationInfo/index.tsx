@@ -38,7 +38,7 @@ const ReservationInfo = () => {
           <li {...stylex.props(Styles.horizonItem)}>
             <div {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.CommonItem)}>날짜/시간</div>
             <div {...stylex.props(Typography.TextSmallRegular)}>
-              {dayjs(data?.congress.date).format('YY-MM-DD')} {data?.congress.startTime} ~ {data?.congress.endTime}
+              {dayjs(data?.congress.startDt).format('YY-MM-DD HH:mm')} ~ {dayjs(data?.congress.endDt).format('HH:mm')}
             </div>
           </li>
           <li {...stylex.props(Styles.horizonItem)}>

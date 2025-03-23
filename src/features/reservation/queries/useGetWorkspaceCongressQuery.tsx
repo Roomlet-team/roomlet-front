@@ -12,6 +12,8 @@ export interface CongressInfo {
   startTime: string;
   endTime: string;
   date: string;
+  startDt: string;
+  endDt: string;
   CongressId: number;
   congressTitle: string;
   congressDescription: string;
