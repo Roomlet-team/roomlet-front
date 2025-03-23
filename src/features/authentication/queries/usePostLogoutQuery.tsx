@@ -30,7 +30,7 @@ const usePostLogoutQuery = () => {
   const result = useCustomMutation({
     mutationFn: () => postLogoutApi(),
     onSuccess: (data: LogoutResponse, variables, context) => {
-      router.push(`/`);
+      window.location.href = '/';
     },
     onError: (error, variables, context) => {
       if (error.response.data.code === 452) {
