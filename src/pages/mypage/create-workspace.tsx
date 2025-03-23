@@ -7,19 +7,18 @@ import { colors, Typography } from '../../../public/styles/vars.stylex';
 import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import Button from '@src/components/ui/Button';
-import usePostWorkspaceJoinQuery from '@src/features/invite/queries/usePostWorkspaceJoinQuery';
+import usePostWorkspaceQuery from '@src/features/workspace/queries/usePostWorkspaceQuery copy';
 
 const CreateWorkspace = () => {
   const [workspaceName, handleChangeWorkspaceName] = useInput('');
-  const mutation = usePostWorkspaceJoinQuery();
+  const mutation = usePostWorkspaceQuery();
   const router = useRouter();
   const letterImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/mypage/create-workspace.png';
 
   const handleClickCreate = () => {
-    // mutation.mutate({
-    //   WorkspaceId: data.inviteInfo.workspace.WorkspaceId,
-    //   joinInfo: { workspaceName, InviteId: data.inviteInfo.InviteId },
-    // });
+    mutation.mutate({
+      workspaceName,
+    });
   };
 
   const handleClickDenyCreate = () => {
