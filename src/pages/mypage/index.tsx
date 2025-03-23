@@ -20,6 +20,7 @@ import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfo
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 import usePostLogoutQuery from '@src/features/authentication/queries/usePostLogoutQuery';
+import useDeleteWorkspaceMypageMeQuery from '@src/features/workspace/queries/useDeleteWorkspaceMypageMeQuery';
 
 const MyPageInviteModal = dynamic(() => import('@src/features/mypage/compontents/MyPageInviteModal'), {
   ssr: false,
@@ -33,11 +34,12 @@ const MypageMenu = dynamic(() => import('@src/features/mypage/compontents/Mypage
 
 const MyPageHome = () => {
   const { isWorkspace } = useSelector((state: RootState) => state.workspace);
-  const mutation = usePostLogoutQuery();
   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
   const { data } = useGetWorkspaceListQuery();
   const { data: profileData } = useGetMyPageProfileQuery();
   const { data: mypageInfoData } = useGetMypageInfoQuery();
+  const logoutMutation = usePostLogoutQuery();
+  const withdrawnMutation = useDeleteWorkspaceMypageMeQuery();
   const commonUrl = 'mypage';
 
   // 멤버 초대 모달을 열고 닫게하는 함수
@@ -46,7 +48,7 @@ const MyPageHome = () => {
   };
 
   const commonMenuList = [
-    { id: 6, name: '로그아웃', icon: <ExitOutlined width={24} height={24} />, onClick: () => mutation.mutate() },
+    { id: 6, name: '로그아웃', icon: <ExitOutlined width={24} height={24} />, onClick: () => logoutMutation.mutate() },
   ];
 
   const menuList = data?.workspaceCount
@@ -74,7 +76,7 @@ const MyPageHome = () => {
               content:
                 '워크스페이스를 나가도 작성된 회의 내용은 남아있어요. 다시 참여를 원하시면 초대 링크를 입력 후 참여 가능합니다.',
               okBtnName: '나갈래요',
-              onOk: null,
+              onOk: () => withdrawnMutation.mutate(),
               cancelBtnName: '유지할래요',
               onCancel: null,
             });
