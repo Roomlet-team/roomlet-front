@@ -90,7 +90,7 @@ const MyPageHome = () => {
           id: 1,
           name: '워크스페이스 생성하기',
           icon: <AddOutlined width={24} height={24} />,
-          href: `/create-workspace`,
+          href: `/mypage/create-workspace`,
         },
         {
           id: 2,
