@@ -48,6 +48,7 @@ const useGetInviteInfoQuery = () => {
     queryKey: ['inviteInfo', InviteId],
     queryFn: () => getInviteInfoApi(InviteId),
     enabled: Boolean(InviteId), // InviteId가 정의되어 있지 않은 경우, 첫 렌더링시 요청이 이뤄지지 않게 함.
+    staleTime: 60 * 1000, // SSR을 위해 추가
   });
 
   return result;
