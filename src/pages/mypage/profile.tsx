@@ -7,7 +7,6 @@ import { colors } from '../../../public/styles/vars.stylex';
 import BoundaryArea from '@src/components/ui/BoundaryArea';
 import ProfilePersonalDataList from '@src/features/profile/components/ProfilePersonalDataList';
 import DataflowOutlined from '@src/components/icons/DataflowOutlined';
-import UserSquareOutlined from '@src/components/icons/UserSquareOutlined';
 import MailOutlined from '@src/components/icons/MailOutlined';
 import MyPageImgUpload from '@src/features/mypage/compontents/MyPageImgUpload';
 import MyPageInput from '@src/features/mypage/compontents/MyPageInput';
@@ -16,12 +15,14 @@ import usePatchMypageInfoQuery from '@src/features/mypage/profile/queries/usePat
 import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 import { RootState } from '@src/store';
 import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGetMyPageProfileQuery';
+import usePatchMypageProfileQuery from '@src/features/mypage/profile/queries/usePatchMypageProfileQuery';
 
 const MyPageProfile = () => {
   const { isWorkspace } = useSelector((state: RootState) => state.workspace);
   const { data } = useGetMypageInfoQuery();
   const { data: profileData } = useGetMyPageProfileQuery();
-  const mutation = usePatchMypageInfoQuery();
+  const myPageInfoMutation = usePatchMypageInfoQuery();
+  const myPageProfileMutation = usePatchMypageProfileQuery();
   const [displayName, handleChangeDisplayName] = useInput<string>(
     isWorkspace ? data?.myInfo?.displayName : profileData?.profile.displayName
   );
@@ -48,7 +49,7 @@ const MyPageProfile = () => {
       formData.append('displayName', displayName);
       formData.append('image', imageFile);
 
-      mutation.mutate(formData);
+      myPageInfoMutation.mutate(formData);
     },
   };
   const profileCompleteBtnProps = {
@@ -60,7 +61,7 @@ const MyPageProfile = () => {
       formData.append('displayName', displayName);
       formData.append('image', imageFile);
 
-      // [ ] 공통 프로필 수정 요청 추가
+      myPageProfileMutation.mutate(formData);
     },
   };
 
@@ -76,7 +77,11 @@ const MyPageProfile = () => {
       <div {...stylex.props(Styles.SettingContainer)}>
         <MyPageImgUpload
           onSelect={handleSelectImg}
-          initialImgUrl={isWorkspace ? data?.myInfo?.profileImgUrl : profileData?.profile.profileImgUrl}
+          initialImgUrl={
+            isWorkspace
+              ? `${process.env.NEXT_PUBLIC_S3_URL}/${data?.myInfo?.profileImgUrl}`
+              : `${process.env.NEXT_PUBLIC_S3_URL}/${profileData?.profile.profileImgUrl}`
+          }
         />
         <MyPageInput label="닉네임" value={displayName} onChange={handleChangeDisplayName} />
       </div>
