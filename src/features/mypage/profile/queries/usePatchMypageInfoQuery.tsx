@@ -3,17 +3,13 @@ import useCustomMutation from '@src/hooks/react-query/useCustomMutation';
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
 import clientInstance from '@src/utils/api/clientInstance';
 
-interface WorkspaceInfo {
+interface MyPageInfo {
   code: number;
   success: boolean;
-  workspaceInfo: {
-    WorkspaceId: number;
-    workspaceName: string;
-  };
 }
 
 // [ ] formData에 특정 키를 지정해서 해당 키 값만 받을 수 있게하는 타입스크립트를 선언한 코드 추가 필요
-const patchMypageInfoApi = async (WorkspaceId: number, data: FormData): Promise<WorkspaceInfo> => {
+const patchMypageInfoApi = async (WorkspaceId: number, data: FormData): Promise<MyPageInfo> => {
   const response = await clientInstance.patch(`/v1/workspace/@${WorkspaceId}/mypage/info`, data);
 
   return response.data;

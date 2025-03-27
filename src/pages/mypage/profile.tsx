@@ -12,7 +12,7 @@ import MailOutlined from '@src/components/icons/MailOutlined';
 import MyPageImgUpload from '@src/features/mypage/compontents/MyPageImgUpload';
 import MyPageInput from '@src/features/mypage/compontents/MyPageInput';
 import useInput from '@src/hooks/useInput';
-import usePatchMypageInfoQuery from '@src/features/mypage/profile/queries/usePostWorkspaceJoinQuery';
+import usePatchMypageInfoQuery from '@src/features/mypage/profile/queries/usePatchMypageInfoQuery';
 import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 import { RootState } from '@src/store';
 import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGetMyPageProfileQuery';
