@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import Toggle from '@src/components/ui/Toggle';
 import { Typography, colors } from '../.././../../../public/styles/vars.stylex';
+import { confirm } from '@src/components/ui/Modal/confirm';
 
 type MyPageAlarmToggleProps = {
   key: string | number;
@@ -15,7 +16,20 @@ const MyPageAlarmToggle: FC<MyPageAlarmToggleProps> = (props) => {
   const [isInviteMeeting, setIsInviteMeeting] = useState<boolean>(false);
 
   const handleChangeAlarm = (e) => {
-    setIsInviteMeeting(e.target.checked);
+    const { checked } = e.target;
+
+    if (isInviteMeeting) {
+      confirm({
+        content: '중요한 알림을 놓칠 수 있어요.\n그래도 괜찮으신가요?',
+        onOk: () => {
+          setIsInviteMeeting(checked);
+        },
+        okBtnName: '그만 받을래요',
+        cancelBtnName: '계속 받을래요',
+      });
+    } else {
+      setIsInviteMeeting(checked);
+    }
   };
 
   return (
@@ -24,7 +38,7 @@ const MyPageAlarmToggle: FC<MyPageAlarmToggleProps> = (props) => {
         <p {...stylex.props(Typography.TextSmallMedium, Styles.Label)}>{label}</p>
         <p {...stylex.props(Typography.CaptionLargeRegular, Styles.Caption)}>{caption}</p>
       </div>
-      <Toggle onChange={handleChangeAlarm} />
+      <Toggle onChange={handleChangeAlarm} checked={isInviteMeeting} />
     </div>
   );
 };
