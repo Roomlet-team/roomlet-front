@@ -144,6 +144,7 @@ const Styles = stylex.create({
     fontWeight: '400',
     color: colors.gray50,
     lineHeight: 'normal',
+    flexShrink: 0,
   },
   content: {
     margin: 0,
