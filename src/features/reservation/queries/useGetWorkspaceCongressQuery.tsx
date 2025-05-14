@@ -21,6 +21,7 @@ export interface CongressInfo {
   congressRoom: CongressRoom;
   attendMemberList: any[];
   attendTeamList: AttendTeamListItem[];
+  isOrganizer: boolean;
 }
 
 interface AttendTeamListItem {
@@ -32,7 +33,7 @@ interface AttendTeamListItem {
 interface MemberList {
   MemberId: number;
   displayName: string;
-  profileImgUrl: null;
+  profileImgUrl: string;
 }
 
 interface CongressRoom {
