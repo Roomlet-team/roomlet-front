@@ -1,17 +1,46 @@
 import React from 'react';
 import stylex from '@stylexjs/stylex';
 import { colors, Typography } from '../../../../../public/styles/vars.stylex';
-import EllipsisOutlined from '@src/components/icons/EllipsisOutlined';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import useGetWorkspaceCongressQuery from '../../queries/useGetWorkspaceCongressQuery';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Dropdown from '@src/components/ui/Dropdown';
+import PencilOutlined from '@src/components/icons/PencilOutlined';
+import TrashcanOutlined from '@src/components/icons/TrashcanOutlined';
+import { confirm } from '@src/components/ui/Modal/confirm';
+import useDeleteCongressQuery from '../../queries/useDeleteCongressQuery';
 
 const ReservationInfo = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data } = useGetWorkspaceCongressQuery({ cgsid: Number(id) });
+  const mutation = useDeleteCongressQuery();
+
+  const dropdownMenuList = [
+    {
+      id: '1',
+      label: '수정하기',
+      icon: <PencilOutlined width={16} height={16} />,
+      onClick: () => {
+        router.push(`booking?id=${id}&mode=edit`);
+      },
+    },
+    {
+      id: '2',
+      label: '삭제하기',
+      icon: <TrashcanOutlined width={16} height={16} />,
+      onClick: () => {
+        confirm({
+          content: '삭제하기 진행시 기록한 회의 내용을\n다시 확인할 수 없어요. 삭제를 진행할까요?',
+          cancelBtnName: '취소',
+          okBtnName: '확인',
+          onOk: () => mutation.mutate({ cgsid: Number(id) }),
+        });
+      },
+    },
+  ];
 
   return (
     <div>
@@ -22,9 +51,8 @@ const ReservationInfo = () => {
         </div>
         <div {...stylex.props(Styles.TitleAndShowMoreContainer)}>
           <h1 {...stylex.props(Typography.TextLargeBold)}>{data?.congress.congressTitle}</h1>
-          <button type="button">
-            <EllipsisOutlined width="24" height="24" />
-          </button>
+
+          {data?.congress.isOrganizer && <Dropdown menuList={dropdownMenuList} />}
         </div>
       </div>
 
