@@ -48,7 +48,7 @@ const ReservationList: FC<ReservationListProps> = (props) => {
                     {item.attendMemberList.map((item) => (
                       <div {...stylex.props(Styles.profileContent)}>
                         <ProfileImg
-                          src={item?.profileImgUrl}
+                          src={item?.profileImgKey}
                           size={34}
                           borderProperties={{ color: '#D9D9D9', width: '1px', radius: '50%' }}
                         />

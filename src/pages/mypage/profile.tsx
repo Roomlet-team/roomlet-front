@@ -77,11 +77,7 @@ const MyPageProfile = () => {
       <div {...stylex.props(Styles.SettingContainer)}>
         <MyPageImgUpload
           onSelect={handleSelectImg}
-          initialImgUrl={
-            isWorkspace
-              ? `${process.env.NEXT_PUBLIC_S3_URL}/${data?.myInfo?.profileImgUrl}`
-              : `${process.env.NEXT_PUBLIC_S3_URL}/${profileData?.profile.profileImgUrl}`
-          }
+          initialImgUrl={isWorkspace ? `${data?.myInfo?.profileImgKey}` : `${profileData?.profile.profileImgKey}`}
         />
         <MyPageInput label="닉네임" value={displayName} onChange={handleChangeDisplayName} />
       </div>

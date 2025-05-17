@@ -6,7 +6,7 @@ export interface MypageInfo {
   myInfo: {
     MemberId: number;
     displayName: string;
-    profileImgUrl: string;
+    profileImgKey: string;
     position: string;
     isAdmin: boolean;
     email: string;

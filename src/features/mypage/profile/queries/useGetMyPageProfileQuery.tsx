@@ -7,7 +7,7 @@ export interface ProfileInfo {
   code: number;
   profile: {
     displayName: string;
-    profileImgUrl: string | null;
+    profileImgKey: string | null;
     email: string;
   };
 }

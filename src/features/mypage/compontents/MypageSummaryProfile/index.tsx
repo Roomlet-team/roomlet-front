@@ -8,7 +8,7 @@ import ArrowHeadOutlinedV2 from '@src/components/icons/ArrowHeadOutlinedV2';
 interface MypageSummaryProfileProps {
   data: {
     displayName: string;
-    profileImgUrl: string | null;
+    profileImgKey: string | null;
     email: string;
   };
 }
@@ -19,7 +19,7 @@ const MypageSummaryProfile: FC<MypageSummaryProfileProps> = (props) => {
   return (
     <div {...stylex.props(Styles.Container)}>
       <Link href="/mypage/profile" {...stylex.props(Styles.ProfileLink)} passHref>
-        <ProfileImg src={data?.profileImgUrl} size={60} />
+        <ProfileImg src={data?.profileImgKey} size={60} />
         <div {...stylex.props(Styles.UserInfoContainer)}>
           <div>
             <p {...stylex.props(Styles.NameText, Typography.SubTextRegularBold)}>{data?.displayName}</p>

@@ -100,7 +100,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
                 <li {...stylex.props(Typography.SubtitleRegularSemiBold)}>
                   <div {...stylex.props(Styles.MemberItemContainer)}>
                     <Link {...stylex.props(Styles.MemberInfoLink)} href={`/profile/${item.MemberId}`}>
-                      <ProfileImg src={item.profileImgUrl} size={42} borderProperties={{ radius: '12px' }} />
+                      <ProfileImg src={item.profileImgKey} size={42} borderProperties={{ radius: '12px' }} />
                       <span>{item.displayName}</span>
                     </Link>
                     {isEdit && (

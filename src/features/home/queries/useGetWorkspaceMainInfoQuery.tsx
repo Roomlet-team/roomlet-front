@@ -8,7 +8,7 @@ interface WorkspaceInfo {
   code: number;
   memberInfo: {
     displayName: string;
-    profileImgUrl: string;
+    profileImgKey: string;
     isAdmin: boolean;
   };
   workspaceCongressStatus: {
@@ -55,7 +55,7 @@ const useGetWorkspaceMainInfoQuery = () => {
       code: 0,
       memberInfo: {
         displayName: '',
-        profileImgUrl: '',
+        profileImgKey: '',
         isAdmin: false,
       },
       workspaceCongressStatus: { workspaceCongressCount: 0, myCongressCount: 0 },

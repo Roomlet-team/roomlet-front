@@ -11,7 +11,7 @@ const WorkspaceUserGreeting = () => {
 
   return (
     <div {...stylex.props(Styles.container)}>
-      <ProfileImg src={data?.memberInfo.profileImgUrl} size={50} borderProperties={{ radius: '50%' }} />
+      <ProfileImg src={data?.memberInfo.profileImgKey} size={50} borderProperties={{ radius: '50%' }} />
       <div {...stylex.props(Styles.textContent)}>
         <p {...stylex.props(Styles.greetingText)}>룸렛에 오신걸 환영해요 🖐🏻</p>
         <p {...stylex.props(Styles.nicknameText)}>{data?.memberInfo.displayName}님</p>
