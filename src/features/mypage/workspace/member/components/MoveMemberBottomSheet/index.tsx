@@ -143,9 +143,6 @@ const Styles = stylex.create({
     '-webkit-appearance': 'none' /* for chrome */,
     '-moz-appearance': 'none' /*for firefox*/,
     appearance: 'none',
-    '::-ms-expand': {
-      display: 'none' /*for IE10,11*/,
-    },
   },
   DisplayNameWrapper: {
     flex: 1,
