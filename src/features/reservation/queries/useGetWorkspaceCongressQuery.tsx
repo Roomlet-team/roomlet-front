@@ -49,7 +49,7 @@ interface CongressCategory {
 }
 
 interface Params {
-  cgsid: number | string;
+  cgsid: number | string | null;
 }
 
 const getWorkspaceCongressApi = async (WorkspaceId: number, params: Params): Promise<ResponseData> => {
@@ -75,7 +75,7 @@ const useGetWorkspaceCongressQuery = (params: Params) => {
   const result = useQuery({
     queryKey: ['congressInfo'],
     queryFn: () => getWorkspaceCongressApi(WorkspaceId, params),
-    enabled: Boolean(WorkspaceId), // WorkspaceId가 정의되어 있지 않은 경우, 첫 렌더링시 요청이 이뤄지지 않게 함.
+    enabled: Boolean(WorkspaceId) && params?.cgsid !== null, // WorkspaceId가 정의되어 있지 않은 경우, 첫 렌더링시 요청이 이뤄지지 않게 함.
   });
 
   return result;
