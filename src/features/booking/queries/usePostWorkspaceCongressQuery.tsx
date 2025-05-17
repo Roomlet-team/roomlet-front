@@ -1,8 +1,11 @@
+import { useDispatch } from 'react-redux';
 import { confirm } from '@src/components/ui/Modal/confirm';
 import useCustomMutation from '@src/hooks/react-query/useCustomMutation';
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
 import clientInstance from '@src/utils/api/clientInstance';
 import { useRouter } from 'next/router';
+import { saveSelectBookingDate } from '../slices/booking';
+import { saveSelectBookingMemberObj } from '../slices/booking';
 
 interface RequestBody {
   RoomId: number;
@@ -23,7 +26,7 @@ interface CongressInfo {
   CongressId: number;
 }
 
-const postCongressApi = async (WorkspaceId: number, data: RequestBody): Promise<CongressInfo> => {
+const postCongressApi = async (WorkspaceId: number | undefined, data: RequestBody): Promise<CongressInfo> => {
   const response = await clientInstance.post(`/v1/workspace/@${WorkspaceId}/congress`, data);
 
   return response.data;
@@ -41,11 +44,18 @@ const postCongressApi = async (WorkspaceId: number, data: RequestBody): Promise<
 const usePostWorkspaceCongressQuery = () => {
   const { data } = useGetWorkspaceListQuery();
   const router = useRouter();
+  const dispatch = useDispatch();
   const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 
   const result = useCustomMutation({
     mutationFn: (data: RequestBody) => postCongressApi(workspaceId, data),
     onSuccess: (data: CongressInfo, variables, context) => {
+      // [ ] 초기화 코드가 여기에 있으면, 유지보수할 때 코드 찾기가 어려울 것. 추후 수정 필요
+      // 예약 날짜 초기화
+      dispatch(saveSelectBookingDate(''));
+      // 예약 참석자 초기화
+      dispatch(saveSelectBookingMemberObj({}));
+
       router.push(`/reservations/${data.CongressId}`);
     },
     onError: (error, variables, context) => {
