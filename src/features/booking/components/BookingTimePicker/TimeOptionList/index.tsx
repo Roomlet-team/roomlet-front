@@ -8,10 +8,11 @@ import { CongressRoomTimeList } from '@src/features/booking/queries/useGetMember
 type TimeOptionListProps = {
   onSelect: (value: TimeItemType) => void;
   data: CongressRoomTimeList | undefined;
+  isDate: boolean;
 };
 
 const TimeOptionList: FC<TimeOptionListProps> = (props) => {
-  const { onSelect, data } = props;
+  const { onSelect, data, isDate } = props;
   const optionList = data?.timeList
     .map((item, idx) => {
       const displayTime = item.dateTime;
@@ -47,9 +48,8 @@ const TimeOptionList: FC<TimeOptionListProps> = (props) => {
           )
         ) : (
           <li {...stylex.props(Styles.TimeItem, Styles.NoTime, Typography.SubTextLargeMedium)}>
-            예약 가능한
-            <br />
-            시간이 없어요.
+            {!isDate && `날짜를\n선택해주세요.`}
+            {!optionList && isDate && `예약 가능한\n시간이 없어요. \n(장소, 카테고리, 날짜를 다시 확인해주세요.)`}
           </li>
         )}
       </ul>
@@ -88,5 +88,6 @@ const Styles = stylex.create({
   NoTime: {
     textAlign: 'center',
     color: colors.gray50,
+    whiteSpace: 'pre-line',
   },
 });
