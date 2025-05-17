@@ -74,9 +74,11 @@ const Styles = stylex.create({
     fontSize: '1.4rem',
     outline: 'none',
     overflow: 'auto',
+    '::placeholder': {
+      color: '#999',
+    },
     color: {
       default: colors.black500,
-      ':placeholder': colors.gray60,
     },
   },
   iconWrapper: {
