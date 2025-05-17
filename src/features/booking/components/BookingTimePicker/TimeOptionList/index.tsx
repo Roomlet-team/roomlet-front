@@ -7,7 +7,7 @@ import { CongressRoomTimeList } from '@src/features/booking/queries/useGetMember
 
 type TimeOptionListProps = {
   onSelect: (value: TimeItemType) => void;
-  data: CongressRoomTimeList;
+  data: CongressRoomTimeList | undefined;
   reserDate: string;
 };
 
@@ -35,7 +35,7 @@ const TimeOptionList: FC<TimeOptionListProps> = (props) => {
   return (
     <div {...stylex.props(Styles.TimeListWrapper)}>
       <ul {...stylex.props(Styles.TimeList)}>
-        {optionList?.length > 0 ? (
+        {optionList && optionList.length > 0 ? (
           React.Children.toArray(
             optionList?.map((item) => (
               <li

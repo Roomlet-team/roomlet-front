@@ -1,4 +1,4 @@
-export type TimeItemType = { name: string; value: string };
+export type TimeItemType = { name: string; value: string } | null;
 
 type AutoCompleteItemKeyName = 'id' | 'name'; // 컬럼 이름
 

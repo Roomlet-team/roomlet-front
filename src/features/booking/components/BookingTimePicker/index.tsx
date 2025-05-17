@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 
 type BookingTimePickerProps = {
   placeholder: string;
-  roomId: number;
+  roomId: number | null;
   reserDate: string;
   startDt?: TimeItemType;
   onSelect: (value: TimeItemType) => void;
@@ -31,7 +31,7 @@ const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
   };
 
   const handleClickOutside = ({ target }) => {
-    if (!timeRef.current.contains(target)) {
+    if (!timeRef?.current?.contains(target)) {
       setIsTimeOptionOpen(false);
     }
   };
