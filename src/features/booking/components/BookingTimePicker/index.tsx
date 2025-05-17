@@ -6,21 +6,24 @@ import TimeOptionList from './TimeOptionList';
 import type { TimeItemType } from '../../types';
 import useGetWorkspaceCongressRoomTimQuery from '../../queries/useGetMemberListQuery copy';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
+import { RootState } from '@src/store';
 
 type BookingTimePickerProps = {
   placeholder: string;
   roomId: number | null;
-  reserDate: string;
   startDt?: TimeItemType;
   onSelect: (value: TimeItemType) => void;
+  defaultValue: TimeItemType | null;
 };
 
 const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
-  const { placeholder, onSelect, roomId, reserDate, startDt } = props;
+  const { selectBookingDate } = useSelector((state: RootState) => state.booking);
+  const { placeholder, onSelect, roomId, startDt, defaultValue } = props;
   const [isTimeOptionOpen, setIsTimeOptionOpen] = useState<boolean>(false);
   const [selectTime, setSelectTime] = useState<TimeItemType>(null);
   const timeRef = useRef<HTMLDivElement>(null);
-  const reserDateWithoutHyphens = reserDate?.split('-').join('');
+  const reserDateWithoutHyphens = selectBookingDate?.split('-').join('');
 
   const { data } = useGetWorkspaceCongressRoomTimQuery(roomId, reserDateWithoutHyphens, {
     ...(startDt ? { startDtNumber: dayjs(startDt.value).valueOf() } : {}),
@@ -50,11 +53,17 @@ const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    // 예약 시간 날짜가 변경되면 선택된 시간 초기화
-    if (reserDate) {
+    if (defaultValue) {
+      setSelectTime(defaultValue);
+    }
+  }, [defaultValue]);
+
+  // 예약 날짜가 변경되면 선택된 시간 초기화
+  useEffect(() => {
+    if (selectBookingDate) {
       setSelectTime(null);
     }
-  }, [reserDate]);
+  }, [selectBookingDate]);
 
   return (
     <div {...stylex.props(BookingStyles.formItemInputWrapper, Styles.Wrapper)} ref={timeRef}>
@@ -69,7 +78,7 @@ const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
           placeholder
         )}
       </button>
-      {isTimeOptionOpen && <TimeOptionList onSelect={handleSelectTime} data={data} reserDate={reserDate} />}
+      {isTimeOptionOpen && <TimeOptionList onSelect={handleSelectTime} data={data} />}
     </div>
   );
 };

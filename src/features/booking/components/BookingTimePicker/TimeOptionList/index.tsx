@@ -8,11 +8,10 @@ import { CongressRoomTimeList } from '@src/features/booking/queries/useGetMember
 type TimeOptionListProps = {
   onSelect: (value: TimeItemType) => void;
   data: CongressRoomTimeList | undefined;
-  reserDate: string;
 };
 
 const TimeOptionList: FC<TimeOptionListProps> = (props) => {
-  const { onSelect, data, reserDate } = props;
+  const { onSelect, data } = props;
   const optionList = data?.timeList
     .map((item, idx) => {
       const displayTime = item.dateTime;
