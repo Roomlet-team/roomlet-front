@@ -24,7 +24,7 @@ const ReservationInfo = () => {
       label: '수정하기',
       icon: <PencilOutlined width={16} height={16} />,
       onClick: () => {
-        router.push(`booking?id=${id}&mode=edit`);
+        router.push(`/booking?id=${id}&mode=edit`);
       },
     },
     {
