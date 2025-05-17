@@ -35,9 +35,9 @@ const Calendar = () => {
       {/* 예약하기 링크 (플로팅) */}
       {isWorkspace && (
         <div {...stylex.props(Styles.CreateReservationWrapper)}>
-          <Link href="/booking">
+          <a href="/booking">
             <CirclePlusFilled width={56} height={56} />
-          </Link>
+          </a>
         </div>
       )}
     </GnbNavLayout>
