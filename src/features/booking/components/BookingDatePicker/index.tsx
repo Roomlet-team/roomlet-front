@@ -34,8 +34,7 @@ const BookingDatePicker = () => {
       <button type="button" {...stylex.props(Styles.DatePickerBtn)} onClick={handleClickDate}>
         <CalendarOutlined width={24} height={24} />
         <span {...stylex.props(Styles.dateText, Typography.SubTextLargeRegular)}>
-          {/* 날짜를 선택 안하면 오늘 날짜가 보임 */}
-          {selectBookingDate ? dayjs(selectBookingDate).format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD')}
+          {selectBookingDate ? dayjs(selectBookingDate).format('YYYY-MM-DD') : '날짜'}
         </span>
       </button>
       {isCalendarOpen && <MiniCalendar onClose={handleCloseCalendar} />}
