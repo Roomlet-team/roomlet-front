@@ -47,7 +47,10 @@ const MyPageProfile = () => {
       const formData = new FormData();
 
       formData.append('displayName', displayName);
-      formData.append('image', imageFile);
+
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
 
       myPageInfoMutation.mutate(formData);
     },
