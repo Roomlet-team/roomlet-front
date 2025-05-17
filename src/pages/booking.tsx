@@ -14,10 +14,14 @@ import Radio from '@src/components/ui/Radio';
 import MainLayout from '@src/layouts/MainLayout';
 import useGetCongressRoomListQuery from '@src/queries/congress/useGetCongressRoomListQuery';
 import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQuery';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 import usePostWorkspaceCongressQuery from '@src/features/booking/queries/usePostWorkspaceCongressQuery';
 import { TimeItemType } from '@src/features/booking/types';
+import useGetWorkspaceCongressQuery from '@src/features/reservation/queries/useGetWorkspaceCongressQuery';
+import { useRouter } from 'next/router';
+import { saveSelectBookingDate, saveSelectBookingMemberObj } from '@src/features/booking/slices/booking';
+import dayjs from 'dayjs';
 
 const BookingMemberSelect = dynamic(() => import('@src/features/booking/components/BookingMemberSelect'), {
   ssr: false,
@@ -35,12 +39,12 @@ const BookingDatePicker = dynamic(() => import('@src/features/booking/components
   ssr: false,
 });
 
-type BookingForm = {
+export type BookingForm = {
   date: string;
   RoomId: number | null;
   startDt: TimeItemType;
   endDt: TimeItemType;
-  attendMemberList: string[] | null;
+  attendMemberList: number[] | null;
   CongressCategoryId: number | null;
   congressTitle: string;
   congressDescription: string;
@@ -53,21 +57,21 @@ const Booking = () => {
     handleSubmit,
     control,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<BookingForm>({ mode: 'onChange' }); // 실시간으로 입력값 확인 및 모든 필드가 유효한지 확인
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { id, mode } = router.query;
   const { data: congressRoomData } = useGetCongressRoomListQuery();
   const { data: categoryData } = useGetCategoryListQuery();
+  const { data: congressData } = useGetWorkspaceCongressQuery({ cgsid: Number(id) || null });
   const mutation = usePostWorkspaceCongressQuery();
   // 시간 선택시 roomId, date, startDt 값이 필요해서 해당 값들은 실시간 추적이 가능하도록 함.
   const RoomId = useWatch({ control, name: 'RoomId' });
-  const date = useWatch({ control, name: 'date' });
   const startDt = useWatch({ control, name: 'startDt' });
   // selectBookingDate 설정시 값이 초기화 되는 문제가 있어서 제목, 카테고리, 종료 시간, 참석자, 상세 내용도 추적이 가능하게 함
-  const congressTitle = useWatch({ control, name: 'congressTitle' });
-  const CongressCategoryId = useWatch({ control, name: 'CongressCategoryId' });
   const endDt = useWatch({ control, name: 'endDt' });
-  const congressDescription = useWatch({ control, name: 'congressDescription' });
-  const attendMemberList = useWatch({ control, name: 'attendMemberList' });
 
   // 모든 필드의 값을 감시
   const values = watch();
@@ -78,7 +82,7 @@ const Booking = () => {
       return value.length > 0;
     }
 
-    return value !== undefined && value !== '';
+    return value !== undefined && value !== '' && value !== null;
   });
 
   const onSubmit = (data) => {
@@ -94,22 +98,34 @@ const Booking = () => {
     });
   };
 
-  // Redux 상태 변경 시 React Hook Form의 값 동기화
   useEffect(() => {
-    if (selectBookingDate) {
-      // 예약 날짜가 변경되면 예약 시간 초기화
+    // 회의 수정하는 경우, 기존 회의 정보를 가져와서 저장
+    if (congressData?.congress && mode === 'edit') {
+      const mappedAttendMemberObj = congressData?.congress?.attendTeamList.reduce((acc, val) => {
+        acc[val.teamName] = val.memberList;
+        return acc;
+      }, {});
+
       reset({
-        date: selectBookingDate,
-        RoomId,
-        startDt: null,
-        congressTitle,
-        CongressCategoryId,
-        endDt: null,
-        congressDescription,
-        attendMemberList,
+        congressTitle: congressData?.congress?.congressTitle,
+        CongressCategoryId: congressData?.congress?.congressCategory.CongressCategoryId,
+        RoomId: congressData?.congress?.congressRoom.RoomId,
+        date: congressData?.congress?.date,
+        startDt: {
+          name: dayjs(congressData.congress.startDt).format('A HH:mm'),
+          value: congressData.congress.startDt,
+        },
+        endDt: {
+          name: dayjs(congressData.congress.endDt).format('A HH:mm'),
+          value: congressData.congress.endDt,
+        },
+        congressDescription: congressData?.congress?.congressDescription,
       });
+
+      dispatch(saveSelectBookingMemberObj(mappedAttendMemberObj));
+      dispatch(saveSelectBookingDate(congressData?.congress?.date));
     }
-  }, [selectBookingDate, reset]);
+  }, [congressRoomData?.congressRoomList, categoryData?.congressCategoryList, congressData?.congress]);
 
   return (
     <MainLayout isScroll>
@@ -152,6 +168,9 @@ const Booking = () => {
                         label={item.roomName}
                         value={item.RoomId}
                         onChange={field.onChange}
+                        {...(mode === 'edit' && {
+                          checked: field.value === congressData?.congress.congressRoom.RoomId,
+                        })}
                       />
                     )}
                   />
@@ -177,6 +196,9 @@ const Booking = () => {
                         label={item.categoryName}
                         value={item.CongressCategoryId}
                         onChange={field.onChange}
+                        {...(mode === 'edit' && {
+                          checked: field.value === congressData?.congress.congressCategory.CongressCategoryId,
+                        })}
                       />
                     )}
                   />
@@ -191,7 +213,7 @@ const Booking = () => {
               name="date"
               control={control}
               defaultValue={selectBookingDate}
-              render={({ field }) => <BookingDatePicker />}
+              render={({ field }) => <BookingDatePicker setValue={setValue} />}
               rules={{ required: '날짜를 선택해주세요' }}
             />
           </BookingFormItem>
@@ -209,7 +231,7 @@ const Booking = () => {
                     placeholder="시작 시간"
                     onSelect={field.onChange}
                     roomId={RoomId}
-                    reserDate={date}
+                    defaultValue={startDt}
                   />
                 )}
               />
@@ -224,8 +246,8 @@ const Booking = () => {
                     placeholder="종료 시간"
                     onSelect={field.onChange}
                     roomId={RoomId}
-                    reserDate={date}
                     startDt={startDt}
+                    defaultValue={endDt}
                   />
                 )}
               />
