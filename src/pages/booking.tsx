@@ -37,11 +37,11 @@ const BookingDatePicker = dynamic(() => import('@src/features/booking/components
 
 type BookingForm = {
   date: string;
-  RoomId: number;
+  RoomId: number | null;
   startDt: TimeItemType;
   endDt: TimeItemType;
-  attendMemberList: string[];
-  CongressCategoryId: number;
+  attendMemberList: string[] | null;
+  CongressCategoryId: number | null;
   congressTitle: string;
   congressDescription: string;
 };
