@@ -78,7 +78,7 @@ const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
           placeholder
         )}
       </button>
-      {isTimeOptionOpen && <TimeOptionList onSelect={handleSelectTime} data={data} />}
+      {isTimeOptionOpen && <TimeOptionList onSelect={handleSelectTime} data={data} isDate={!!selectBookingDate} />}
     </div>
   );
 };
