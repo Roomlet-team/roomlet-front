@@ -11,15 +11,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { saveSelectBookingDate } from '@src/features/booking/slices/booking';
 import { RootState } from '@src/store';
 import DateWheelPicker from '@src/features/calendar/components/DateWheelPicker';
+import { BookingForm } from '@src/pages/booking';
+import { UseFormSetValue } from 'react-hook-form';
 
 type MiniCalendarProps = {
   onClose: (status: boolean) => void;
+  setValue: UseFormSetValue<BookingForm>;
 };
 
-type ValuePiece = Date | null;
-
 const MiniCalendar: FC<MiniCalendarProps> = (props) => {
-  const { onClose } = props;
+  const { onClose, setValue } = props;
   const { selectBookingDate } = useSelector((state: RootState) => state.booking);
   const [isDateWheelPickerOpen, setIsDateWheelPickerOpen] = useState<boolean>(false);
   const [year, setYear] = useState<number>(dayjs().year());
@@ -82,6 +83,9 @@ const MiniCalendar: FC<MiniCalendarProps> = (props) => {
 
   const handleClickSave = () => {
     onClose(false);
+    setValue('date', dayjs(`${year}-${month}-${day}`).format('YYYY-MM-DD'));
+    setValue('startDt', null);
+    setValue('endDt', null);
     dispatch(saveSelectBookingDate(dayjs(`${year}-${month}-${day}`).format('YYYY-MM-DD')));
   };
 

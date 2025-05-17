@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import { BookingStyles } from '../../styles/index.stylex';
 import CalendarOutlined from '@src/components/icons/CalendarOutlined';
@@ -7,8 +7,15 @@ import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 import MiniCalendar from './MiniCalendar';
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
+import { UseFormSetValue } from 'react-hook-form';
+import { BookingForm } from '@src/pages/booking';
 
-const BookingDatePicker = () => {
+interface BookingDatePickerProps {
+  setValue: UseFormSetValue<BookingForm>;
+}
+
+const BookingDatePicker: FC<BookingDatePickerProps> = (props) => {
+  const { setValue } = props;
   const { selectBookingDate } = useSelector((state: RootState) => state.booking);
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -37,7 +44,7 @@ const BookingDatePicker = () => {
           {selectBookingDate ? dayjs(selectBookingDate).format('YYYY-MM-DD') : '날짜'}
         </span>
       </button>
-      {isCalendarOpen && <MiniCalendar onClose={handleCloseCalendar} />}
+      {isCalendarOpen && <MiniCalendar onClose={handleCloseCalendar} setValue={setValue} />}
     </div>
   );
 };
