@@ -15,14 +15,14 @@ interface InviteInfoResponse {
     };
     invitedMember: {
       displayName: string;
-      profileImgUrl: string;
+      profileImgKey: string;
     };
   };
 }
 
 interface MemberListItem {
   displayName: string;
-  profileImgUrl: null | string;
+  profileImgKey: null | string;
 }
 
 export const getInviteInfoApi = async (InviteId: string): Promise<InviteInfoResponse> => {

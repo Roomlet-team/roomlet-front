@@ -8,7 +8,7 @@ interface MemberListInfo {
   memberList: {
     MemberId: number;
     displayName: string;
-    profileImgUrl: string;
+    profileImgKey: string;
     position: string;
     isAdmin: boolean;
     email: string;

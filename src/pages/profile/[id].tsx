@@ -34,7 +34,7 @@ const UserProfile = () => {
 
       {/* 프로필 이미지 */}
       <div {...stylex.props(Styles.ProfileContainer)}>
-        <ProfileImg size={68} src={data?.member?.profileImgUrl} />
+        <ProfileImg size={68} src={data?.member?.profileImgKey} />
         <span {...stylex.props(Typography.TitleRegularBold)}>{data?.member?.displayName}</span>
       </div>
 

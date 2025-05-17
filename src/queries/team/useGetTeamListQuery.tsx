@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 export interface MemberInfoItem {
   MemberId: number;
   displayName: string;
-  profileImgUrl: string;
+  profileImgKey: string;
   position: string;
   isAdmin: boolean;
   email: string;

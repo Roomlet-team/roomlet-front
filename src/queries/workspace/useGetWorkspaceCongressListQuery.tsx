@@ -31,7 +31,7 @@ interface AttendTeamListItem {
 interface AttendMemberListItem {
   MemberId: number;
   displayName: string;
-  profileImgUrl: null;
+  profileImgKey: null;
 }
 
 interface CongressRoom {

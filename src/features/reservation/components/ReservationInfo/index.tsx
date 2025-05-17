@@ -85,7 +85,7 @@ const ReservationInfo = () => {
                         {...stylex.props(Styles.memberLink)}
                       >
                         <div {...stylex.props(Styles.MemberInfoContainer)}>
-                          <ProfileImg size={20} src={memberItem.profileImgUrl} />
+                          <ProfileImg size={20} src={memberItem.profileImgKey} />
                           <span {...stylex.props(Typography.TagLargeMedium)}>{memberItem.displayName}</span>
                         </div>
                       </Link>

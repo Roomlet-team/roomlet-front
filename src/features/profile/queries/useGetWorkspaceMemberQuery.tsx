@@ -11,7 +11,7 @@ export interface ResponseData {
 interface Member {
   MemberId: number;
   displayName: string;
-  profileImgUrl: null;
+  profileImgKey: null;
   position: string;
   isAdmin: boolean;
   email: string;

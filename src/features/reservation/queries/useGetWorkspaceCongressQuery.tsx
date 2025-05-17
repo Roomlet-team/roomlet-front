@@ -33,7 +33,7 @@ interface AttendTeamListItem {
 interface MemberList {
   MemberId: number;
   displayName: string;
-  profileImgUrl: string;
+  profileImgKey: string;
 }
 
 interface CongressRoom {
