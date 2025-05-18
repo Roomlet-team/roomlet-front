@@ -29,7 +29,7 @@ export default AlertModal;
 
 const Styles = stylex.create({
   container: {
-    minWidth: '300px',
+    maxWidth: '300px',
     width: '100%',
     padding: '24px 16px',
     background: colors.white500,
