@@ -21,6 +21,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 import usePostLogoutQuery from '@src/features/authentication/queries/usePostLogoutQuery';
 import useDeleteWorkspaceMypageMeQuery from '@src/features/workspace/queries/useDeleteWorkspaceMypageMeQuery';
+import OutWorkspaceOutlined from '@src/components/icons/OutWorkspaceOutlined';
 
 const MyPageInviteModal = dynamic(() => import('@src/features/mypage/compontents/MyPageInviteModal'), {
   ssr: false,
@@ -70,7 +71,7 @@ const MyPageHome = () => {
         {
           id: 5,
           name: '워크스페이스 나가기',
-          icon: <ExitOutlined width={24} height={24} />,
+          icon: <OutWorkspaceOutlined width={24} height={24} />,
           onClick: () => {
             confirm({
               content:
