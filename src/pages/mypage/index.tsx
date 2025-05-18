@@ -17,11 +17,15 @@ import AddOutlined from '@src/components/icons/AddOutlined';
 import EntranceOutlined from '@src/components/icons/EntranceOutlined';
 import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGetMyPageProfileQuery';
 import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 import usePostLogoutQuery from '@src/features/authentication/queries/usePostLogoutQuery';
 import useDeleteWorkspaceMypageMeQuery from '@src/features/workspace/queries/useDeleteWorkspaceMypageMeQuery';
 import OutWorkspaceOutlined from '@src/components/icons/OutWorkspaceOutlined';
+import DocumentOutlined from '@src/components/icons/DocumentOutlined';
+import AlertModal from '@src/components/ui/Modal/alert';
+import { hideModal } from '@src/slices/modal';
+import useRenderModal from '@src/hooks/ui/useRenderModal';
 
 const MyPageInviteModal = dynamic(() => import('@src/features/mypage/compontents/MyPageInviteModal'), {
   ssr: false,
@@ -41,6 +45,8 @@ const MyPageHome = () => {
   const { data: mypageInfoData } = useGetMypageInfoQuery();
   const logoutMutation = usePostLogoutQuery();
   const withdrawnMutation = useDeleteWorkspaceMypageMeQuery();
+  const dispatch = useDispatch();
+  const { renderModal } = useRenderModal();
   const commonUrl = 'mypage';
 
   // 멤버 초대 모달을 열고 닫게하는 함수
@@ -50,6 +56,16 @@ const MyPageHome = () => {
 
   const commonMenuList = [
     { id: 6, name: '로그아웃', icon: <ExitOutlined width={24} height={24} />, onClick: () => logoutMutation.mutate() },
+    {
+      id: 7,
+      name: '이용약관',
+      icon: <DocumentOutlined width={24} height={24} />,
+      onClick: () =>
+        renderModal(AlertModal, {
+          content: '준비중입니다.',
+          onOk: () => dispatch(hideModal()),
+        }),
+    },
   ];
 
   const menuList = data?.workspaceCount
