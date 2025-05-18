@@ -41,7 +41,7 @@ const OnboardingSlider = () => {
     },
     {
       id: 2,
-      imgUrl: `${process.env.NEXT_PUBLIC_S3_URL}/public/images/onboarding/FOLDER.png`,
+      imgUrl: `${process.env.NEXT_PUBLIC_S3_URL}/public/images/onboarding/TODOLIST.png`,
       name: 'onboarding_02',
       title: '스케쥴 관리 간소화',
       description: (
