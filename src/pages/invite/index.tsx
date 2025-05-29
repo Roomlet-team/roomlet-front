@@ -2,7 +2,7 @@ import React from 'react';
 import stylex from '@stylexjs/stylex';
 import MainLayout from '@src/layouts/MainLayout';
 import RoomletTextLogo from '@src/components/logos/text';
-import { colors, Typography } from '../../public/styles/vars.stylex';
+import { colors, Typography } from '../../../public/styles/vars.stylex';
 import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import Button from '@src/components/ui/Button';
