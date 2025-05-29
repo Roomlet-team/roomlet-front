@@ -43,7 +43,7 @@
   content: '';
   position: absolute;
   left: 4px;
-  top: 4px;
+  top: 6px;
   width: 12px;
   height: 12px;
   background-image: url('https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/common/checkmark.png'); /* 체크 표시 이미지 경로 */
