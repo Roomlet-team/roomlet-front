@@ -32,6 +32,11 @@
     border-color 0.3s;
 }
 
+/* 원형 체크박스 디자인 */
+.common-checkbox-label.circle::before {
+  border-radius: 50%; /* 원형으로 변경 */
+}
+
 /* 체크된 상태 스타일 */
 .common-checkbox-label:has(.common-checkbox-input[type='checkbox']:checked)::before {
   background-color: #b5312c; /* 체크박스 배경색 */
@@ -50,6 +55,15 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+/* 원형 체크박스의 체크 표시 위치 조정 */
+.common-checkbox-label.circle:has(.common-checkbox-input[type='checkbox']:checked)::after {
+  left: 5px;
+  top: 8px;
+  width: 10px;
+  height: 8px;
+  background-image: url('https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/common/checkmark_v2.png'); /* 체크 표시 이미지 경로 */
 }
 
 /* 호버 효과 */
