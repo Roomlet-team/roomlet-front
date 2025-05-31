@@ -3,11 +3,7 @@ import stylex from '@stylexjs/stylex';
 import MainLayout from '@src/layouts/MainLayout';
 import RoomletTextLogo from '@src/components/logos/text';
 import { colors, Typography } from '../../../public/styles/vars.stylex';
-import Input from '@src/components/ui/Input';
-import useInput from '@src/hooks/useInput';
-import Button from '@src/components/ui/Button';
 import useGetInviteInfoQuery, { getInviteInfoApi } from '@src/features/invite/queries/useGetInviteInfoQuery';
-import usePostWorkspaceJoinQuery from '@src/features/invite/queries/usePostWorkspaceJoinQuery';
 import { useRouter } from 'next/router';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import EllipsisImg from '@public/img/ellipsis.svg';
@@ -15,11 +11,10 @@ import Link from 'next/link';
 import SEOHead from '@src/components/ui/SEOHead';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import GoogleOutlined from '@src/components/icons/GoogleOutlined';
 
 const Invite = () => {
-  const [displayName, handleChangeDisplayName] = useInput('');
   const { data } = useGetInviteInfoQuery();
-  const mutation = usePostWorkspaceJoinQuery();
   const router = useRouter();
   const memberCount = data?.inviteInfo?.workspace?.memberCount;
   const isMemberCountGreaterThanLimit = (limit: number) => memberCount > limit;
@@ -27,16 +22,17 @@ const Invite = () => {
     .slice(0, 2)
     .map((item) => item.displayName)
     .join(isMemberCountGreaterThanLimit(1) ? ', ' : '');
+  const snsLoginList = [
+    {
+      id: 1,
+      logo: <GoogleOutlined width={18} height={18} />,
+      name: 'Google',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/auth/google?prev_url=${process.env.NEXT_PUBLIC_FRONTEND_URL}/invite/join?InviteId=${data?.inviteInfo?.InviteId}`,
+    },
+  ];
 
-  const handleClickJoin = () => {
-    mutation.mutate({
-      WorkspaceId: data.inviteInfo.workspace.WorkspaceId,
-      joinInfo: { displayName, InviteId: data.inviteInfo.InviteId },
-    });
-  };
-
-  const handleClickDenyJoin = () => {
-    router.push('/');
+  const handleClickSnsLogin = (url) => {
+    router.push(url);
   };
 
   return (
@@ -110,28 +106,38 @@ const Invite = () => {
                 {/* 멤버 닉네임 */}
                 <p {...stylex.props(Styles.nicknameContent, Typography.SubTextLargeRegular)}>
                   {displayedMemberNames}
-                  {isMemberCountGreaterThanLimit(3) ? ` 님 외 ${memberCount - 2}명` : ' 님'}이 이미 함께하고 있어요..
+                  {isMemberCountGreaterThanLimit(3) ? ` 님 외 ${memberCount - 2}명` : ' 님'}이 이미 함께하고 있어요.
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="" {...stylex.props(Styles.formContainer)}>
-          {/* 닉네임 */}
-          <Input onChange={handleChangeDisplayName} value={displayName} placeholder="사용하실 닉네임을 입력해주세요." />
+        <div {...stylex.props(Styles.loginContainer)}>
+          <div {...stylex.props(Styles.guideTextContainer)}>
+            <p {...stylex.props(Styles.guideText, Typography.SubTextLargeRegular)}>
+              업무에 사용하는 이메일 계정을 사용하는 것이 좋아요
+            </p>
+            <div {...stylex.props(Styles.chromeRecommendContainer)}>
+              <p {...stylex.props(Styles.chromeRecommendText, Typography.SubTextLargeRegular)}>
+                원활한 서비스 이용을 위해 <span {...stylex.props(Styles.chromeBold)}>Chrome 브라우저</span> 사용을
+                권장해요
+              </p>
+            </div>
+          </div>
 
-          {/* 참가하기 및 참가하지 않기 버튼 */}
-          <Button type="button" onClick={handleClickJoin}>
-            참가하기
-          </Button>
-          <button
-            type="button"
-            onClick={handleClickDenyJoin}
-            {...stylex.props(Styles.dontParticipateButton, Typography.M3BodyLarge)}
-          >
-            참가하지 않기
-          </button>
+          {/* SNS 로그인 버튼 */}
+          {snsLoginList.map((item) => (
+            <button
+              type="button"
+              key={item.id}
+              {...stylex.props(SnsLoginStyles.button)}
+              onClick={() => handleClickSnsLogin(item.url)}
+            >
+              <span>{item.logo}</span>
+              <span {...stylex.props(SnsLoginStyles.buttonText)}>{item.name}&nbsp;계정으로 로그인</span>
+            </button>
+          ))}
         </div>
       </div>
     </MainLayout>
@@ -166,6 +172,7 @@ const Styles = stylex.create({
   Container: {
     display: 'flex',
     height: '100%',
+    padding: '16px',
     justifyContent: 'space-between',
     flexDirection: 'column',
   },
@@ -226,18 +233,60 @@ const Styles = stylex.create({
     marginBottom: '75px',
     textAlign: 'center',
   },
-  formContainer: {
+  loginContainer: {
+    width: '100%',
+    paddingBottom: '40px',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  guideTextContainer: {
+    textAlign: 'center',
+  },
+  guideText: {
+    textAlign: 'center',
+    color: colors.black500,
+  },
+  chromeRecommendContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
+    marginBottom: '16px',
+  },
+  chromeIcon: {
+    fontSize: '1.6rem',
+  },
+  chromeRecommendText: {
+    color: colors.black500,
+    textAlign: 'center',
+  },
+  chromeBold: {
+    fontWeight: 700,
+  },
+});
+
+const SnsLoginStyles = stylex.create({
+  content: {
+    width: '100%',
+    padding: '0 16px',
+    marginBottom: '24px',
+  },
+  button: {
     width: '100%',
     padding: '16px',
     display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
+    alignItems: 'center',
+    border: '1px solid #E6E6E6',
+    borderRadius: '8px',
+    fontSize: '1.4rem',
+    background: 'var(--Base-White)',
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: '1.8rem' /* 128.571% */,
   },
-  dontParticipateButton: {
+  buttonText: {
+    display: 'inline-block',
     width: '100%',
-    justifySelf: 'center',
-    padding: '14px 12px',
-    background: 'none',
-    color: colors.gray50,
+    textAlign: 'center',
   },
 });
