@@ -26,6 +26,7 @@ import DocumentOutlined from '@src/components/icons/DocumentOutlined';
 import AlertModal from '@src/components/ui/Modal/alert';
 import { hideModal } from '@src/slices/modal';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
+import LockOutlined from '@src/components/icons/LockOutlined';
 
 const MyPageInviteModal = dynamic(() => import('@src/features/mypage/compontents/MyPageInviteModal'), {
   ssr: false,
@@ -57,8 +58,18 @@ const MyPageHome = () => {
   const termsMenuList = [
     {
       id: 7,
-      name: '이용약관',
+      name: '서비스 이용약관',
       icon: <DocumentOutlined width={24} height={24} />,
+      onClick: () =>
+        renderModal(AlertModal, {
+          content: '준비중입니다.',
+          onOk: () => dispatch(hideModal()),
+        }),
+    },
+    {
+      id: 8,
+      name: '개인정보 수집 및 이용 동의',
+      icon: <LockOutlined width={24} height={24} />,
       onClick: () =>
         renderModal(AlertModal, {
           content: '준비중입니다.',
