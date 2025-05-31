@@ -10,6 +10,7 @@ import GoogleLogo from '@features/authentication/assets/google_logo.svg';
 import MainLayout from '@src/layouts/MainLayout';
 // import OnboardingSlider from '@src/features/onboarding/components/OnboardingSlider';
 import SEOHead from '@src/components/ui/SEOHead';
+import { Typography, colors } from '../../public/styles/vars.stylex';
 
 const OnboardingSlider = dynamic(() => import('@src/features/onboarding/components/OnboardingSlider'), {
   ssr: false,
@@ -53,6 +54,14 @@ const Login = () => {
             <RoomletLogo />
             <RoomletTextLogo />
           </div>
+
+          <div {...stylex.props(SnsLoginStyles.chromeRecommendContainer)}>
+            <p {...stylex.props(SnsLoginStyles.chromeRecommendText, Typography.SubTextLargeRegular)}>
+              원활한 서비스 이용을 위해 <span {...stylex.props(SnsLoginStyles.chromeBold)}>Chrome 브라우저</span> 사용을
+              권장해요
+            </p>
+          </div>
+
           <div {...stylex.props(SnsLoginStyles.content)}>
             {snsLoginList.map((item) => (
               <button
@@ -119,6 +128,23 @@ const SnsLoginStyles = stylex.create({
     fontStyle: 'normal',
     fontWeight: 400,
     lineHeight: '1.8rem' /* 128.571% */,
+  },
+  chromeRecommendContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
+    marginBottom: '16px',
+  },
+  chromeIcon: {
+    fontSize: '1.6rem',
+  },
+  chromeRecommendText: {
+    color: colors.black500,
+    textAlign: 'center',
+  },
+  chromeBold: {
+    fontWeight: 700,
   },
 });
 
