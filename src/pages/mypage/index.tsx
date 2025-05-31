@@ -54,8 +54,7 @@ const MyPageHome = () => {
     setIsInviteModalOpen(!isInviteModalOpen);
   };
 
-  const commonMenuList = [
-    { id: 6, name: '로그아웃', icon: <ExitOutlined width={24} height={24} />, onClick: () => logoutMutation.mutate() },
+  const termsMenuList = [
     {
       id: 7,
       name: '이용약관',
@@ -84,7 +83,7 @@ const MyPageHome = () => {
           onClick: () => handleClickInviteModal(),
         },
         { id: 4, name: '알림 설정', icon: <BellOutlined width={24} height={24} />, href: `/${commonUrl}/alarm` },
-        ...commonMenuList,
+        ...termsMenuList,
         {
           id: 5,
           name: '워크스페이스 나가기',
@@ -100,6 +99,12 @@ const MyPageHome = () => {
             });
           },
         },
+        {
+          id: 6,
+          name: '로그아웃',
+          icon: <ExitOutlined width={24} height={24} />,
+          onClick: () => logoutMutation.mutate(),
+        },
       ]
     : [
         // 워크 스페이스가 존재하지 않는 경우
@@ -109,12 +114,18 @@ const MyPageHome = () => {
           icon: <AddOutlined width={24} height={24} />,
           href: `/mypage/create-workspace`,
         },
-        ...commonMenuList,
         {
           id: 2,
           name: '워크스페이스 입장하기',
           icon: <EntranceOutlined width={24} height={24} />,
           href: `/${commonUrl}/workspace`,
+        },
+        ...termsMenuList,
+        {
+          id: 6,
+          name: '로그아웃',
+          icon: <ExitOutlined width={24} height={24} />,
+          onClick: () => logoutMutation.mutate(),
         },
       ];
 
