@@ -48,7 +48,10 @@ const Join = () => {
               </Link>
               <p {...stylex.props(Typography.SubtitleRegularBold)}>룸렛에서 회의를 함께 준비해 보세요</p>
             </div>
+          </div>
 
+          {/* 초대 내용, 유저 정보, 약관 동의 */}
+          <div>
             {/* 초대 내용 */}
             <div {...stylex.props(Styles.inviteContentContainer)}>
               {/* 멤버 프로필 이미지 리스트 */}
@@ -100,52 +103,54 @@ const Join = () => {
                 </p>
               </div>
             </div>
-          </div>
 
-          <div {...stylex.props(Styles.userInfoContainer)}>
-            <div {...stylex.props(Styles.profileInfoContainer)}>
-              <ProfileImg
-                src={profileData?.profile.profileImgKey}
-                size={34}
-                borderProperties={{ radius: '2px', color: colors.gray40, width: '1px' }}
-              />
-              <div>
-                <p {...stylex.props(Typography.SubtitleSmallBold)}>{profileData?.profile.displayName}</p>
-                <p {...stylex.props(Typography.CaptionLargeRegular)}>{profileData?.profile.email}</p>
+            {/* 유저 정보 */}
+            <div {...stylex.props(Styles.userInfoContainer)}>
+              <div {...stylex.props(Styles.profileInfoContainer)}>
+                <ProfileImg
+                  src={profileData?.profile.profileImgKey}
+                  size={34}
+                  borderProperties={{ radius: '2px', color: colors.gray40, width: '1px' }}
+                />
+                <div>
+                  <p {...stylex.props(Typography.SubtitleSmallBold)}>{profileData?.profile.displayName}</p>
+                  <p {...stylex.props(Typography.CaptionLargeRegular)}>{profileData?.profile.email}</p>
+                </div>
               </div>
+
+              <GoogleOutlined width={18} height={18} />
             </div>
 
-            <GoogleOutlined width={18} height={18} />
+            {/* 약관 동의 */}
+            <div {...stylex.props(Styles.agreementContainer)}>
+              <p {...stylex.props(Typography.TextSmallMedium)}>계속 진행하면 다음에 동의하게 됩니다.</p>
+
+              <div {...stylex.props(Styles.checkboxContainer)}>
+                <Checkbox variant="circle" checked={isServiceAgree} onChange={handleChangeServiceAgree}>
+                  <p>
+                    [필수]&nbsp;
+                    <Link href={TERMS.SERVICE_AGREE} target="_blank" {...stylex.props(Styles.link)}>
+                      고객 서비스 약관
+                    </Link>
+                    에 동의합니다.
+                  </p>
+                </Checkbox>
+                <Checkbox variant="circle" checked={isPrivacyAgree} onChange={handleChangePrivacyAgree}>
+                  <p>
+                    [필수] 본인은{' '}
+                    <Link href={TERMS.PRIVACY_AGREE} target="_blank" {...stylex.props(Styles.link)}>
+                      개인정보의 수집 및 이용
+                    </Link>
+                    에 동의합니다.
+                  </p>
+                </Checkbox>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* 약관 동의 및 시작하기 */}
+        {/* 시작하기 */}
         <div>
-          <div {...stylex.props(Styles.agreementContainer)}>
-            <p {...stylex.props(Typography.TextSmallMedium)}>계속 진행하면 다음에 동의하게 됩니다.</p>
-
-            <div {...stylex.props(Styles.checkboxContainer)}>
-              <Checkbox variant="circle" checked={isServiceAgree} onChange={handleChangeServiceAgree}>
-                <p>
-                  [필수]&nbsp;
-                  <Link href={TERMS.SERVICE_AGREE} target="_blank" {...stylex.props(Styles.link)}>
-                    고객 서비스 약관
-                  </Link>
-                  에 동의합니다.
-                </p>
-              </Checkbox>
-              <Checkbox variant="circle" checked={isPrivacyAgree} onChange={handleChangePrivacyAgree}>
-                <p>
-                  [필수] 본인은{' '}
-                  <Link href={TERMS.PRIVACY_AGREE} target="_blank" {...stylex.props(Styles.link)}>
-                    개인정보의 수집 및 이용
-                  </Link>
-                  에 동의합니다.
-                </p>
-              </Checkbox>
-            </div>
-          </div>
-
           <div {...stylex.props(Styles.startButtonContainer)}>
             <p {...stylex.props(Styles.guideText, Typography.SubTextLargeRegular)}>
               업무에 사용하는 이메일 계정을 사용하는 것이 좋아요
@@ -186,7 +191,7 @@ const Styles = stylex.create({
     justifyContent: 'center',
     flexDirection: 'column',
     gap: '32px',
-    marginBottom: '32px',
+    marginBottom: '64px',
   },
   inviteContentContainer: {
     display: 'flex',
@@ -233,7 +238,7 @@ const Styles = stylex.create({
   },
   userInfoContainer: {
     width: '100%',
-    marginBottom: '54px',
+    marginBottom: '24px',
     padding: '8px 16px 8px 8px',
     display: 'flex',
     alignItems: 'center',
