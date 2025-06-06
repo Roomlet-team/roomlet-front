@@ -26,7 +26,7 @@ const MypageMenu: FC<MypageMenuProps> = (props) => {
               </button>
             ) : (
               // 메뉴 클릭시 링크 이동할 때
-              <Link href={item.href} {...stylex.props(Styles.MenuLink)}>
+              <Link href={item.href} target={item.target || '_self'} {...stylex.props(Styles.MenuLink)}>
                 <span>{item.icon}</span>
                 <span {...stylex.props(Typography.TextSmallMedium)}>{item.name}</span>
               </Link>
