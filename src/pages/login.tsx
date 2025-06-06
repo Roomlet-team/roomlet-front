@@ -11,6 +11,7 @@ import MainLayout from '@src/layouts/MainLayout';
 // import OnboardingSlider from '@src/features/onboarding/components/OnboardingSlider';
 import SEOHead from '@src/components/ui/SEOHead';
 import { Typography, colors } from '../../public/styles/vars.stylex';
+import { TERMS } from '@src/constant/terms';
 
 const OnboardingSlider = dynamic(() => import('@src/features/onboarding/components/OnboardingSlider'), {
   ssr: false,
@@ -77,11 +78,11 @@ const Login = () => {
           </div>
           <p {...stylex.props(TermsStyles.text)}>
             시작하기를 누르는 것으로 계정 연동에 대한{' '}
-            <a {...stylex.props(TermsStyles.link)} href="/">
+            <a {...stylex.props(TermsStyles.link)} href={TERMS.SERVICE_AGREE}>
               이용약관
             </a>
             과{' '}
-            <a {...stylex.props(TermsStyles.link)} href="/">
+            <a {...stylex.props(TermsStyles.link)} href={TERMS.PRIVACY_AGREE}>
               개인정보 처리방침
             </a>
             에 동의하고 서비스를 이용합니다.
