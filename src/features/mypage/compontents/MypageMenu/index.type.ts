@@ -3,5 +3,6 @@ export type MenuListType = {
   name: string;
   icon: React.JSX.Element;
   href?: string;
+  target?: React.HTMLAttributeAnchorTarget;
   onClick?: (e: React.MouseEvent) => void;
 }[];
