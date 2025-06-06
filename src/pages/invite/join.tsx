@@ -14,6 +14,7 @@ import Button from '@src/components/ui/Button';
 import useInputCheckbox from '@src/hooks/useInputCheckbox';
 import GoogleOutlined from '@src/components/icons/GoogleOutlined';
 import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGetMyPageProfileQuery';
+import { TERMS } from '@src/constant/terms';
 
 const Join = () => {
   const { data } = useGetInviteInfoQuery();
@@ -127,7 +128,7 @@ const Join = () => {
               <Checkbox variant="circle" checked={isServiceAgree} onChange={handleChangeServiceAgree}>
                 <p>
                   [필수]&nbsp;
-                  <Link href="/" target="_blank" {...stylex.props(Styles.link)}>
+                  <Link href={TERMS.SERVICE_AGREE} target="_blank" {...stylex.props(Styles.link)}>
                     고객 서비스 약관
                   </Link>
                   에 동의합니다.
@@ -136,17 +137,11 @@ const Join = () => {
               <Checkbox variant="circle" checked={isPrivacyAgree} onChange={handleChangePrivacyAgree}>
                 <p>
                   [필수] 본인은{' '}
-                  <Link href="/" target="_blank" {...stylex.props(Styles.link)}>
+                  <Link href={TERMS.PRIVACY_AGREE} target="_blank" {...stylex.props(Styles.link)}>
                     개인정보의 수집 및 이용
                   </Link>
                   에 동의합니다.
                 </p>
-              </Checkbox>
-              <Checkbox variant="circle" checked={isAgeAgree} onChange={handleChangeAgeAgree}>
-                <p>[필수] 본인은 본인의 연령이 14세를 넘었음을 증명합니다.</p>
-              </Checkbox>
-              <Checkbox variant="circle" checked={isMarketingAgree} onChange={handleChangeMarketingAgree}>
-                <p>[선택] 룸렛에 대한 마케팅 소식을 받겠습니다.</p>
               </Checkbox>
             </div>
           </div>
