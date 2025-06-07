@@ -29,8 +29,10 @@ const Styles = stylex.create({
     position: 'sticky',
     bottom: 0,
     background: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 10,
   },
   ContentWrapper: {
+    zIndex: 11,
     width: '100%',
     height: 'auto',
     position: 'absolute',
