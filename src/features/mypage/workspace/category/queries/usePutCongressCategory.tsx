@@ -17,7 +17,7 @@ interface CongressCategoryListInfo {
 }
 
 const putCongressCategoryApi = async (WorkspaceId, data: CongressCategoryListInfo): Promise<ResponseData> => {
-  const response = await clientInstance.put(`/v1/workspace/@${WorkspaceId}/congress/cateogy`, data);
+  const response = await clientInstance.put(`/v1/workspace/@${WorkspaceId}/manage/cateogy`, data);
 
   return response.data;
 };
