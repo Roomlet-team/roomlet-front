@@ -21,7 +21,7 @@ interface MemberListInfo {
 }
 
 const getMemberListApi = async (WorkspaceId: number, skeywd: string = ''): Promise<MemberListInfo> => {
-  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/member`, { params: { skeywd } });
+  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/members`, { params: { skeywd } });
 
   return response.data;
 };

@@ -14,7 +14,7 @@ interface MemberRequestData {
 const deleteWorkspaceMemberApi = async (WorkspaceId, data: MemberRequestData): Promise<ResponseData> => {
   const { MemberId } = data;
 
-  const response = await clientInstance.delete(`/v1/workspace/@${WorkspaceId}/member/${MemberId}`);
+  const response = await clientInstance.delete(`/v1/workspace/@${WorkspaceId}/manage/members/${MemberId}`);
 
   return response.data;
 };
