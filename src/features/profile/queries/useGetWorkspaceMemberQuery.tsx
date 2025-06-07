@@ -25,7 +25,7 @@ interface TeamInfo {
 }
 
 const getWorkspaceMemberApi = async (WorkspaceId: number, MemberId: number): Promise<ResponseData> => {
-  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/member/${MemberId}`);
+  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/members/${MemberId}`);
 
   return response.data;
 };
