@@ -8,14 +8,22 @@ import useInput from '@src/hooks/useInput';
 import { hideModal } from '@src/slices/modal';
 import { addCategory } from '../../slices/category';
 import useGetCategoryListQuery from '@src/queries/category/useGetCategoryListQuery';
+import usePutCongressCategory from '../../queries/usePutCongressCategory';
 
 let bottomSheetId = 'add-category-bottom-sheet';
 
-const AddCategoryBottomSheet = () => {
+type AddCategoryMode = 'immediate' | 'deferred';
+
+interface AddCategoryBottomSheetProps {
+  mode?: AddCategoryMode;
+}
+
+const AddCategoryBottomSheet = ({ mode = 'deferred' }: AddCategoryBottomSheetProps) => {
   const [name, handleChangeName] = useInput<string>('');
   const [validMsg, setValidMsg] = useState<string>('');
   const dispatch = useDispatch();
   const { data } = useGetCategoryListQuery();
+  const mutation = usePutCongressCategory();
 
   useEffect(() => {
     // 카테고리 이름이 입력되면 경고 메시지 초기화
@@ -24,13 +32,26 @@ const AddCategoryBottomSheet = () => {
     }
   }, [name]);
 
-  const handleClickRegister = () => {
+  const handleClickDeferredRegister = () => {
     if (data?.congressCategoryList.find((item) => item.categoryName === name)) {
       setValidMsg('이미 존재하는 카테고리입니다.');
       return;
     }
 
     dispatch(addCategory({ categoryName: name }));
+    dispatch(hideModal());
+  };
+
+  const handleClickImmediateRegister = () => {
+    if (data?.congressCategoryList.find((item) => item.categoryName === name)) {
+      setValidMsg('이미 존재하는 카테고리입니다.');
+      return;
+    }
+
+    mutation.mutate({
+      congressCategoryList: [...data.congressCategoryList, { categoryName: name }],
+      deleteCongressCategoryList: [],
+    });
     dispatch(hideModal());
   };
 
@@ -52,7 +73,7 @@ const AddCategoryBottomSheet = () => {
           </button>
           <button
             type="button"
-            onClick={handleClickRegister}
+            onClick={mode === 'immediate' ? handleClickImmediateRegister : handleClickDeferredRegister}
             {...stylex.props(Styles.Button, Styles.RegisterButton, Typography.TextSmallMedium)}
           >
             등록
