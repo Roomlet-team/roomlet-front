@@ -7,7 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 type ResponseData = null;
 
 interface CongressCategoryItem {
-  CongressCategoryId: number;
+  CongressCategoryId?: number;
   categoryName: string;
 }
 
