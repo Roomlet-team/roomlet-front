@@ -16,7 +16,7 @@ interface WorkspaceInfo {
 
 interface JoinInfo {
   WorkspaceId: number;
-  joinInfo: { displayName: string; InviteId: string };
+  joinInfo: { displayName?: string; InviteId: string };
 }
 
 const postWorkspaceJoinApi = async (data: JoinInfo): Promise<WorkspaceInfo> => {
