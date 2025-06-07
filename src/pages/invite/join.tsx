@@ -15,20 +15,43 @@ import useInputCheckbox from '@src/hooks/useInputCheckbox';
 import GoogleOutlined from '@src/components/icons/GoogleOutlined';
 import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGetMyPageProfileQuery';
 import { TERMS } from '@src/constant/terms';
+import usePostWorkspaceJoinQuery from '@src/features/invite/queries/usePostWorkspaceJoinQuery';
+import useRenderModal from '@src/hooks/ui/useRenderModal';
+import AlertModal from '@src/components/ui/Modal/alert';
+import { useDispatch } from 'react-redux';
+import { hideModal } from '@src/slices/modal';
 
 const Join = () => {
   const { data } = useGetInviteInfoQuery();
   const [isServiceAgree, handleChangeServiceAgree] = useInputCheckbox(false);
   const [isPrivacyAgree, handleChangePrivacyAgree] = useInputCheckbox(false);
-  const [isAgeAgree, handleChangeAgeAgree] = useInputCheckbox(false);
-  const [isMarketingAgree, handleChangeMarketingAgree] = useInputCheckbox(false);
   const { data: profileData } = useGetMyPageProfileQuery();
+  const mutation = usePostWorkspaceJoinQuery();
   const memberCount = data?.inviteInfo?.workspace?.memberCount;
   const isMemberCountGreaterThanLimit = (limit: number) => memberCount > limit;
+  const { renderModal } = useRenderModal();
+  const dispatch = useDispatch();
   const displayedMemberNames = data?.inviteInfo?.workspace?.memberList
     .slice(0, 2)
     .map((item) => item.displayName)
     .join(isMemberCountGreaterThanLimit(1) ? ', ' : '');
+
+  const handleClickStartBtn = () => {
+    if (!isServiceAgree || !isPrivacyAgree) {
+      renderModal(AlertModal, {
+        content: '필수 약관을 모두 동의해주세요.',
+        onOk: () => dispatch(hideModal()),
+      });
+      return;
+    }
+
+    mutation.mutate({
+      WorkspaceId: data?.inviteInfo?.workspace?.WorkspaceId,
+      joinInfo: {
+        InviteId: data?.inviteInfo?.InviteId,
+      },
+    });
+  };
 
   return (
     <MainLayout isScroll>
@@ -155,7 +178,7 @@ const Join = () => {
             <p {...stylex.props(Styles.guideText, Typography.SubTextLargeRegular)}>
               업무에 사용하는 이메일 계정을 사용하는 것이 좋아요
             </p>
-            <Button>시작하기</Button>
+            <Button onClick={handleClickStartBtn}>시작하기</Button>
           </div>
         </div>
       </div>
