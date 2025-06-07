@@ -8,10 +8,10 @@ type ResponseData = null;
 
 interface CongressRoomListInfo {
   congressRoomList: {
-    RoomId: number;
+    RoomId?: number;
     roomName: string;
     roomDescription: string;
-    roomSize: number;
+    roomSize?: number;
   }[];
   deleteCongressRoomList: {
     RoomId: number;
