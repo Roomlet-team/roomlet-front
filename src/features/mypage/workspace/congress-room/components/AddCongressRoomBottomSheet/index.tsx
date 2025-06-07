@@ -8,15 +8,23 @@ import useInput from '@src/hooks/useInput';
 import { addCongressRoom } from '../../slice/congressRoom';
 import { hideModal } from '@src/slices/modal';
 import useGetCongressRoomListQuery from '@src/queries/congress/useGetCongressRoomListQuery';
+import usePutCongressRoomQuery from '../../queries/usePutCongressRoomQuery';
 
 let bottomSheetId = 'add-congress-room-bottom-sheet';
 
-const AddCongressRoomBottomSheet = () => {
+type AddCongressRoomMode = 'immediate' | 'deferred';
+
+interface AddCongressRoomBottomSheetProps {
+  mode?: AddCongressRoomMode;
+}
+
+const AddCongressRoomBottomSheet = ({ mode = 'deferred' }: AddCongressRoomBottomSheetProps) => {
   const [name, handleChangeName] = useInput<string>('');
   const [validMsg, setValidMsg] = useState<string>('');
   const [description, handleChangeDescription] = useInput<string>('');
   const dispatch = useDispatch();
   const { data } = useGetCongressRoomListQuery();
+  const mutation = usePutCongressRoomQuery();
 
   useEffect(() => {
     if (name.length > 0) {
@@ -24,13 +32,26 @@ const AddCongressRoomBottomSheet = () => {
     }
   }, [name]);
 
-  const handleClickRegister = () => {
+  const handleClickDeferredRegister = () => {
     if (data?.congressRoomList.find((item) => item.roomName === name)) {
       setValidMsg('이미 존재하는 회의실입니다.');
       return;
     }
 
     dispatch(addCongressRoom({ roomName: name, roomDescription: description }));
+    dispatch(hideModal());
+  };
+
+  const handleClickImmediateRegister = () => {
+    if (data?.congressRoomList.find((item) => item.roomName === name)) {
+      setValidMsg('이미 존재하는 회의실입니다.');
+      return;
+    }
+
+    mutation.mutate({
+      congressRoomList: [...data.congressRoomList, { roomName: name, roomDescription: description }],
+      deleteCongressRoomList: [],
+    });
     dispatch(hideModal());
   };
 
@@ -58,7 +79,7 @@ const AddCongressRoomBottomSheet = () => {
           </button>
           <button
             type="button"
-            onClick={handleClickRegister}
+            onClick={mode === 'immediate' ? handleClickImmediateRegister : handleClickDeferredRegister}
             {...stylex.props(Styles.Button, Styles.RegisterButton, Typography.TextSmallMedium)}
           >
             등록
