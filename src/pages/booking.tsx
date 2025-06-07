@@ -22,6 +22,10 @@ import useGetWorkspaceCongressQuery from '@src/features/reservation/queries/useG
 import { useRouter } from 'next/router';
 import { saveSelectBookingDate, saveSelectBookingMemberObj } from '@src/features/booking/slices/booking';
 import dayjs from 'dayjs';
+import AddCongressRoomBottomSheet from '@src/features/mypage/workspace/congress-room/components/AddCongressRoomBottomSheet';
+import useRenderModal from '@src/hooks/ui/useRenderModal';
+import AddCategoryBottomSheet from '@src/features/mypage/workspace/category/components/AddCategoryBottomSheet';
+import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 
 const BookingMemberSelect = dynamic(() => import('@src/features/booking/components/BookingMemberSelect'), {
   ssr: false,
@@ -63,6 +67,8 @@ const Booking = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { id, mode } = router.query;
+  const { renderModal } = useRenderModal();
+  const { data: myInfoData } = useGetMypageInfoQuery();
   const { data: congressRoomData } = useGetCongressRoomListQuery();
   const { data: categoryData } = useGetCategoryListQuery();
   const { data: congressData } = useGetWorkspaceCongressQuery({ cgsid: Number(id) || null });
@@ -96,6 +102,14 @@ const Booking = () => {
       startDt: data.startDt.value,
       endDt: data.endDt.value,
     });
+  };
+
+  const handleClickAddMeetingRoom = () => {
+    renderModal(AddCongressRoomBottomSheet, { mode: 'immediate' });
+  };
+
+  const handleClickAddCategory = () => {
+    renderModal(AddCategoryBottomSheet, { mode: 'immediate' });
   };
 
   useEffect(() => {
@@ -176,6 +190,11 @@ const Booking = () => {
                   />
                 ))
               )}
+              {myInfoData?.myInfo.isAdmin && (
+                <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddMeetingRoom}>
+                  + 추가하기
+                </button>
+              )}
             </div>
           </BookingFormItem>
 
@@ -203,6 +222,11 @@ const Booking = () => {
                     )}
                   />
                 ))
+              )}
+              {myInfoData?.myInfo.isAdmin && (
+                <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddCategory}>
+                  + 추가하기
+                </button>
               )}
             </div>
           </BookingFormItem>
@@ -314,6 +338,20 @@ const Styles = stylex.create({
   RadioBtnContainer: {
     display: 'flex',
     gap: '8px',
+    flexWrap: 'wrap',
+  },
+  addBtn: {
+    width: 'fit-content',
+    padding: '12px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'relative',
+    borderRadius: '20px',
+    boxShadow: `inset 0 0 0 1px ${colors.gray40}`,
+    fontSize: '1.2rem',
+    fontWeight: 500,
+    color: '#070505',
   },
   submitBtnWrapper: {
     padding: '16px 16px 40px',
