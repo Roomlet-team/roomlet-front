@@ -15,7 +15,7 @@ interface TeamListInfo {
 }
 
 const putTeamApi = async (WorkspaceId, data: TeamListInfo): Promise<ResponseData> => {
-  const response = await clientInstance.put(`/v1/workspace/@${WorkspaceId}/team`, data);
+  const response = await clientInstance.put(`/v1/workspace/@${WorkspaceId}/manage/team`, data);
 
   return response.data;
 };
