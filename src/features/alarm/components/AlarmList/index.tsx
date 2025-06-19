@@ -1,9 +1,11 @@
 import React from 'react';
-import stylex, { props } from '@stylexjs/stylex';
+import stylex from '@stylexjs/stylex';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 import CloseOutlined from '@src/components/icons/CloseOutlined';
+import useGetNotificationsInfiniteQuery from '@src/queries/alarm/useGetNotificationsInfiniteQuery';
+import useIntersectionObserver from '@src/hooks/useIntersectionObserver';
 
 // fromNow를 사용하기 위해 플러그인 사용
 dayjs.extend(relativeTime);
@@ -12,47 +14,47 @@ dayjs.extend(relativeTime);
  * 알람 리스트 컴포넌트
  */
 const AlarmList = () => {
-  const data = [
-    {
-      id: 1,
-      isRead: false,
-      category: 'reservation',
-      content: `'레나'님의 회의가 예약되었어요.`,
-      createdAt: '2024-05-24',
-    },
-    {
-      id: 2,
-      isRead: true,
-      category: 'reservation',
-      content: `'레나'님의 회의가 예약되었어요.`,
-      createdAt: '2024-05-24',
-    },
-  ];
+  const { notifications, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
+    useGetNotificationsInfiniteQuery();
+
+  const loadMoreRef = useIntersectionObserver(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  });
 
   const alarmCategoryInfo = {
-    reservation: { imgKey: 'public/images/alarm/checked 1.png', korean: '예약' },
+    reserve: { imgKey: 'public/images/alarm/checked 1.png', korean: '예약' },
     invite: { imgKey: 'public/images/alarm/plus 1.png', korean: '초대' },
     change: { imgKey: 'public/images/alarm/shuffle 1.png', korean: '변경' },
-    notice: { imgKey: 'public/images/alarm/volume-up 1.png', korean: '공지' },
     remind: { imgKey: 'public/images/alarm/bell 1.png', korean: '리마인드' },
   };
 
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
   return (
     <ul>
-      {data.map((item) => (
-        <li key={item.id} {...stylex.props(AlarmStyles.Item, !item.isRead && AlarmStyles.NotRead)}>
+      {notifications.map((item, index) => (
+        <li
+          key={item.NotificationId}
+          {...stylex.props(AlarmStyles.Item, !item.checkedAt && AlarmStyles.NotRead)}
+          // 마지막 항목에 Intersection Observer 적용
+          ref={index === notifications.length - 1 ? loadMoreRef : undefined}
+        >
           {/* 알람 정보 */}
           <div {...stylex.props(AlarmStyles.InfoContainer)}>
             {/* 읽었는지 안 읽었는지 체크하는 dot */}
             <div {...stylex.props(AlarmStyles.DotWrapper)}>
-              {item.isRead ? '' : <span {...stylex.props(AlarmStyles.Dot)} />}
+              {item.checkedAt ? '' : <span {...stylex.props(AlarmStyles.Dot)} />}
             </div>
 
             {/* 카테고리 이미지 */}
             <div {...stylex.props(AlarmStyles.ImgWrapper)}>
               <img
-                src={`${process.env.NEXT_PUBLIC_S3_URL}/${alarmCategoryInfo[item.category].imgKey}`}
-                alt={alarmCategoryInfo[item.category].korean}
+                src={`${process.env.NEXT_PUBLIC_S3_URL}/${alarmCategoryInfo[item?.notificationType].imgKey}`}
+                alt={alarmCategoryInfo[item?.notificationType].korean}
                 width={24}
               />
             </div>
@@ -60,7 +62,7 @@ const AlarmList = () => {
             {/* 카테고리와 알람내용, 날짜 */}
             <div>
               <p {...stylex.props(Typography.SubTextLargeMedium, AlarmStyles.CategoryText)}>
-                {alarmCategoryInfo[item.category].korean}
+                {alarmCategoryInfo[item?.notificationType].korean}
               </p>
               <p {...stylex.props(Typography.TextSmallMedium, AlarmStyles.ContentText)}>{item.content}</p>
               <p {...stylex.props(Typography.CaptionRegularRegular, AlarmStyles.DateText)}>
@@ -119,5 +121,9 @@ const AlarmStyles = stylex.create({
   },
   DateText: {
     color: colors.gray60,
+  },
+  LoadingItem: {
+    textAlign: 'center',
+    padding: '16px',
   },
 });
