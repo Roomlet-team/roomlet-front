@@ -2,11 +2,17 @@ import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceList
 import clientInstance from '@src/utils/api/clientInstance';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
+export type AlarmCategory = 'reserve' | 'invite' | 'change' | 'remind';
+
+interface Params {
+  alarmCategory: AlarmCategory;
+}
+
 export interface NotificationItem {
   NotificationId: number;
   WorkspaceId: number;
   CongressId: number;
-  notificationType: 'reserve' | 'invite' | 'change' | 'remind';
+  notificationType: AlarmCategory;
   createdAt: string;
   content: string;
   checkedAt: string | null;
@@ -20,10 +26,14 @@ interface Notification {
 
 const PER_PAGE = 20;
 
-const getNotificationApi = async (WorkspaceId: number, page: number): Promise<Notification> => {
-  const response = await clientInstance.get(
-    `/v1/workspace/@${WorkspaceId}/mypage/notifications?page=${page}&perPage=${PER_PAGE}`
-  );
+const getNotificationApi = async (
+  WorkspaceId: number,
+  alarmCategory: AlarmCategory,
+  page: number
+): Promise<Notification> => {
+  const response = await clientInstance.get(`/v1/workspace/@${WorkspaceId}/mypage/notifications`, {
+    params: { page, perPage: PER_PAGE, ...(alarmCategory && { notyp: alarmCategory }) },
+  });
 
   return response.data;
 };
@@ -41,13 +51,13 @@ const getNotificationApi = async (WorkspaceId: number, page: number): Promise<No
  *   - `refetch`: 데이터를 수동으로 다시 가져오는 함수
  *   - `notifications`: 모든 페이지의 알림을 평면화한 배열
  */
-const useGetNotificationsInfiniteQuery = () => {
+const useGetNotificationsInfiniteQuery = ({ alarmCategory }: Params) => {
   const { data } = useGetWorkspaceListQuery();
   const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 
   const result = useInfiniteQuery({
-    queryKey: ['notifications', workspaceId],
-    queryFn: ({ pageParam }) => getNotificationApi(workspaceId!, pageParam),
+    queryKey: ['notifications', workspaceId, alarmCategory],
+    queryFn: ({ pageParam }) => getNotificationApi(workspaceId!, alarmCategory, pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => {
       // 알림이 20개 미만이면 마지막 페이지
