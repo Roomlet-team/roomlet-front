@@ -1,6 +1,7 @@
 import Header from '@src/components/ui/Header';
 import AlarmCategoryList from '@src/features/alarm/components/AlarmCategoryList';
 import AlarmList from '@src/features/alarm/components/AlarmList';
+import { AlarmCategoryProvider } from '@src/features/alarm/contexts/AlarmCategoryContext';
 import MainLayout from '@src/layouts/MainLayout';
 import React, { useState } from 'react';
 
@@ -17,12 +18,13 @@ const Alarm = () => {
   return (
     <MainLayout isScroll>
       <Header title="알림" prevUrl="/" rightBtnInfo={readAllBtnProps} />
+      <AlarmCategoryProvider>
+        {/* 알림 카테고리 */}
+        <AlarmCategoryList />
 
-      {/* 알림 카테고리 */}
-      <AlarmCategoryList />
-
-      {/* 알림 리스트 */}
-      <AlarmList />
+        {/* 알림 리스트 */}
+        <AlarmList />
+      </AlarmCategoryProvider>
     </MainLayout>
   );
 };
