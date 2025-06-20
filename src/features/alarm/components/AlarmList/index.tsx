@@ -6,6 +6,7 @@ import { Typography, colors } from '../../../../../public/styles/vars.stylex';
 import CloseOutlined from '@src/components/icons/CloseOutlined';
 import useGetNotificationsInfiniteQuery from '@src/queries/alarm/useGetNotificationsInfiniteQuery';
 import useIntersectionObserver from '@src/hooks/useIntersectionObserver';
+import { useAlarmCategory } from '../../contexts/AlarmCategoryContext';
 
 // fromNow를 사용하기 위해 플러그인 사용
 dayjs.extend(relativeTime);
@@ -14,8 +15,11 @@ dayjs.extend(relativeTime);
  * 알람 리스트 컴포넌트
  */
 const AlarmList = () => {
-  const { notifications, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
-    useGetNotificationsInfiniteQuery();
+  const { category } = useAlarmCategory();
+
+  const { notifications, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } = useGetNotificationsInfiniteQuery(
+    { alarmCategory: category }
+  );
 
   const loadMoreRef = useIntersectionObserver(() => {
     if (hasNextPage && !isFetchingNextPage) {

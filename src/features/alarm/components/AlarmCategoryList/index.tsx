@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import { Typography, colors } from '../../../../../public/styles/vars.stylex';
+import { AlarmCategory } from '@src/queries/alarm/useGetNotificationsInfiniteQuery';
+import { useAlarmCategory } from '../../contexts/AlarmCategoryContext';
 
 const AlarmCategoryList = () => {
-  const [selectCategory, setSelectCategory] = useState<string>('all');
-  const categoryList = [
-    { id: 1, name: '전체', value: 'all' },
-    { id: 2, name: '테스트', value: 'test' },
+  const { category, setCategory } = useAlarmCategory();
+  const categoryList: { id: number; name: string; value: AlarmCategory }[] = [
+    { id: 1, name: '전체', value: null },
+    { id: 2, name: '예약', value: 'reserve' },
+    { id: 3, name: '초대', value: 'invite' },
+    { id: 4, name: '변경', value: 'change' },
+    { id: 5, name: '리마인드', value: 'remind' },
   ];
 
   const handleClick = (e) => {
     const value = e.target.getAttribute('value');
-    setSelectCategory(value);
+    setCategory(value);
   };
 
   return (
@@ -25,7 +30,7 @@ const AlarmCategoryList = () => {
               AlarmCategoryStyles.Item,
               Typography.SubTextLargeRegular,
               idx === categoryList.length - 1 && AlarmCategoryStyles.LastItem,
-              item.value === selectCategory && AlarmCategoryStyles.Active
+              item.value === category && AlarmCategoryStyles.Active
             )}
           >
             {item.name}
