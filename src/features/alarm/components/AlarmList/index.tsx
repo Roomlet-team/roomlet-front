@@ -7,6 +7,7 @@ import CloseOutlined from '@src/components/icons/CloseOutlined';
 import useGetNotificationsInfiniteQuery from '@src/queries/alarm/useGetNotificationsInfiniteQuery';
 import useIntersectionObserver from '@src/hooks/useIntersectionObserver';
 import { useAlarmCategory } from '../../contexts/AlarmCategoryContext';
+import usePatchNotificationsQuery from '../../queries/usePatchNotificationsQuery';
 
 // fromNow를 사용하기 위해 플러그인 사용
 dayjs.extend(relativeTime);
@@ -16,6 +17,7 @@ dayjs.extend(relativeTime);
  */
 const AlarmList = () => {
   const { category } = useAlarmCategory();
+  const { mutate: patchNotifications } = usePatchNotificationsQuery();
 
   const { notifications, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } = useGetNotificationsInfiniteQuery(
     { alarmCategory: category }
@@ -38,45 +40,56 @@ const AlarmList = () => {
     return <div>로딩 중...</div>;
   }
 
+  const handleAlarmClick = (e: React.MouseEvent, notificationId: number, congressId: number) => {
+    e.preventDefault();
+    patchNotifications({ NotificationId: notificationId, CongressId: congressId });
+  };
+
   return (
     <ul>
       {notifications.map((item, index) => (
         <li
           key={item.NotificationId}
-          {...stylex.props(AlarmStyles.Item, !item.checkedAt && AlarmStyles.NotRead)}
           // 마지막 항목에 Intersection Observer 적용
           ref={index === notifications.length - 1 ? loadMoreRef : undefined}
+          {...stylex.props(AlarmStyles.Item)}
         >
-          {/* 알람 정보 */}
-          <div {...stylex.props(AlarmStyles.InfoContainer)}>
-            {/* 읽었는지 안 읽었는지 체크하는 dot */}
-            <div {...stylex.props(AlarmStyles.DotWrapper)}>
-              {item.checkedAt ? '' : <span {...stylex.props(AlarmStyles.Dot)} />}
-            </div>
+          <a
+            href="#"
+            onClick={(e) => handleAlarmClick(e, item.NotificationId, item.CongressId)}
+            {...stylex.props(AlarmStyles.Link, !item.checkedAt && AlarmStyles.NotRead)}
+          >
+            {/* 알람 정보 */}
+            <div {...stylex.props(AlarmStyles.InfoContainer)}>
+              {/* 읽었는지 안 읽었는지 체크하는 dot */}
+              <div {...stylex.props(AlarmStyles.DotWrapper)}>
+                {item.checkedAt ? '' : <span {...stylex.props(AlarmStyles.Dot)} />}
+              </div>
 
-            {/* 카테고리 이미지 */}
-            <div {...stylex.props(AlarmStyles.ImgWrapper)}>
-              <img
-                src={`${process.env.NEXT_PUBLIC_S3_URL}/${alarmCategoryInfo[item?.notificationType].imgKey}`}
-                alt={alarmCategoryInfo[item?.notificationType].korean}
-                width={24}
-              />
-            </div>
+              {/* 카테고리 이미지 */}
+              <div {...stylex.props(AlarmStyles.ImgWrapper)}>
+                <img
+                  src={`${process.env.NEXT_PUBLIC_S3_URL}/${alarmCategoryInfo[item?.notificationType].imgKey}`}
+                  alt={alarmCategoryInfo[item?.notificationType].korean}
+                  width={24}
+                />
+              </div>
 
-            {/* 카테고리와 알람내용, 날짜 */}
-            <div>
-              <p {...stylex.props(Typography.SubTextLargeMedium, AlarmStyles.CategoryText)}>
-                {alarmCategoryInfo[item?.notificationType].korean}
-              </p>
-              <p {...stylex.props(Typography.TextSmallMedium, AlarmStyles.ContentText)}>{item.content}</p>
-              <p {...stylex.props(Typography.CaptionRegularRegular, AlarmStyles.DateText)}>
-                {dayjs(item.createdAt).fromNow()}
-              </p>
+              {/* 카테고리와 알람내용, 날짜 */}
+              <div>
+                <p {...stylex.props(Typography.SubTextLargeMedium, AlarmStyles.CategoryText)}>
+                  {alarmCategoryInfo[item?.notificationType].korean}
+                </p>
+                <p {...stylex.props(Typography.TextSmallMedium, AlarmStyles.ContentText)}>{item.content}</p>
+                <p {...stylex.props(Typography.CaptionRegularRegular, AlarmStyles.DateText)}>
+                  {dayjs(item.createdAt).fromNow()}
+                </p>
+              </div>
             </div>
-          </div>
+          </a>
 
           {/* 알람 삭제 */}
-          <button type="button">
+          <button type="button" {...stylex.props(AlarmStyles.DeleteButton)}>
             <CloseOutlined width={16} height={16} />
           </button>
         </li>
@@ -89,11 +102,15 @@ export default AlarmList;
 
 const AlarmStyles = stylex.create({
   Item: {
+    position: 'relative',
+  },
+  Link: {
     width: '100%',
     padding: '16px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
+    textDecoration: 'none',
   },
   NotRead: {
     background: '#FFF3F3',
@@ -129,5 +146,11 @@ const AlarmStyles = stylex.create({
   LoadingItem: {
     textAlign: 'center',
     padding: '16px',
+  },
+  DeleteButton: {
+    position: 'absolute',
+    top: '16px',
+    right: '16px',
+    cursor: 'pointer',
   },
 });
