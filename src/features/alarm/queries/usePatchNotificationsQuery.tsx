@@ -14,12 +14,12 @@ interface ClientCustomResponseData extends ResponseData {
 }
 
 interface AlarmRequestData {
-  NotificationId: number;
+  NotificationId?: number;
   isReadAll?: boolean;
 }
 
 interface MutationFnData extends AlarmRequestData {
-  CongressId: number;
+  CongressId?: number;
 }
 
 const patchNotificationsApi = async (WorkspaceId: number, data: MutationFnData): Promise<ClientCustomResponseData> => {
@@ -55,8 +55,10 @@ const usePatchNotificationsQuery = () => {
       // 업데이트 후 알람 설정 데이터 재요청 (쿼리 무효화)
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
 
-      // 회의 페이지 이동
-      router.push(`/reservations/${CongressId}`);
+      // CongressId가 있는 경우, 회의 페이지 이동 (모두 읽음 처리를 하는 경우에는 회의 페이지로 이동하지 않음)
+      if (CongressId) {
+        router.push(`/reservations/${CongressId}`);
+      }
     },
     onError: (error, variables, context) => {
       console.log('error', error);
