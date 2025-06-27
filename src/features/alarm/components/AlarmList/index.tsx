@@ -8,6 +8,7 @@ import useGetNotificationsInfiniteQuery from '@src/queries/alarm/useGetNotificat
 import useIntersectionObserver from '@src/hooks/useIntersectionObserver';
 import { useAlarmCategory } from '../../contexts/AlarmCategoryContext';
 import usePatchNotificationsQuery from '../../queries/usePatchNotificationsQuery';
+import useDeleteNotificationsQuery from '../../queries/useDeleteNotificationsQuery';
 
 // fromNow를 사용하기 위해 플러그인 사용
 dayjs.extend(relativeTime);
@@ -18,6 +19,7 @@ dayjs.extend(relativeTime);
 const AlarmList = () => {
   const { category } = useAlarmCategory();
   const { mutate: patchNotifications } = usePatchNotificationsQuery();
+  const { mutate: deleteNotifications } = useDeleteNotificationsQuery();
 
   const { notifications, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } = useGetNotificationsInfiniteQuery(
     { alarmCategory: category }
@@ -43,6 +45,11 @@ const AlarmList = () => {
   const handleAlarmClick = (e: React.MouseEvent, notificationId: number, congressId: number) => {
     e.preventDefault();
     patchNotifications({ NotificationId: notificationId, CongressId: congressId });
+  };
+
+  const handleClickDeleteAlarm = (e: React.MouseEvent, notificationId: number) => {
+    e.preventDefault();
+    deleteNotifications({ NotificationId: notificationId });
   };
 
   return (
@@ -89,7 +96,11 @@ const AlarmList = () => {
           </a>
 
           {/* 알람 삭제 */}
-          <button type="button" {...stylex.props(AlarmStyles.DeleteButton)}>
+          <button
+            type="button"
+            onClick={(e) => handleClickDeleteAlarm(e, item.NotificationId)}
+            {...stylex.props(AlarmStyles.DeleteButton)}
+          >
             <CloseOutlined width={16} height={16} />
           </button>
         </li>
