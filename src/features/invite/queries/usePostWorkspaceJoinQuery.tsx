@@ -47,7 +47,7 @@ const usePostWorkspaceJoinQuery = () => {
     mutationFn: (data: JoinInfo) => postWorkspaceJoinApi(data),
     onSuccess: () => {
       // 가입 성공 시 홈 화면으로 이동
-      router.push('/');
+      router.push('/home');
     },
     onError: (error, variables, context) => {
       console.log('error', error);

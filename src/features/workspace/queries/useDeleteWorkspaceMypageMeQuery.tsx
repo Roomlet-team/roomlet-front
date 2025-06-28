@@ -39,7 +39,7 @@ const useDeleteWorkspaceMypageMeQuery = () => {
     mutationFn: () => deleteWorkspaceWithdrawApi({ WorkspaceId: workspaceId }),
     onSuccess: () => {
       // 워크스페이스 탈퇴 성공시 홈 화면으로 이동
-      window.location.href = '/';
+      window.location.href = '/home';
     },
     onError: (error, variables, context) => {
       // 에러가 발생한 경우, 에러 내용이 담긴 confirm 모달 띄우기

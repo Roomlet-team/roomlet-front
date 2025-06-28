@@ -66,7 +66,7 @@ const Join = () => {
           <div {...stylex.props(Styles.logoAndInfoContainer)}>
             {/* 룸렛 텍스트 로고 */}
             <div className="logo-wrapper" {...stylex.props(Styles.logoWrapper)}>
-              <Link href="/">
+              <Link href="/home">
                 <RoomletTextLogo width={164} height={24} />
               </Link>
               <p {...stylex.props(Typography.SubtitleRegularBold)}>룸렛에서 회의를 함께 준비해 보세요</p>

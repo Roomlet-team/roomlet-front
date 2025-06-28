@@ -37,7 +37,7 @@ const usePostWorkspaceQuery = () => {
     mutationFn: (data: CreateWorkspaceInfo) => postWorkspaceApi(data),
     onSuccess: () => {
       // 워크스페이스 생성 성공 시 홈 화면으로 이동
-      router.push('/');
+      router.push('/home');
     },
     onError: (error, variables, context) => {
       // 에러가 발생한 경우, 에러 내용이 담긴 confirm 모달 띄우기
