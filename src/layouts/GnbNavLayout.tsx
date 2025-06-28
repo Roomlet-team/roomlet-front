@@ -34,7 +34,7 @@ const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
       name: '홈',
       onIcon: <HomeTwoTone width={24} height={24} />,
       offIcon: <HomeOutlined width={24} height={24} />,
-      href: '/',
+      href: '/home',
     },
     {
       id: 2,
@@ -63,9 +63,7 @@ const GnbNavLayout: FC<GnbNavLayoutProps> = (props) => {
   const checkSameMainPath = (mainPath) => {
     const pathName = router.pathname;
 
-    return (
-      pathName.indexOf(mainPath) === 0 && (pathName.length === mainPath.length || pathName[mainPath.length] === '/')
-    );
+    return pathName.indexOf(mainPath) === 0 && pathName.length === mainPath.length;
   };
 
   return (

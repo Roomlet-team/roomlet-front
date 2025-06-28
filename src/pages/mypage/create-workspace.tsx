@@ -22,7 +22,7 @@ const CreateWorkspace = () => {
   };
 
   const handleClickDenyCreate = () => {
-    router.push('/');
+    router.push('/home');
   };
 
   return (
