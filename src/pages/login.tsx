@@ -20,12 +20,13 @@ const OnboardingSlider = dynamic(() => import('@src/features/onboarding/componen
 const Login = () => {
   const router = useRouter();
   const { prev_url } = router.query;
+  const defaultPrevUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/home`;
   const snsLoginList = [
     {
       id: 1,
       logo: <GoogleLogo />,
       name: 'Google',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/auth/google?prev_url=${prev_url}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/auth/google?prev_url=${prev_url || defaultPrevUrl}`,
     },
   ];
   const { isOnboardingHidden } = useSelector((state: RootState) => state.onboarding);
