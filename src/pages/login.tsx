@@ -59,8 +59,8 @@ const Login = () => {
 
           <div {...stylex.props(SnsLoginStyles.chromeRecommendContainer)}>
             <p {...stylex.props(SnsLoginStyles.chromeRecommendText, Typography.SubTextLargeRegular)}>
-              원활한 서비스 이용을 위해 <span {...stylex.props(SnsLoginStyles.chromeBold)}>Chrome 브라우저</span> 사용을
-              권장해요
+              원활한 서비스 이용을 위해
+              <br /> <span {...stylex.props(SnsLoginStyles.chromeBold)}>Chrome 브라우저</span> 사용을 권장해요
             </p>
           </div>
 
