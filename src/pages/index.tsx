@@ -3,6 +3,7 @@ import stylex from '@stylexjs/stylex';
 import { colors, Shadows, Typography } from '../../public/styles/vars.stylex';
 import MainLayout from '@src/layouts/MainLayout';
 import Link from 'next/link';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const Home = () => {
   const descriptions = [
@@ -28,6 +29,12 @@ const Home = () => {
 
   return (
     <MainLayout isScroll>
+      <SEOHead
+        title="룸렛 : 스마트 회의 관리 솔루션"
+        description="설치없이 웹에서 바로 시작하는 룸렛! 모바일로 실시간 회의실 예약하고 모든 회의 준비와 팀 협업을 한 곳에서 관리하여 생산성을 극대화하세요."
+        url={{ pathname: '/' }}
+      />
+
       <section {...stylex.props(Styles.heroSection)}>
         <h1 {...stylex.props(Typography.TitleRegularBold, Styles.title)}>
           룸렛: 모바일에서 바로
