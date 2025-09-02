@@ -32,6 +32,7 @@ const useGetWorkspaceListQuery = () => {
     queryKey: ['workspaceList'],
     queryFn: () => getWorkspaceListApi(),
     gcTime: 3 * 60 * 1000,
+    retry: false,
   });
 
   return result;
