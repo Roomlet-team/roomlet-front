@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
 import stylex from '@stylexjs/stylex';
-import { useSelector } from 'react-redux';
-import { RootState } from '@src/store';
 import RoomletLogo from '@assets/logo_roomlet.svg';
 import RoomletTextLogo from '@assets/logo_text_roomlet.svg';
 import GoogleLogo from '@features/authentication/assets/google_logo.svg';
 import MainLayout from '@src/layouts/MainLayout';
-// import OnboardingSlider from '@src/features/onboarding/components/OnboardingSlider';
 import SEOHead from '@src/components/ui/SEOHead';
 import { Typography, colors } from '../../public/styles/vars.stylex';
 import { TERMS } from '@src/constant/terms';
-
-const OnboardingSlider = dynamic(() => import('@src/features/onboarding/components/OnboardingSlider'), {
-  ssr: false,
-});
 
 const Login = () => {
   const router = useRouter();
@@ -29,16 +21,6 @@ const Login = () => {
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/auth/google?prev_url=${prev_url || defaultPrevUrl}`,
     },
   ];
-  const { isOnboardingHidden } = useSelector((state: RootState) => state.onboarding);
-  const [isHidden, setIsHidden] = useState<boolean>(false);
-
-  // [ ] react-persist로 리팩토링 진행하기
-  useEffect(() => {
-    const storedValue = localStorage.getItem('isOnboardingHidden');
-    if (storedValue) {
-      setIsHidden(storedValue === '1');
-    }
-  }, [isOnboardingHidden]);
 
   const handleClickSnsLogin = (url) => {
     router.push(url);
@@ -48,51 +30,43 @@ const Login = () => {
     <MainLayout>
       <SEOHead title="로그인 | 룸렛" description="룸렛 로그인 페이지 입니다." url={{ pathname: '/login' }} />
 
-      {/* 로그인 페이지를 새로 고침할 때마다 온보딩 화면이 보임 */}
-      {isHidden ? (
-        <>
-          {/* 온보딩이 히든 상태이면 SNS 로그인 화면이 보임 */}
-          <div {...stylex.props(LogoStyles.content)}>
-            <RoomletLogo />
-            <RoomletTextLogo />
-          </div>
+      <div {...stylex.props(LogoStyles.content)}>
+        <RoomletLogo />
+        <RoomletTextLogo />
+      </div>
 
-          <div {...stylex.props(SnsLoginStyles.chromeRecommendContainer)}>
-            <p {...stylex.props(SnsLoginStyles.chromeRecommendText, Typography.SubTextLargeRegular)}>
-              원활한 서비스 이용을 위해
-              <br /> <span {...stylex.props(SnsLoginStyles.chromeBold)}>Chrome 브라우저</span> 사용을 권장해요
-            </p>
-          </div>
+      <div {...stylex.props(SnsLoginStyles.chromeRecommendContainer)}>
+        <p {...stylex.props(SnsLoginStyles.chromeRecommendText, Typography.SubTextLargeRegular)}>
+          원활한 서비스 이용을 위해
+          <br /> <span {...stylex.props(SnsLoginStyles.chromeBold)}>Chrome 브라우저</span> 사용을 권장해요
+        </p>
+      </div>
 
-          <div {...stylex.props(SnsLoginStyles.content)}>
-            {snsLoginList.map((item) => (
-              <button
-                type="button"
-                key={item.id}
-                {...stylex.props(SnsLoginStyles.button)}
-                onClick={() => handleClickSnsLogin(item.url)}
-              >
-                <span>{item.logo}</span>
-                <span>{item.name}&nbsp;계정으로 시작하기</span>
-              </button>
-            ))}
-          </div>
-          <p {...stylex.props(TermsStyles.text)}>
-            시작하기를 누르는 것으로 계정 연동에 대한{' '}
-            <a {...stylex.props(TermsStyles.link)} href={TERMS.SERVICE_AGREE}>
-              이용약관
-            </a>
-            과{' '}
-            <a {...stylex.props(TermsStyles.link)} href={TERMS.PRIVACY_AGREE}>
-              개인정보 처리방침
-            </a>
-            에 동의하고 서비스를 이용합니다.
-          </p>
-        </>
-      ) : (
-        // 온보딩 보기
-        <OnboardingSlider />
-      )}
+      <div {...stylex.props(SnsLoginStyles.content)}>
+        {snsLoginList.map((item) => (
+          <button
+            type="button"
+            key={item.id}
+            {...stylex.props(SnsLoginStyles.button)}
+            onClick={() => handleClickSnsLogin(item.url)}
+          >
+            <span>{item.logo}</span>
+            <span>{item.name}&nbsp;계정으로 시작하기</span>
+          </button>
+        ))}
+      </div>
+
+      <p {...stylex.props(TermsStyles.text)}>
+        시작하기를 누르는 것으로 계정 연동에 대한{' '}
+        <a {...stylex.props(TermsStyles.link)} href={TERMS.SERVICE_AGREE}>
+          이용약관
+        </a>
+        과{' '}
+        <a {...stylex.props(TermsStyles.link)} href={TERMS.PRIVACY_AGREE}>
+          개인정보 처리방침
+        </a>
+        에 동의하고 서비스를 이용합니다.
+      </p>
     </MainLayout>
   );
 };
