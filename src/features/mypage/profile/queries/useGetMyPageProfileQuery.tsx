@@ -9,6 +9,7 @@ export interface ProfileInfo {
     displayName: string;
     profileImgKey: string | null;
     email: string;
+    isShowOnboarding: boolean;
   };
 }
 const getMyPageProfileApi = async (): Promise<ProfileInfo> => {
@@ -34,6 +35,7 @@ const useGetMyPageProfileQuery = () => {
     queryKey: ['profile'],
     queryFn: () => getMyPageProfileApi(),
     enabled: Boolean(!workspaceId),
+    retry: false,
   });
 
   return result;
