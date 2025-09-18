@@ -1,10 +1,12 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import { colors } from '../../public/styles/vars.stylex';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 import { workspaceExists } from '@src/slices/workspace';
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
+import OnboardingSlider from '@src/features/onboarding/components/OnboardingSlider';
+import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGetMyPageProfileQuery';
 
 interface MainLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   isScroll?: boolean; // 전체 화면에 스크롤이 적용되게 할지 말지 결정
@@ -16,6 +18,9 @@ const MainLayout: FC<MainLayoutProps> = (props) => {
   const { isScroll, backgroundColor, children } = props;
   const modal = useSelector((state: RootState) => state.modal);
   const { data } = useGetWorkspaceListQuery();
+  const { data: myPageProfileData, isLoading } = useGetMyPageProfileQuery();
+  const isShowOnboarding = myPageProfileData?.profile?.isShowOnboarding;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,8 +30,13 @@ const MainLayout: FC<MainLayoutProps> = (props) => {
 
   return (
     <div id="main-layout" {...stylex.props(Styles.container(isScroll, backgroundColor))}>
-      {children}
       {modal && <div {...stylex.props(Styles.modalWrapper)}>{modal}</div>}
+      {isShowOnboarding === true && !isLoading && (
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1000 }}>
+          <OnboardingSlider />
+        </div>
+      )}
+      {!isLoading && children}
     </div>
   );
 };
