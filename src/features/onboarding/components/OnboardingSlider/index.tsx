@@ -4,12 +4,15 @@ import { useRouter } from 'next/router';
 import Slider from 'react-slick';
 import { useDispatch } from 'react-redux';
 import onboarding, { changeHiddenStatus } from '../../slices/onboarding';
+import usePostMypageOnboardingCompleteQuery from '../../queries/usePostMypageOnboardingComplete';
+import { colors } from '../../../../../public/styles/vars.stylex';
 
 const OnboardingSlider = () => {
   const router = useRouter();
   const [dotIndex, setDotIndex] = useState<number>(0);
   const sliderRef = useRef(null);
   const dispatch = useDispatch();
+  const { mutate: postMypageOnboardingComplete } = usePostMypageOnboardingCompleteQuery();
   const settings = {
     dots: false,
     arrows: false,
@@ -81,9 +84,10 @@ const OnboardingSlider = () => {
 
   const handleClickRunMeeting = () => {
     dispatch(changeHiddenStatus());
-    localStorage.setItem('isOnboardingHidden', '1');
 
-    router.push({ pathname: '/login', query: router.query });
+    postMypageOnboardingComplete();
+
+    router.reload();
   };
 
   return (
@@ -129,6 +133,7 @@ export default OnboardingSlider;
 const SliderStyles = stylex.create({
   container: {
     position: 'relative',
+    background: colors.white500,
   },
   dotList: {
     margin: 0,
@@ -152,7 +157,7 @@ const SliderStyles = stylex.create({
   }),
   slideContent: {
     width: '100%',
-    height: 'calc(100vh - 48px)',
+    height: '100vh',
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
