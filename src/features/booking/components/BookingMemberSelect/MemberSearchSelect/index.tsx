@@ -81,7 +81,7 @@ const MemberSearchSelect = () => {
                     }
                   >
                     <div {...stylex.props(Styles.MemberInfoContainer)}>
-                      <ProfileImg size={20} src={memberItem.profileImgKey} />
+                      <ProfileImg size={20} imgKey={memberItem.profileImgKey} />
                       <span {...stylex.props(Typography.TagLargeMedium)}>{memberItem.displayName}</span>
                     </div>
                   </Checkbox>
@@ -117,7 +117,7 @@ const MemberSearchSelect = () => {
                       >
                         {/* 멤버 정보 */}
                         <div {...stylex.props(Styles.MemberInfoContainer)}>
-                          <ProfileImg size={20} src={memberItem.profileImgKey} />
+                          <ProfileImg size={20} imgKey={memberItem.profileImgKey} />
                           <span {...stylex.props(Typography.TagLargeMedium)}>{memberItem.displayName}</span>
                         </div>
                       </Checkbox>

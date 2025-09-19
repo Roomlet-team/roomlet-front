@@ -19,7 +19,7 @@ const MypageSummaryProfile: FC<MypageSummaryProfileProps> = (props) => {
   return (
     <div {...stylex.props(Styles.Container)}>
       <Link href="/mypage/profile" {...stylex.props(Styles.ProfileLink)} passHref>
-        <ProfileImg src={data?.profileImgKey} size={60} />
+        <ProfileImg imgKey={data?.profileImgKey} size={60} />
         <div {...stylex.props(Styles.UserInfoContainer)}>
           <div>
             <p {...stylex.props(Styles.NameText, Typography.SubTextRegularBold)}>{data?.displayName}</p>

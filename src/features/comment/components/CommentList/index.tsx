@@ -66,7 +66,7 @@ const CommentList = () => {
             <div {...stylex.props(Styles.profileAndCommentInfoContainer)}>
               {/* 프로필 이미지 */}
               <Link href={`/profile/${item.member.MemberId}`}>
-                <ProfileImg src={item.member.profileImgKey} size={32} />
+                <ProfileImg imgKey={item.member.profileImgKey} size={32} />
               </Link>
 
               <div {...stylex.props(Styles.commentInfoContainer)}>
