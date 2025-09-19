@@ -27,6 +27,19 @@ const Home = () => {
     },
   ];
 
+  const footerLinks = [
+    {
+      id: 1,
+      title: '이용약관',
+      href: 'https://www.notion.so/204bdfc5b2a780de83cae0ddc55c101d?source=copy_link',
+    },
+    {
+      id: 2,
+      title: '개인정보 처리방침',
+      href: 'https://www.notion.so/204bdfc5b2a78038b177d3d6a3efa6f8?source=copy_link',
+    },
+  ];
+
   return (
     <MainLayout isScroll>
       <SEOHead
@@ -36,16 +49,16 @@ const Home = () => {
       />
 
       <section {...stylex.props(Styles.heroSection)}>
-        <h1 {...stylex.props(Typography.TitleRegularBold, Styles.title)}>
-          룸렛: 모바일에서 바로
+        <h1 {...stylex.props(Typography.TextXLargeBold, Styles.title)}>
+          룸렛: 모바일에서 바로,
           <br />
           스마트 회의실 예약
         </h1>
 
-        <p {...stylex.props(Typography.TextSmallMedium, Styles.heroDescription)}>
+        <p {...stylex.props(Typography.TextSmallRegular, Styles.heroDescription)}>
           설치 없이 웹에서 즉시 시작!
           <br />
-          회의실 눈치싸움은 이제 그만!
+          회의실 눈치싸움은 이제 그만.
         </p>
 
         <Link href="/login" {...stylex.props(Styles.startLink, Styles.isRedButton, Typography.SubTextRegularBold)}>
@@ -58,8 +71,8 @@ const Home = () => {
           <div key={item.id} {...stylex.props(Styles.featureItem)}>
             <div {...stylex.props(Styles.featureIcon)}>{item.icon}</div>
             <div {...stylex.props(Styles.featureBody)}>
-              <h3 {...stylex.props(Typography.SubTextRegularBold)}>{item.title}</h3>
-              <p {...stylex.props(Typography.SubTextLargeRegular)}>{item.content}</p>
+              <h3 {...stylex.props(Typography.SubtitleRegularSemiBold)}>{item.title}</h3>
+              <p {...stylex.props(Typography.CaptionLargeRegular)}>{item.content}</p>
             </div>
           </div>
         ))}
@@ -67,10 +80,8 @@ const Home = () => {
 
       <section {...stylex.props(Styles.ctaSection)}>
         <div {...stylex.props(Styles.ctaBody)}>
-          <h2 {...stylex.props(Typography.TitleRegularBold, Styles.ctaTitle)}>룸렛으로 팀의 회의를 시작하세요!</h2>
-          <p {...stylex.props(Typography.SubTextLargeRegular, Styles.ctaContent)}>
-            지금 바로 로그인 후 무료로 시작해보세요.
-          </p>
+          <h2 {...stylex.props(Styles.ctaTitle)}>룸렛으로 팀의 회의를 시작하세요!</h2>
+          <p {...stylex.props(Styles.ctaContent)}>지금 바로 로그인 후 무료로 시작해보세요.</p>
 
           <Link href="/login" {...stylex.props(Styles.startLink, Styles.isWhiteButton, Typography.SubTextRegularBold)}>
             무료로 룸렛 시작하기
@@ -84,12 +95,11 @@ const Home = () => {
 
       <footer {...stylex.props(Styles.footer)}>
         <div {...stylex.props(Styles.footerLinks)}>
-          <Link href="/" {...stylex.props(Typography.CaptionRegularRegular, Styles.footerLink)}>
-            이용약관
-          </Link>
-          <Link href="/" {...stylex.props(Typography.CaptionRegularRegular, Styles.footerLink)}>
-            개인정보 처리방침
-          </Link>
+          {footerLinks.map((item) => (
+            <Link href={item.href} key={item.id} target="_blank" {...stylex.props(Styles.footerLink)}>
+              {item.title}
+            </Link>
+          ))}
         </div>
 
         <p {...stylex.props(Typography.CaptionRegularRegular, Styles.footerCopyright)}>Copyright © 2025 룸렛</p>
@@ -103,23 +113,23 @@ export default Home;
 const Styles = stylex.create({
   heroSection: {
     // 히어로 섹션 스타일
-    padding: '64px 25px 30px',
+    padding: '84px 16px 32px',
     backgroundColor: colors.white500,
     textAlign: 'center',
     color: colors.black300,
   },
   title: {
-    marginBottom: '20px',
+    marginBottom: '24px',
     textAlign: 'center',
   },
   startLink: {
     width: '100%',
     display: 'block',
     padding: '10px',
-    borderRadius: '12px',
+    borderRadius: '16px',
     textAlign: 'center',
     textDecoration: 'none',
-    boxShadow: Shadows.Shadow1,
+    boxShadow: '0 4px 8px 0px rgba(87, 56, 56, 0.25)',
   },
   isRedButton: {
     backgroundColor: colors.red500,
@@ -130,28 +140,28 @@ const Styles = stylex.create({
     color: colors.red500,
   },
   heroDescription: {
-    marginBottom: '20px',
+    marginBottom: '28px',
   },
   featuresSection: {
     // 기능 소개 섹션 스타일
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
-    padding: '24px 25px',
+    gap: '12px',
+    padding: '32px 16px',
     backgroundColor: colors.gray20,
   },
   featureItem: {
     // 각 기능 아이템 스타일
     display: 'flex',
-    gap: '16px',
+    gap: '12px',
     padding: '16px',
     backgroundColor: colors.white500,
     borderRadius: '12px',
   },
   featureIcon: {
     flexShrink: 0,
-    width: '44px',
-    height: '44px',
+    width: '36px',
+    height: '36px',
     backgroundColor: '#EDF2FE',
     borderRadius: '8px',
   },
@@ -163,24 +173,32 @@ const Styles = stylex.create({
   },
   ctaBody: {
     // CTA 컨텐츠 스타일
-    padding: '30px 26px',
+    padding: '24px 16px',
     textAlign: 'center',
     backgroundColor: colors.red500,
-    borderRadius: '24px 24px 0 0',
+    borderRadius: '16px 16px 0 0',
   },
   ctaTitle: {
-    marginBottom: '18px',
+    fontSize: '2rem',
+    fontWeight: '700',
+    lineHeight: '3.2rem',
     color: colors.white500,
   },
   ctaContent: {
     marginBottom: '18px',
     color: colors.gray20,
+    fontWeight: '400',
+    fontSize: '1.4rem',
+    lineHeight: '1.8rem',
   },
   alreadyHaveAccountLink: {
     display: 'block',
-    marginTop: '18px',
-    color: colors.gray20,
+    marginTop: '24px',
+    color: colors.gray40,
     textDecoration: 'underline',
+    fontWeight: '500',
+    fontSize: '1.4rem',
+    lineHeight: '1.8rem',
   },
   footer: {
     // 푸터 스타일
@@ -195,9 +213,15 @@ const Styles = stylex.create({
   footerLink: {
     textDecoration: 'none',
     color: colors.gray700,
+    fontWeight: '400',
+    fontSize: '1.4rem',
+    lineHeight: '1.8rem',
   },
   footerCopyright: {
     textAlign: 'center',
-    color: colors.gray60,
+    color: colors.gray700,
+    fontWeight: '400',
+    fontSize: '1.4rem',
+    lineHeight: '1.8rem',
   },
 });
