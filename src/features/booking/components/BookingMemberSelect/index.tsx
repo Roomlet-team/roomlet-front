@@ -57,7 +57,7 @@ const BookingMemberSelect: FC<BookingMemberSelectProps> = (props) => {
               <div {...stylex.props(Styles.MemberListContainer)}>
                 {selectBookingMemberObj[teamName].map((memberItem) => (
                   <div {...stylex.props(Styles.MemberInfoContainer)}>
-                    <ProfileImg size={20} src={memberItem.profileImgKey} />
+                    <ProfileImg size={20} imgKey={memberItem.profileImgKey} />
                     <span {...stylex.props(Typography.TagLargeMedium)}>{memberItem.displayName}</span>
                   </div>
                 ))}
@@ -68,7 +68,7 @@ const BookingMemberSelect: FC<BookingMemberSelectProps> = (props) => {
       ) : (
         // 아직 선택된 멤버가 없을 때
         <button type="button" onClick={handleClickMemberSelect}>
-          <ProfileImg size={32} src={defaultImgUrl} />
+          <ProfileImg size={32} imgKey={defaultImgUrl} />
         </button>
       )}
 

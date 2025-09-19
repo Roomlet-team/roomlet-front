@@ -85,7 +85,7 @@ const Join = () => {
                       {data?.inviteInfo?.workspace?.memberList.slice(0, 2).map((item) => (
                         <div {...stylex.props(Styles.memberGroupItemWrapper)}>
                           <ProfileImg
-                            src={item.profileImgKey}
+                            imgKey={item.profileImgKey}
                             alt={`${item.displayName}의 프로필 사진`}
                             size={60}
                             borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
@@ -97,7 +97,7 @@ const Join = () => {
                     <EllipsisImg />
                     <div {...stylex.props(Styles.memberGroupItemWrapper)}>
                       <ProfileImg
-                        src={data?.inviteInfo?.workspace?.memberList?.slice(-1)[0]?.profileImgKey}
+                        imgKey={data?.inviteInfo?.workspace?.memberList?.slice(-1)[0]?.profileImgKey}
                         alt="프로필 사진"
                         size={60}
                         borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
@@ -109,7 +109,7 @@ const Join = () => {
                     {data?.inviteInfo?.workspace?.memberList.map((item) => (
                       <div {...stylex.props(Styles.memberGroupItemWrapper)}>
                         <ProfileImg
-                          src={item.profileImgKey}
+                          imgKey={item.profileImgKey}
                           alt={`${item.displayName}의 프로필 사진`}
                           size={60}
                           borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
@@ -131,7 +131,7 @@ const Join = () => {
             <div {...stylex.props(Styles.userInfoContainer)}>
               <div {...stylex.props(Styles.profileInfoContainer)}>
                 <ProfileImg
-                  src={profileData?.profile.profileImgKey}
+                  imgKey={profileData?.profile.profileImgKey}
                   size={34}
                   borderProperties={{ radius: '2px', color: colors.gray40, width: '1px' }}
                 />

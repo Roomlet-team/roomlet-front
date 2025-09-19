@@ -85,7 +85,7 @@ const WorkspaceHome = () => {
         </div>
       ) : (
         <div {...stylex.props(Styles.ProfileContainer)}>
-          <ProfileImg src={workspaceImgUrl} size={68} />
+          <ProfileImg imgKey={workspaceImgUrl} size={68} />
           <p {...stylex.props(Typography.TitleRegularBold)}>{data.workspace.workspaceName}</p>
         </div>
       )}

@@ -58,7 +58,7 @@ const MyPageImgUpload: FC<MyPageImgUploadProps> = (props) => {
     <div {...stylex.props(Styles.Container)}>
       <div {...stylex.props(Styles.ImgContainer)}>
         {/* [ ] src 타입 수정하기 */}
-        <ProfileImg src={imgUrl || initialImgUrl} size={68} />
+        <ProfileImg imgKey={imgUrl || initialImgUrl} size={68} />
         <input
           type="file"
           style={{ display: 'none' }}
