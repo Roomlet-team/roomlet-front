@@ -24,7 +24,7 @@ const WorkspaceHome = () => {
   const [workspaceName, handleChangeWorkspaceName] = useInput<string>(data?.workspace.workspaceName);
   const [workspaceImgFile, setWorkspaceImgFile] = useState<Blob | null>(null);
   const isAdmin = myInfoData?.myInfo.isAdmin;
-  const workspaceImgUrl = `${process.env.NEXT_PUBLIC_S3_URL}/${data?.workspace.workspaceImgKey}`;
+  const workspaceImgUrl = data?.workspace.workspaceImgKey;
   const commonUrl = 'mypage/workspace';
   const menuList = [
     {
