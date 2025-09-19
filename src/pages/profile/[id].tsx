@@ -28,6 +28,12 @@ const UserProfile = () => {
     { id: 3, name: data?.member?.email, icon: <MailOutlined width={24} height={24} /> },
   ];
 
+  const roleName = {
+    owner: '최고 관리자',
+    admin: '중간 관리자',
+    member: '멤버',
+  };
+
   return (
     <MainLayout>
       <Header prevOnClick={handlePrevOnClick} />
@@ -35,7 +41,11 @@ const UserProfile = () => {
       {/* 프로필 이미지 */}
       <div {...stylex.props(Styles.ProfileContainer)}>
         <ProfileImg size={68} imgKey={data?.member?.profileImgKey} role={data?.member?.role} />
-        <span {...stylex.props(Typography.TitleRegularBold)}>{data?.member?.displayName}</span>
+
+        <div {...stylex.props(Styles.nameContainer)}>
+          <p {...stylex.props(Typography.TitleRegularBold)}>{data?.member?.displayName}</p>
+          <p {...stylex.props(Typography.SubTextLargeRegular)}>{roleName[data?.member?.role]}</p>
+        </div>
       </div>
 
       {/* 경계선 */}
@@ -63,5 +73,11 @@ const Styles = stylex.create({
     flexDirection: 'column',
     alignItems: 'center',
     gap: '16px',
+  },
+  nameContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '8px',
   },
 });
