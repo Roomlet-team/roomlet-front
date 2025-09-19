@@ -20,7 +20,12 @@ interface ProfileImgProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 const ProfileImg: FC<ProfileImgProps> = (props) => {
   const { src, size, borderProperties } = props;
 
-  return <img {...stylex.props(Styles.img(size, borderProperties))} src={src || s3ImgUrlConfig.defaultProfile} />;
+  return (
+    <img
+      {...stylex.props(Styles.img(size, borderProperties))}
+      src={src ? `${process.env.NEXT_PUBLIC_S3_URL}/${src}` : s3ImgUrlConfig.defaultProfile}
+    />
+  );
 };
 
 export default ProfileImg;
@@ -29,7 +34,8 @@ const Styles = stylex.create({
   img: (size, borderProperties) => ({
     width: `${size}px`,
     height: `${size}px`,
-    backgroundSize: 'cover',
+    objectFit: 'cover',
+    objectPosition: 'center',
     flexShrink: 0,
     borderWidth: borderProperties?.width,
     borderRadius: borderProperties?.radius || '50%',
