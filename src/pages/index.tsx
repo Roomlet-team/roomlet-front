@@ -4,6 +4,9 @@ import { colors, Shadows, Typography } from '../../public/styles/vars.stylex';
 import MainLayout from '@src/layouts/MainLayout';
 import Link from 'next/link';
 import SEOHead from '@src/components/ui/SEOHead';
+import CalendarFilled from '@src/components/icons/CalendarFilled';
+import GlobalFilled from '@src/components/icons/GlobalFilled';
+import PeopleFilled from '@src/components/icons/PeopleFilled';
 
 const Home = () => {
   const descriptions = [
@@ -11,19 +14,19 @@ const Home = () => {
       id: 1,
       title: '설치 없이 바로 예약, 언제 어디서든',
       content: '모바일 웹으로 실시간 회의실 현황을 확인하고, 터치 몇 번으로 빠르게 예약하세요.',
-      icon: '',
+      icon: <GlobalFilled width={24} height={24} />,
     },
     {
       id: 2,
       title: '모든 회의 준비는 한 곳에서 관리',
       content: '회의 개최, 참석자 등 웹에서 통합 관리, 중요한 내용은 놓치지 않습니다.',
-      icon: '',
+      icon: <CalendarFilled width={24} height={24} />,
     },
     {
       id: 3,
       title: '팀 워크스페이스로 생산성 극대화',
       content: '간편한 멤버 초대와 워크스페이스 관리가 웹에서 가능합니다.',
-      icon: '',
+      icon: <PeopleFilled width={24} height={24} />,
     },
   ];
 
@@ -162,6 +165,9 @@ const Styles = stylex.create({
     flexShrink: 0,
     width: '36px',
     height: '36px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#EDF2FE',
     borderRadius: '8px',
   },
