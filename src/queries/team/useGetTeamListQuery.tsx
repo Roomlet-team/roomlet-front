@@ -1,4 +1,5 @@
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
+import { MemberRole } from '@src/shared/types/member';
 import clientInstance from '@src/utils/api/clientInstance';
 import { useQuery } from '@tanstack/react-query';
 
@@ -9,6 +10,7 @@ export interface MemberInfoItem {
   position: string;
   isAdmin: boolean;
   email: string;
+  role: MemberRole;
 }
 
 export interface TeamInfoItem {
