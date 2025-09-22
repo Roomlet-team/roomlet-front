@@ -10,6 +10,8 @@ export interface MypageInfo {
     position: string;
     isAdmin: boolean;
     email: string;
+    isShowOnboarding: boolean;
+    hasNewNotification: boolean;
     teamInfo: {
       TeamId: number;
       teamName: string;
