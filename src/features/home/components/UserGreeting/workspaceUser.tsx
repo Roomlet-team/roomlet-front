@@ -4,27 +4,28 @@ import React, { FC } from 'react';
 import useGetWorkspaceMainInfoQuery from '../../queries/useGetWorkspaceMainInfoQuery';
 import Link from 'next/link';
 import AlarmOutlined from '@src/components/icons/AlarmOutlined';
+import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 
 /**
  * 홈 화면에서 워크스페이스에 가입된 사용자에게 환영하는 내용을 담은 컴포넌트
  */
 const WorkspaceUserGreeting = () => {
-  const { data } = useGetWorkspaceMainInfoQuery();
+  const { data } = useGetMypageInfoQuery();
 
   return (
     <div {...stylex.props(Styles.container)}>
       {/* 유저 정보 */}
       <div {...stylex.props(Styles.userInfoContainer)}>
-        <ProfileImg imgKey={data?.memberInfo.profileImgKey} size={50} borderProperties={{ radius: '50%' }} />
+        <ProfileImg imgKey={data?.myInfo.profileImgKey} size={50} borderProperties={{ radius: '50%' }} />
         <div {...stylex.props(Styles.textContent)}>
           <p {...stylex.props(Styles.greetingText)}>룸렛에 오신걸 환영해요 🖐🏻</p>
-          <p {...stylex.props(Styles.nicknameText)}>{data?.memberInfo.displayName}님</p>
+          <p {...stylex.props(Styles.nicknameText)}>{data?.myInfo.displayName}님</p>
         </div>
       </div>
 
       {/* 알림 이동 링크 */}
       <Link href="/alarm">
-        <AlarmOutlined width={24} height={24} />
+        <AlarmOutlined width={24} height={24} hasNewNotification={data?.myInfo.hasNewNotification} />
       </Link>
     </div>
   );
