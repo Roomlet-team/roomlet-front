@@ -1,63 +1,75 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import ArrowHeadOutlinedV2 from '@src/components/icons/ArrowHeadOutlinedV2';
-import { MemberInfoItem } from '@src/queries/team/useGetTeamListQuery';
+import { MemberInfoItem, TeamInfoItem } from '@src/queries/team/useGetTeamListQuery';
 import { colors, Typography } from '../../../../../../../public/styles/vars.stylex';
 import CircleCloseFilled from '@src/components/icons/CircleCloseFilled';
-import { useDispatch, useSelector } from 'react-redux';
-import { saveTeamList, tempRemoveTeam } from '../../slices/member';
-import { RootState } from '@src/store';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import MoveMemberBottomSheet from '../MoveMemberBottomSheet';
-import { EditTeamItem } from '../../types/member';
 import { confirm } from '@src/components/ui/Modal/confirm';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import Link from 'next/link';
+import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
+import Dropdown from '@src/components/ui/Dropdown';
+import PencilOutlined from '@src/components/icons/PencilOutlined';
+import TrashcanOutlined from '@src/components/icons/TrashcanOutlined';
+import useDeleteTeamQuery from '../../queries/useDeleteTeamQuery';
+import useUpdateTeamNameQuery from '../../queries/useUpdateTeamNameQuery';
+import useInput from '@src/hooks/useInput';
 
 interface TeamToggleProps {
-  data: EditTeamItem;
-  isEdit?: boolean;
+  data: TeamInfoItem;
   teamIdx: number;
   isLastIdx: boolean;
 }
 
 const TeamToggle: FC<TeamToggleProps> = (props) => {
-  const { data, isEdit, teamIdx, isLastIdx } = props;
-  const dispatch = useDispatch();
+  const { data, teamIdx, isLastIdx } = props;
+  const { data: myInfoData } = useGetMypageInfoQuery();
   const { renderModal } = useRenderModal();
-  const { editTeamList } = useSelector((state: RootState) => state.member);
+  const [isTeamNameEdit, setIsTeamNameEdit] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [teamName, handleChangeTeamName] = useInput(data.teamName);
+  const { mutate: DeleteTeamMutate } = useDeleteTeamQuery();
+  const { mutate: UpdateTeamNameMutate } = useUpdateTeamNameQuery();
+
+  const getMenuList = (item: TeamInfoItem) => {
+    return [
+      {
+        id: '1',
+        label: '변경하기',
+        icon: <PencilOutlined width={16} height={16} />,
+        onClick: () => {
+          setIsTeamNameEdit(true);
+        },
+      },
+      {
+        id: '2',
+        label: '삭제하기',
+        icon: <TrashcanOutlined width={16} height={16} />,
+        onClick: () => {
+          confirm({
+            content: '팀 삭제 후 취소할 수 없어요.\n기존 팀원들은 다른 팀으로 배치해주세요',
+            cancelBtnName: '유지할래요',
+            okBtnName: '삭제할래요',
+            onOk: () => DeleteTeamMutate({ TeamId: item.TeamId }),
+          });
+        },
+      },
+    ];
+  };
+
+  const handleClickTeamNameEditComplete = () => {
+    UpdateTeamNameMutate({ TeamId: data.TeamId, teamName: teamName });
+    setIsTeamNameEdit(false);
+  };
+
+  const handleClickTeamNameEditCancel = () => {
+    setIsTeamNameEdit(false);
+  };
 
   const handleClickToggle = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleChangeData = useCallback(
-    (key: 'teamName') => (e) => {
-      const value = e.target.value;
-      const mappingTeamList = editTeamList.map((item) =>
-        item.TeamId === data.TeamId ? { ...item, [key]: value } : item
-      );
-      const index = editTeamList.findIndex((item) => item.TeamId === data.TeamId);
-
-      if (index === -1) {
-        return null;
-      }
-
-      const updateTeamList = [...editTeamList];
-      updateTeamList[index] = { ...updateTeamList[index], [key]: value };
-
-      dispatch(saveTeamList(mappingTeamList));
-    },
-    [editTeamList, data.TeamId, dispatch]
-  );
-  const handleClickTempDelete = () => {
-    confirm({
-      content: '팀 삭제를 하면 기존 팀원들은 미분류로 이동돼요.\n수정 완료 전까지 팀 변경 가능해요.',
-      cancelBtnName: '유지할래요',
-      okBtnName: '삭제할래요',
-      onOk: () => dispatch(tempRemoveTeam(data.tempTeamId ? { ...data, tempTeamId: data.tempTeamId } : { ...data })),
-    });
   };
 
   const handleClickMoveMember = (item: MemberInfoItem, idx: number) => {
@@ -67,28 +79,32 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
   return (
     <div {...stylex.props(isLastIdx && Styles.LastIdxContainer)}>
       {/* 팀 이름 */}
-      {isEdit ? (
+      {isTeamNameEdit ? (
         <div {...stylex.props(Styles.EditToggleContainer)}>
           <input
             type="text"
-            value={data.teamName}
-            onChange={handleChangeData('teamName')}
+            value={teamName}
+            onChange={handleChangeTeamName}
             {...stylex.props(Styles.TextInput, Typography.TextSmallMedium)}
           />
-          <button type="button" onClick={handleClickToggle} {...stylex.props(Styles.MiniToggleButton)}>
-            <ArrowHeadOutlinedV2 width={24} height={24} rotate={isOpen ? 270 : 90} />
+          <button type="button" onClick={handleClickTeamNameEditComplete} {...stylex.props(Styles.MiniToggleButton)}>
+            <span {...stylex.props(Typography.TextSmallMedium, Styles.TeamNameEditCompleteText)}>완료</span>
           </button>
-          <button type="button" onClick={handleClickTempDelete}>
+          <button type="button" onClick={handleClickTeamNameEditCancel}>
             <CircleCloseFilled width={24} height={24} />
           </button>
         </div>
       ) : (
-        <button type="button" onClick={handleClickToggle} {...stylex.props(Styles.ToggleButton)}>
-          <p {...stylex.props(Typography.TextSmallMedium)}>
-            {data.teamName}({data.memberList.length})
-          </p>
-          <ArrowHeadOutlinedV2 width={24} height={24} rotate={isOpen ? 270 : 90} />
-        </button>
+        <div {...stylex.props(Styles.ActionButtonContainer)}>
+          <button type="button" onClick={handleClickToggle} {...stylex.props(Styles.ToggleButton)}>
+            <p {...stylex.props(Typography.TextSmallMedium)}>
+              {data.teamName}({data.memberList.length})
+            </p>
+            <ArrowHeadOutlinedV2 width={24} height={24} rotate={isOpen ? 270 : 90} color="#000000" />
+          </button>
+
+          <Dropdown menuList={getMenuList(data)} ellipsisIconStyle={{ color: '#000000' }} />
+        </div>
       )}
 
       {/* 토글이 열렸을 떄 */}
@@ -108,7 +124,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
                       />
                       <span>{item.displayName}</span>
                     </Link>
-                    {isEdit && (
+                    {/* {isEdit && (
                       <button
                         type="button"
                         onClick={() => handleClickMoveMember(item, idx)}
@@ -116,7 +132,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
                       >
                         이동
                       </button>
-                    )}
+                    )} */}
                   </div>
                 </li>
               ))
@@ -138,7 +154,6 @@ const Styles = stylex.create({
   },
   ToggleButton: {
     width: '100%',
-    padding: '16px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -170,6 +185,7 @@ const Styles = stylex.create({
     display: 'flex',
   },
   MiniToggleButton: {
+    display: 'flex',
     marginRight: '12px',
   },
   MoveButton: {
@@ -190,5 +206,18 @@ const Styles = stylex.create({
     alignItems: 'center',
     textDecoration: 'none',
     color: colors.black300,
+  },
+  ActionButtonContainer: {
+    padding: '16px',
+    display: 'flex',
+    gap: '8px',
+    alignItems: 'center',
+    alignContent: 'center',
+    lineHeight: 1,
+  },
+  TeamNameEditCompleteText: {
+    lineHeight: 1,
+    flexShrink: 0,
+    alignSelf: 'center',
   },
 });
