@@ -11,7 +11,7 @@ import ProfilePersonalDataList from '@src/features/profile/components/ProfilePer
 import useGetWorkspaceMemberQuery from '@src/features/profile/queries/useGetWorkspaceMemberQuery';
 import MainLayout from '@src/layouts/MainLayout';
 import { Typography } from '../../../public/styles/vars.stylex';
-import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
+import { MEMBER_ROLE_KOREAN_LABELS } from '@src/constants/member';
 
 const UserProfile = () => {
   const router = useRouter();
@@ -28,12 +28,6 @@ const UserProfile = () => {
     { id: 3, name: data?.member?.email, icon: <MailOutlined width={24} height={24} /> },
   ];
 
-  const roleName = {
-    owner: '최고 관리자',
-    admin: '중간 관리자',
-    member: '멤버',
-  };
-
   return (
     <MainLayout>
       <Header prevOnClick={handlePrevOnClick} />
@@ -44,7 +38,7 @@ const UserProfile = () => {
 
         <div {...stylex.props(Styles.nameContainer)}>
           <p {...stylex.props(Typography.TitleRegularBold)}>{data?.member?.displayName}</p>
-          <p {...stylex.props(Typography.SubTextLargeRegular)}>{roleName[data?.member?.role]}</p>
+          <p {...stylex.props(Typography.SubTextLargeRegular)}>{MEMBER_ROLE_KOREAN_LABELS[data?.member?.role]}</p>
         </div>
       </div>
 
