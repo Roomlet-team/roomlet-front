@@ -5,48 +5,49 @@ import BottomSheet from '@src/components/ui/BottomSheet';
 import { colors, Typography } from '../../../../../../../public/styles/vars.stylex';
 import { hideModal } from '@src/slices/modal';
 import { saveTeamList } from '../../slices/member';
-import { MemberInfoItem } from '@src/queries/team/useGetTeamListQuery';
+import useGetTeamListQuery, { MemberInfoItem } from '@src/queries/team/useGetTeamListQuery';
 import { RootState } from '@src/store';
 import TriangleFilled from '@src/components/icons/TriangleFilled';
+import useUpdateMemberQuery from '../../queries/useUpdateMemberQuery';
+import { MEMBER_ROLE_KOREAN_LABELS } from '@src/constants/member';
 
 let bottomSheetId = 'move-member-bottom-sheet';
 
 interface MoveMemberBottomSheetProps {
   data: MemberInfoItem;
-  selectMemberTeamIdx: number;
+  teamId: number;
 }
 
 const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
-  const { data, selectMemberTeamIdx } = props;
+  const { data, teamId } = props;
+  const { data: teamListData } = useGetTeamListQuery();
   const dispatch = useDispatch();
-  const { editTeamList } = useSelector((state: RootState) => state.member);
-  const selectOptionList = editTeamList.filter((item, index) => index !== selectMemberTeamIdx); // 이미 참여한 팀은 option에 나타나지 않게 함.
-  const [selectTeamIdx, setSelectTeamIdx] = useState<number>(selectOptionList[0].TeamId);
+  const teamOptionList = teamListData.teamList; // 이미 참여한 팀은 option에 나타나지 않게 함.
+  const [selectTeamId, setSelectTeamId] = useState<number>(teamId);
+  const [selectRole, setSelectRole] = useState<string>(data.role);
+  const { mutate: UpdateMemberMutate } = useUpdateMemberQuery();
+
+  const roleOptionList = [
+    { id: 1, role: 'member' },
+    { id: 2, role: 'admin' },
+    { id: 3, role: 'owner' },
+  ];
 
   const handleClickSelectTeam = (e) => {
     const value = Number(e.target.value);
 
-    setSelectTeamIdx(value);
+    setSelectTeamId(value);
+  };
+
+  const handleClickSelectRole = (e) => {
+    const value = e.target.value;
+
+    setSelectRole(value);
   };
 
   const handleClickRegister = () => {
-    const moveMemberTeamList = editTeamList.map((item, idx) => {
-      // 원래 있던 팀에서 삭제
-      if (idx === selectMemberTeamIdx) {
-        const tempDeleteMemberList = item.memberList.filter((memberItem) => memberItem.MemberId !== data.MemberId);
+    UpdateMemberMutate({ MemberId: data.MemberId, role: selectRole, TeamId: selectTeamId });
 
-        return { ...item, memberList: tempDeleteMemberList };
-      }
-
-      // 새로운 팀에서 멤버 추가
-      if (item.TeamId === selectTeamIdx) {
-        return { ...item, memberList: [...item.memberList, data] };
-      }
-
-      return item;
-    });
-
-    dispatch(saveTeamList(moveMemberTeamList));
     dispatch(hideModal());
   };
 
@@ -55,8 +56,30 @@ const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
       <div {...stylex.props(Styles.Container)}>
         <p {...stylex.props(Typography.SubtitleRegularSemiBold, Styles.Title)}>멤버 수정</p>
 
-        {/* 팀 선택 영역 */}
         <div {...stylex.props(Styles.TeamSelectContainer)}>
+          {/* 팀 이동을 위해 선택한 멤버 */}
+          <div {...stylex.props(Styles.DisplayNameWrapper, Typography.SubTextLargeRegular)}>{data.displayName}</div>
+
+          {/* 역할 선택 영역 */}
+          <div {...stylex.props(Styles.SelectContainer)}>
+            <div {...stylex.props(Styles.SelectIcon)}>
+              <TriangleFilled width={24} height={24} />
+            </div>
+            <select
+              name="role"
+              onChange={handleClickSelectRole}
+              defaultValue={data.role}
+              {...stylex.props(Styles.Select, Typography.SubTextLargeRegular)}
+            >
+              {roleOptionList.map((item) => (
+                <option key={item.id} value={item.role}>
+                  {MEMBER_ROLE_KOREAN_LABELS[item.role]}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 팀 선택 영역 */}
           <div {...stylex.props(Styles.SelectContainer)}>
             <div {...stylex.props(Styles.SelectIcon)}>
               <TriangleFilled width={24} height={24} />
@@ -64,16 +87,14 @@ const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
             <select
               name="team"
               onChange={handleClickSelectTeam}
+              defaultValue={teamId}
               {...stylex.props(Styles.Select, Typography.SubTextLargeRegular)}
             >
-              {selectOptionList.map((item, index) => (
-                <option value={index}>{item.teamName}</option>
+              {teamOptionList.map((item) => (
+                <option value={item.TeamId}>{item.teamName}</option>
               ))}
             </select>
           </div>
-
-          {/* 팀 이동을 위해 선택한 멤버 */}
-          <div {...stylex.props(Styles.DisplayNameWrapper, Typography.SubTextLargeRegular)}>{data.displayName}</div>
         </div>
 
         {/* 닫기 및 적용 버튼 */}
@@ -113,6 +134,7 @@ const Styles = stylex.create({
     marginBottom: '24px',
     display: 'flex',
     gap: '8px',
+    flexDirection: 'column',
   },
   ButtonContainer: {
     display: 'flex',
