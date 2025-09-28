@@ -1,12 +1,14 @@
-import React from 'react';
-const EllipsisOutlined = (props) => {
-  const { width, height } = props;
+import React, { FC } from 'react';
+import { IconProps } from './types';
+
+const EllipsisOutlined: FC<IconProps> = (props) => {
+  const { width, height, color } = props;
 
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="none" {...props}>
       <g clipPath="url(#a)">
         <path
-          fill="#999"
+          fill={color || '#999'}
           d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2m0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2"
         />
       </g>
