@@ -1,4 +1,5 @@
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
+import { MemberRole } from '@src/shared/types/member';
 import clientInstance from '@src/utils/api/clientInstance';
 import { useQuery } from '@tanstack/react-query';
 
@@ -12,6 +13,7 @@ export interface MypageInfo {
     email: string;
     isShowOnboarding: boolean;
     hasNewNotification: boolean;
+    role: MemberRole;
     teamInfo: {
       TeamId: number;
       teamName: string;
