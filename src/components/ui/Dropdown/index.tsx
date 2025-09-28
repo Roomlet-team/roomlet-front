@@ -10,10 +10,13 @@ interface DropdownProps {
     icon: React.ReactNode;
     onClick: () => void;
   }[];
+  ellipsisIconStyle?: {
+    color: string;
+  };
 }
 
 const Dropdown: FC<DropdownProps> = (props) => {
-  const { menuList } = props;
+  const { menuList, ellipsisIconStyle } = props;
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClickDropdown = () => {
@@ -39,7 +42,7 @@ const Dropdown: FC<DropdownProps> = (props) => {
       <div {...stylex.props(Styles.dropdownContainer)}>
         {/* 드롭박스 */}
         <button type="button" onClick={handleClickDropdown}>
-          <EllipsisOutlined width={24} height={24} />
+          <EllipsisOutlined width={24} height={24} color={ellipsisIconStyle?.color} />
         </button>
         {isOpen && (
           <>
