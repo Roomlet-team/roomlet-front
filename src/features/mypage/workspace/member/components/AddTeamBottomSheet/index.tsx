@@ -6,8 +6,8 @@ import { colors, Typography } from '../../../../../../../public/styles/vars.styl
 import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import { hideModal } from '@src/slices/modal';
-import { addTeam } from '../../slices/member';
 import useGetTeamListQuery from '@src/queries/team/useGetTeamListQuery';
+import useAddTeamNameQuery from '../../queries/useAddTeamNameQuery';
 
 let bottomSheetId = 'add-congress-room-bottom-sheet';
 
@@ -16,6 +16,7 @@ const AddTeamBottomSheet = () => {
   const [validMsg, setValidMsg] = useState<string>('');
   const dispatch = useDispatch();
   const { data } = useGetTeamListQuery();
+  const { mutate: AddTeamMutate } = useAddTeamNameQuery();
 
   useEffect(() => {
     if (name.length > 0) {
@@ -29,7 +30,7 @@ const AddTeamBottomSheet = () => {
       return;
     }
 
-    dispatch(addTeam({ teamName: name }));
+    AddTeamMutate({ teamName: name });
     dispatch(hideModal());
   };
 

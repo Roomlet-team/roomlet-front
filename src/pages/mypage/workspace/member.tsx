@@ -75,23 +75,13 @@ const Member = () => {
 
         {/* 팀 목록 */}
         <div {...stylex.props(Styles.TeamListContainer)}>
-          {isEdit
-            ? editTeamList?.map((item, idx) => (
-                <TeamToggle
-                  key={item.TeamId}
-                  data={item}
-                  teamIdx={idx}
-                  isEdit={isEdit}
-                  isLastIdx={editTeamList.length - 1 === idx}
-                />
-              ))
-            : data?.teamList?.map((item, idx) => (
-                <TeamToggle key={item.TeamId} data={item} teamIdx={idx} isLastIdx={editTeamList.length - 1 === idx} />
-              ))}
+          {data?.teamList?.map((item, idx) => (
+            <TeamToggle key={item.TeamId} data={item} teamIdx={idx} isLastIdx={editTeamList.length - 1 === idx} />
+          ))}
         </div>
 
         {/* 팀 추가 */}
-        {isEdit && (
+        {['admin', 'owner'].includes(myInfoData?.myInfo.role) && (
           <button
             type="button"
             {...stylex.props(Styles.AddTeamBtn, Typography.TextSmallMedium)}
