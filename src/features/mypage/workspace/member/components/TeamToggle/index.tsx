@@ -73,7 +73,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
   };
 
   const handleClickMoveMember = (item: MemberInfoItem, idx: number) => {
-    renderModal(MoveMemberBottomSheet, { data: item, selectMemberTeamIdx: teamIdx });
+    renderModal(MoveMemberBottomSheet, { data: item, teamId: data.TeamId });
   };
 
   return (
@@ -124,7 +124,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
                       />
                       <span>{item.displayName}</span>
                     </Link>
-                    {/* {isEdit && (
+                    {['admin', 'owner'].includes(myInfoData?.myInfo.role) && (
                       <button
                         type="button"
                         onClick={() => handleClickMoveMember(item, idx)}
@@ -132,7 +132,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
                       >
                         이동
                       </button>
-                    )} */}
+                    )}
                   </div>
                 </li>
               ))
