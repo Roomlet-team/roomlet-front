@@ -82,14 +82,16 @@ const Member = () => {
 
         {/* 팀 추가 */}
         {['admin', 'owner'].includes(myInfoData?.myInfo.role) && (
-          <button
-            type="button"
-            {...stylex.props(Styles.AddTeamBtn, Typography.TextSmallMedium)}
-            onClick={handleClickAddTeam}
-          >
-            <PlusOutlined width={24} height={24} />
-            <span>팀 추가</span>
-          </button>
+          <div {...stylex.props(Styles.AddTeamBtnContainer)}>
+            <button
+              type="button"
+              {...stylex.props(Styles.AddTeamBtn, Typography.TextSmallMedium)}
+              onClick={handleClickAddTeam}
+            >
+              <PlusOutlined width={24} height={24} />
+              <span>팀 추가</span>
+            </button>
+          </div>
         )}
       </div>
     </MainLayout>
@@ -104,7 +106,6 @@ const Styles = stylex.create({
     height: 'calc(100vh - 60px)',
     position: 'relative',
     padding: '16px',
-    marginBottom: '24px',
     overflowY: 'auto',
   },
   TotalCountWrapper: {
@@ -112,16 +113,22 @@ const Styles = stylex.create({
   },
   TeamListContainer: {
     width: '100%',
-    height: 'calc(100vh - 212px)',
+    // height: 'calc(100vh - 400px)',
+    marginBottom: '80px',
     display: 'flex',
     flexDirection: 'column',
   },
-  AddTeamBtn: {
-    maxWidth: '735px',
+  AddTeamBtnContainer: {
     width: 'calc(100% - 32px)',
+    maxWidth: '735px',
     padding: '16px',
     position: 'fixed',
-    bottom: '16px',
+    bottom: '0',
+    background: colors.white500,
+  },
+  AddTeamBtn: {
+    width: '100%',
+    padding: '16px',
     display: 'flex',
     gap: '8px',
     justifyContent: 'center',
