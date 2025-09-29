@@ -24,6 +24,7 @@ const Category = () => {
   );
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const { renderModal } = useRenderModal();
+  const isEditable = ['owner', 'admin'].includes(myInfoData?.myInfo.role);
 
   const completeBtnProps = {
     name: isEdit ? '완료' : '수정',
@@ -60,7 +61,7 @@ const Category = () => {
       <Header
         title={isEdit ? '수정하기' : '카테고리'}
         prevUrl="/mypage/workspace"
-        {...(myInfoData?.myInfo?.isAdmin ? { rightBtnInfo: completeBtnProps } : {})}
+        {...(isEditable ? { rightBtnInfo: completeBtnProps } : {})}
       />
       {/* 검색 */}
 
