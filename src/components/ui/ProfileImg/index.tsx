@@ -50,6 +50,7 @@ export default ProfileImg;
 const Styles = stylex.create({
   imgContainer: {
     position: 'relative',
+    flexShrink: 0,
   },
   img: (size, borderProperties) => ({
     width: `${size}px`,
