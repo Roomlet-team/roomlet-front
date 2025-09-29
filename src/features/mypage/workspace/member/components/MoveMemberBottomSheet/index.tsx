@@ -22,7 +22,7 @@ const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
   const { data, teamId } = props;
   const { data: teamListData } = useGetTeamListQuery();
   const dispatch = useDispatch();
-  const teamOptionList = teamListData.teamList; // 이미 참여한 팀은 option에 나타나지 않게 함.
+  const teamOptionList = teamListData?.teamList; // 이미 참여한 팀은 option에 나타나지 않게 함.
   const [selectTeamId, setSelectTeamId] = useState<number>(teamId);
   const [selectRole, setSelectRole] = useState<string>(data.role);
   const { mutate: UpdateMemberMutate } = useUpdateMemberQuery();
@@ -90,9 +90,7 @@ const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
               defaultValue={teamId}
               {...stylex.props(Styles.Select, Typography.SubTextLargeRegular)}
             >
-              {teamOptionList.map((item) => (
-                <option value={item.TeamId}>{item.teamName}</option>
-              ))}
+              {teamOptionList?.map((item) => <option value={item.TeamId}>{item.teamName}</option>)}
             </select>
           </div>
         </div>
