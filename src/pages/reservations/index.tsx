@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 
 const Reservations = () => {
   const router = useRouter();
-  const { my: queryMy, cc: queryCc } = router.query;
+  const { my: queryMy, cc: queryCc, roomIds: queryRoomIds } = router.query;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [year, setYear] = useState<number>(dayjs().year());
   const [month, setMonth] = useState<number>(dayjs().month() + 1);
@@ -19,8 +19,8 @@ const Reservations = () => {
   const { data } = useGetWorkspaceCongressListQuery({
     date: year && month && day ? dayjs(`${year}-${month}-${day}`).format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD'),
     ...(queryMy ? { my: queryMy as string } : {}),
-    ...(queryCc ? { cc: queryCc as string } : {}), // [ ] 택 1로 하나만 선택하는 건지 확인하기
-    // [ ] 회의실 필터 추가
+    ...(queryCc ? { cc: queryCc as string } : {}),
+    ...(queryRoomIds ? { RoomId: queryRoomIds as string } : {}),
   });
 
   const handleClickDateWheel = () => {

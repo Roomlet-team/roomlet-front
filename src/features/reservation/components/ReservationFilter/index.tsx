@@ -41,6 +41,8 @@ const ReservationFilter = () => {
   const handleChangeMeetingRoom = (value: number) => {
     if (selectedRoomIdList.includes(value)) {
       setSelectedRoomIdList((prevState) => prevState.filter((item) => item !== value));
+    } else if (value === 0) {
+      setSelectedRoomIdList([]);
     } else {
       setSelectedRoomIdList((prevState) => [value]);
     }
@@ -49,6 +51,8 @@ const ReservationFilter = () => {
   const handleChangeCategory = (value: number) => {
     if (selectedCategoryIdList.includes(value)) {
       setSelectedCategoryIdList((prevState) => prevState.filter((item) => item !== value));
+    } else if (value === 0) {
+      setSelectedCategoryIdList([]);
     } else {
       setSelectedCategoryIdList((prevState) => [value]);
     }
@@ -110,6 +114,15 @@ const ReservationFilter = () => {
         {/* 회의실 */}
         <p {...stylex.props(Typography.SubTextLargeSemiBold, Styles.Title)}>회의실</p>
         <div {...stylex.props(Styles.RadioContainer)}>
+          <Radio
+            name="congressRoom"
+            id={`congressRoomAll`}
+            theme="white"
+            label={'전체'}
+            value={0}
+            onChange={() => handleChangeMeetingRoom(0)}
+            checked={selectedRoomIdList.length === 0}
+          />
           {congressRoomData?.congressRoomList?.map((item) => (
             <Radio
               name="congressRoom"
@@ -126,6 +139,15 @@ const ReservationFilter = () => {
         {/* 카테고리 */}
         <p {...stylex.props(Typography.SubTextLargeSemiBold, Styles.Title)}>카테고리</p>
         <div {...stylex.props(Styles.RadioContainer)}>
+          <Radio
+            name="category"
+            id={`categoryAll`}
+            theme="white"
+            label={'전체'}
+            value={0}
+            onChange={() => handleChangeCategory(0)}
+            checked={selectedCategoryIdList.length === 0}
+          />
           {congressCategoryData?.congressCategoryList?.map((item) => (
             <Radio
               name="category"
