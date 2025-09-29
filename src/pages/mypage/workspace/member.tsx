@@ -19,6 +19,7 @@ const Member = () => {
   const [searchKeyword, handleChangeSearchKeyword] = useInput('');
   const debounceKeyword = useDebounce(searchKeyword);
   const { data } = useGetTeamListQuery(debounceKeyword);
+  const isEditable = ['owner'].includes(myInfoData?.myInfo.role);
 
   const totalMemberCount = data?.teamList?.reduce(
     (prevValue, currentValue) => prevValue + currentValue?.memberList?.length,
@@ -56,7 +57,7 @@ const Member = () => {
         </div>
 
         {/* 팀 추가 */}
-        {['admin', 'owner'].includes(myInfoData?.myInfo.role) && (
+        {isEditable && (
           <div {...stylex.props(Styles.AddTeamBtnContainer)}>
             <button
               type="button"

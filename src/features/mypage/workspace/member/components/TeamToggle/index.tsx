@@ -31,7 +31,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
   const [teamName, handleChangeTeamName] = useInput(data.teamName);
   const { mutate: DeleteTeamMutate } = useDeleteTeamQuery();
   const { mutate: UpdateTeamNameMutate } = useUpdateTeamNameQuery();
-  const isEditable = ['admin', 'owner'].includes(myInfoData?.myInfo.role);
+  const isEditable = ['owner'].includes(myInfoData?.myInfo.role);
 
   const getMenuList = () => {
     return [
