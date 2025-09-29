@@ -20,11 +20,10 @@ import useInput from '@src/hooks/useInput';
 interface TeamToggleProps {
   data: TeamInfoItem;
   teamIdx: number;
-  isLastIdx: boolean;
 }
 
 const TeamToggle: FC<TeamToggleProps> = (props) => {
-  const { data, teamIdx, isLastIdx } = props;
+  const { data } = props;
   const { data: myInfoData } = useGetMypageInfoQuery();
   const { renderModal } = useRenderModal();
   const [isTeamNameEdit, setIsTeamNameEdit] = useState<boolean>(false);
@@ -78,7 +77,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
   };
 
   return (
-    <div {...stylex.props(isLastIdx && Styles.LastIdxContainer)}>
+    <div>
       {/* 팀 이름 */}
       {isTeamNameEdit ? (
         <div {...stylex.props(Styles.EditToggleContainer)}>
@@ -150,9 +149,6 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
 export default TeamToggle;
 
 const Styles = stylex.create({
-  LastIdxContainer: {
-    paddingBottom: '104px',
-  },
   ToggleButton: {
     width: '100%',
     display: 'flex',

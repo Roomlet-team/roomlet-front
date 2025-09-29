@@ -1,26 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import stylex from '@stylexjs/stylex';
 import Header from '@src/components/ui/Header';
 import { colors, Typography } from '../../../../public/styles/vars.stylex';
 import TeamToggle from '@src/features/mypage/workspace/member/components/TeamToggle';
 import useGetTeamListQuery from '@src/queries/team/useGetTeamListQuery';
-import { saveTeamList } from '@src/features/mypage/workspace/member/slices/member';
-import { RootState } from '@src/store';
 import PlusOutlined from '@src/components/icons/PlusOutlined';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import MainLayout from '@src/layouts/MainLayout';
 import AddTeamBottomSheet from '@src/features/mypage/workspace/member/components/AddTeamBottomSheet';
-import usePutTeamQuery from '@src/features/mypage/workspace/member/queries/usePutTeamQuery';
 import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
 
 const Member = () => {
   const { data: myInfoData } = useGetMypageInfoQuery();
   const { data } = useGetTeamListQuery();
-  const mutation = usePutTeamQuery();
-  const dispatch = useDispatch();
-  const { editTeamList, tempDeleteTeamList } = useSelector((state: RootState) => state.member);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
   const { renderModal } = useRenderModal();
 
   const totalMemberCount = data?.teamList?.reduce(
@@ -28,43 +20,13 @@ const Member = () => {
     0
   );
 
-  const completeBtnProps = {
-    name: isEdit ? '완료' : '수정',
-    isActive: isEdit,
-    onClick: () => {
-      const removeTempTeamIdInTemList = editTeamList.map((item) => {
-        const { tempTeamId = null, ...anotherItem } = item;
-
-        return tempTeamId ? anotherItem : item;
-      });
-
-      if (isEdit) {
-        mutation.mutate({
-          teamList: removeTempTeamIdInTemList,
-          deleteTeamList: tempDeleteTeamList,
-        });
-      }
-      setIsEdit(!isEdit);
-    },
-  };
-
   const handleClickAddTeam = () => {
     renderModal(AddTeamBottomSheet, null);
   };
 
-  useEffect(() => {
-    if (isEdit) {
-      dispatch(saveTeamList(data.teamList));
-    }
-  }, [isEdit]);
-
   return (
     <MainLayout>
-      <Header
-        title="멤버"
-        prevUrl="/mypage/workspace"
-        {...(myInfoData?.myInfo?.isAdmin ? { rightBtnInfo: completeBtnProps } : {})}
-      />
+      <Header title="멤버" prevUrl="/mypage/workspace" />
       {/* 검색 */}
 
       <div {...{ ...stylex.props(Styles.Container) }}>
@@ -75,9 +37,7 @@ const Member = () => {
 
         {/* 팀 목록 */}
         <div {...stylex.props(Styles.TeamListContainer)}>
-          {data?.teamList?.map((item, idx) => (
-            <TeamToggle key={item.TeamId} data={item} teamIdx={idx} isLastIdx={editTeamList.length - 1 === idx} />
-          ))}
+          {data?.teamList?.map((item, idx) => <TeamToggle key={item.TeamId} data={item} teamIdx={idx} />)}
         </div>
 
         {/* 팀 추가 */}
