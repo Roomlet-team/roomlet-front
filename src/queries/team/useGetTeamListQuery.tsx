@@ -51,6 +51,8 @@ const useGetTeamListQuery = (skeywd?: string) => {
 
   const result = useQuery({
     queryKey: ['teamList', skeywd],
+    staleTime: 3 * 60 * 1000,
+    gcTime: 3 * 60 * 1000,
     queryFn: () => getTeamListApi(workspaceId, skeywd),
     enabled: Boolean(workspaceId),
   });
