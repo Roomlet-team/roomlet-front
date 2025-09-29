@@ -33,7 +33,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
   const { mutate: DeleteTeamMutate } = useDeleteTeamQuery();
   const { mutate: UpdateTeamNameMutate } = useUpdateTeamNameQuery();
 
-  const getMenuList = (item: TeamInfoItem) => {
+  const getMenuList = () => {
     return [
       {
         id: '1',
@@ -52,7 +52,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
             content: '팀 삭제 후 취소할 수 없어요.\n기존 팀원들은 다른 팀으로 배치해주세요',
             cancelBtnName: '유지할래요',
             okBtnName: '삭제할래요',
-            onOk: () => DeleteTeamMutate({ TeamId: item.TeamId }),
+            onOk: () => DeleteTeamMutate({ TeamId: data.TeamId }),
           });
         },
       },
@@ -103,7 +103,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
             <ArrowHeadOutlinedV2 width={24} height={24} rotate={isOpen ? 270 : 90} color="#000000" />
           </button>
 
-          <Dropdown menuList={getMenuList(data)} ellipsisIconStyle={{ color: '#000000' }} />
+          <Dropdown menuList={getMenuList()} ellipsisIconStyle={{ color: '#000000' }} />
         </div>
       )}
 
