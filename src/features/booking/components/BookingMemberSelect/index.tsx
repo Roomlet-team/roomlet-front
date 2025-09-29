@@ -13,7 +13,7 @@ interface BookingMemberSelectProps {
 const BookingMemberSelect: FC<BookingMemberSelectProps> = (props) => {
   const { onSelect } = props;
   const { selectBookingMemberObj } = useSelector((state: RootState) => state.booking);
-  const defaultImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/booking_default_2x.png'; // 참가자를 선택하지 않았을 때 보여지는 이미지
+  const defaultImgKey = 'public/images/booking_default_2x.png'; // 참가자를 선택하지 않았을 때 보여지는 이미지
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
@@ -68,7 +68,7 @@ const BookingMemberSelect: FC<BookingMemberSelectProps> = (props) => {
       ) : (
         // 아직 선택된 멤버가 없을 때
         <button type="button" onClick={handleClickMemberSelect}>
-          <ProfileImg size={32} imgKey={defaultImgUrl} />
+          <ProfileImg size={32} imgKey={defaultImgKey} />
         </button>
       )}
 
