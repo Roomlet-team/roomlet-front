@@ -31,7 +31,6 @@ const selections = {
  */
 const DateWheelPicker: FC<DateWheelPickerProps> = (props) => {
   const { isOpen, onClose, onSelect, defaultValue } = props;
-  console.log({ defaultValue }, dayjs(`${defaultValue.year}.${defaultValue.month}.${defaultValue.day}}`));
   const todayDate = dayjs(`${defaultValue.year}-${defaultValue.month}-${defaultValue.day}`).format(
     'YYYY년 M월 D일 ddd요일'
   );
