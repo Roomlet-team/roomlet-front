@@ -32,6 +32,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
   const [teamName, handleChangeTeamName] = useInput(data.teamName);
   const { mutate: DeleteTeamMutate } = useDeleteTeamQuery();
   const { mutate: UpdateTeamNameMutate } = useUpdateTeamNameQuery();
+  const isEditable = ['admin', 'owner'].includes(myInfoData?.myInfo.role);
 
   const getMenuList = () => {
     return [
@@ -103,7 +104,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
             <ArrowHeadOutlinedV2 width={24} height={24} rotate={isOpen ? 270 : 90} color="#000000" />
           </button>
 
-          <Dropdown menuList={getMenuList()} ellipsisIconStyle={{ color: '#000000' }} />
+          {isEditable && <Dropdown menuList={getMenuList()} ellipsisIconStyle={{ color: '#000000' }} />}
         </div>
       )}
 
@@ -124,7 +125,7 @@ const TeamToggle: FC<TeamToggleProps> = (props) => {
                       />
                       <span>{item.displayName}</span>
                     </Link>
-                    {['admin', 'owner'].includes(myInfoData?.myInfo.role) && (
+                    {isEditable && (
                       <button
                         type="button"
                         onClick={() => handleClickMoveMember(item, idx)}
