@@ -23,6 +23,7 @@ const MeetingRoom = () => {
   const { editCongressRoomList, tempDeleteCongressRoomList } = useSelector((state: RootState) => state.congressRoom);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const { renderModal } = useRenderModal();
+  const isEditable = ['owner', 'admin'].includes(myInfoData?.myInfo.role);
 
   const completeBtnProps = {
     name: isEdit ? '완료' : '수정',
@@ -56,11 +57,7 @@ const MeetingRoom = () => {
 
   return (
     <MainLayout backgroundColor="#FAFAFA">
-      <Header
-        title="회의실"
-        prevUrl="/mypage/workspace"
-        {...(myInfoData?.myInfo?.isAdmin ? { rightBtnInfo: completeBtnProps } : {})}
-      />
+      <Header title="회의실" prevUrl="/mypage/workspace" {...(isEditable ? { rightBtnInfo: completeBtnProps } : {})} />
 
       <div {...stylex.props(Styles.Container)}>
         {/* 회의실 개수 */}
