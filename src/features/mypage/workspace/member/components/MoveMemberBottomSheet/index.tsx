@@ -111,7 +111,7 @@ const MoveMemberBottomSheet: FC<MoveMemberBottomSheetProps> = (props) => {
             onClick={handleClickRegister}
             {...stylex.props(Styles.Button, Styles.RegisterButton, Typography.TextSmallMedium)}
           >
-            등록
+            완료
           </button>
         </div>
       </div>
