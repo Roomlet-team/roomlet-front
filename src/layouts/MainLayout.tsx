@@ -32,7 +32,7 @@ const MainLayout: FC<MainLayoutProps> = (props) => {
     <div id="main-layout" {...stylex.props(Styles.container(isScroll, backgroundColor))}>
       {modal && <div {...stylex.props(Styles.modalWrapper)}>{modal}</div>}
       {isShowOnboarding === true && !isLoading && (
-        <div style={{ position: 'fixed', bottom: 0, width: '100%', height: '100%', zIndex: 1000 }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100dvh', zIndex: 1000 }}>
           <OnboardingSlider />
         </div>
       )}

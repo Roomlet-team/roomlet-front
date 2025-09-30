@@ -157,7 +157,7 @@ const SliderStyles = stylex.create({
   }),
   slideContent: {
     width: '100%',
-    height: '100vh',
+    height: '100dvh',
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
