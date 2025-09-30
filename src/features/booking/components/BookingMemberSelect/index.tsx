@@ -57,7 +57,7 @@ const BookingMemberSelect: FC<BookingMemberSelectProps> = (props) => {
               <div {...stylex.props(Styles.MemberListContainer)}>
                 {selectBookingMemberObj[teamName].map((memberItem) => (
                   <div {...stylex.props(Styles.MemberInfoContainer)}>
-                    <ProfileImg size={20} imgKey={memberItem.profileImgKey} role={memberItem.role} />
+                    <ProfileImg size={20} imgKey={memberItem.profileImgKey} />
                     <span {...stylex.props(Typography.TagLargeMedium)}>{memberItem.displayName}</span>
                   </div>
                 ))}
