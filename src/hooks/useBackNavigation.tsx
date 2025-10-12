@@ -7,18 +7,16 @@ const useBackNavigation = () => {
   const router = useRouter();
 
   const goBackOrHome = () => {
-    // 1. referrer 체크
-    const referrer = document.referrer;
+    const referer = sessionStorage.getItem('referer');
+
     const allowedDomains = [
       process.env.NEXT_PUBLIC_FRONTEND_URL, // 환경변수로 관리
     ].filter(Boolean);
 
-    const isInternalReferrer = referrer && allowedDomains.some((domain) => referrer.includes(domain));
+    const isInternalReferrer = referer && allowedDomains.some((domain) => referer.includes(domain));
 
-    // 2. 히스토리 길이 체크 (추가 안전장치)
     const hasHistory = window.history.length > 1;
 
-    // 3. Next.js 라우터 히스토리 체크 (가장 안전)
     const canGoBack = router.asPath !== router.pathname || hasHistory;
 
     if (isInternalReferrer && canGoBack) {

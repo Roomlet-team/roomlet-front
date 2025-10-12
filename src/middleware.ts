@@ -7,9 +7,20 @@ export async function middleware(request: NextRequest) {
   let refreshToken = request.cookies.get('refresh_token');
   let isRefreshToken = request.cookies.has('refresh_token');
   let isAccessToken = request.cookies.has('access_token');
+  const referer = request.headers.get('referer');
+  const response = NextResponse.next();
 
   const path = request.nextUrl.pathname;
   const prevUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}${request.nextUrl.pathname}${request.nextUrl.search}`; // 로그인 페이지 이전에 있었던 url
+
+  if (referer) {
+    response.cookies.set('page_referer', referer, {
+      httpOnly: false, // 클라이언트에서 접근 가능하게 함.
+      sameSite: 'lax',
+    });
+  } else {
+    response.cookies.delete('page_referer');
+  }
 
   if (isRefreshToken) {
     if (['/login', '/'].includes(path)) {
@@ -17,7 +28,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/home', request.url));
     }
 
-    return null;
+    return response;
   }
 
   // 로그인을 하지 않은 경우, 로그인 페이지로 이동 (초대 페이지, 로그인 페이지, 랜딩 페이지를 제외한 모든 페이지 접근 불가)
@@ -25,7 +36,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(`/login?prev_url=${encodeURIComponent(prevUrl)}`, request.url));
   }
 
-  return null;
+  return response;
 }
 
 export const config = {

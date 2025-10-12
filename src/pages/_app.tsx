@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { AppProps } from 'next/app';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -20,9 +20,11 @@ import '../features/authentication/assets/onboarding-slider.css';
 import '../features/booking/assets/custom-react-calendar.css';
 import '../features/calendar/styles/custom-react-calendar.css';
 import { ToastContainer } from 'react-toastify';
+import { useRouter } from 'next/router';
 // import '../features/calendar/styles/styles.css';
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -44,6 +46,24 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // 로케일 설정
   dayjs.locale('ko');
+
+  // sessionStorage에 referer 저장
+  useEffect(() => {
+    const tempReferer = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('page_referer='))
+      ?.split('=')[1];
+
+    if (tempReferer) {
+      sessionStorage.setItem('referer', decodeURIComponent(tempReferer));
+
+      // 쿠키 삭제
+      document.cookie = 'page_referer=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    } else {
+      // 외부 페이지로 부터 온 경우, 세션 스토리지에 저장되어 있던 기존 referer 삭제
+      sessionStorage.removeItem('referer');
+    }
+  }, [router.asPath]);
 
   return (
     <QueryClientProvider client={queryClient}>
