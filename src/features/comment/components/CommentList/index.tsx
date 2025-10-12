@@ -84,8 +84,7 @@ const CommentList = () => {
                   </div>
 
                   {/* 수정하기 / 삭제하기 */}
-                  {/* [ ] 본인 댓글에만 드롭박스가 나타나게 수정 필요 */}
-                  <Dropdown menuList={getMenuList(item)} />
+                  {item.isOwner && <Dropdown menuList={getMenuList(item)} />}
                 </div>
 
                 {/* 내용 */}

@@ -13,6 +13,7 @@ export interface CommentListItem {
   CommentId: number;
   content: string;
   createdAt: string;
+  isOwner: boolean;
   member: { MemberId: number; displayName: string; profileImgKey: string; isAdmin: boolean };
 }
 
