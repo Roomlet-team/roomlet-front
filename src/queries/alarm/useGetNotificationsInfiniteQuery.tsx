@@ -16,6 +16,17 @@ export interface NotificationItem {
   createdAt: string;
   content: string;
   checkedAt: string | null;
+  congress: {
+    congressTitle: string;
+    startDt: string;
+    endDt: string;
+    organizer: {
+      displayName: string;
+    };
+  };
+  sender: {
+    displayName: string;
+  };
 }
 
 interface Notification {
