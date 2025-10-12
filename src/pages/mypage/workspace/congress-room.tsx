@@ -57,7 +57,7 @@ const MeetingRoom = () => {
 
   return (
     <MainLayout backgroundColor="#FAFAFA">
-      <Header title="회의실" prevUrl="/mypage/workspace" {...(isEditable ? { rightBtnInfo: completeBtnProps } : {})} />
+      <Header title="회의실" {...(isEditable ? { rightBtnInfo: completeBtnProps } : {})} />
 
       <div {...stylex.props(Styles.Container)}>
         {/* 회의실 개수 */}

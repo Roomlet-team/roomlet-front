@@ -50,7 +50,6 @@ const WorkspaceHome = () => {
     <MainLayout>
       <Header
         title="워크스페이스 정보"
-        prevUrl="/mypage"
         {...(isAdmin
           ? {
               rightBtnInfo: {

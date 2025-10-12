@@ -1,12 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import stylex from '@stylexjs/stylex';
 import { Typography, colors } from '../../../../public/styles/vars.stylex';
 import ArrowHeadOutlined from '@src/components/icons/ArrowHeadOutlined';
+import useBackNavigation from '@src/hooks/useBackNavigation';
 
 type HeaderProps = {
   title?: string; // 제목
-  prevUrl?: string; // 이전으로 이동할 url
   prevOnClick?: () => void;
   rightBtnInfo?: {
     name: string;
@@ -16,20 +16,15 @@ type HeaderProps = {
 };
 
 const Header: FC<HeaderProps> = (props) => {
-  const { title, prevUrl, prevOnClick, rightBtnInfo } = props;
+  const { title, prevOnClick, rightBtnInfo } = props;
+  const { goBackOrHome } = useBackNavigation();
 
   return (
     <div {...stylex.props(Styles.container, rightBtnInfo && Styles.withRightBtn)}>
-      {prevUrl && (
-        <Link href={prevUrl}>
-          <ArrowHeadOutlined width={24} height={24} />
-        </Link>
-      )}
-      {prevOnClick && (
-        <button type="button" onClick={prevOnClick}>
-          <ArrowHeadOutlined width={24} height={24} />
-        </button>
-      )}
+      <button type="button" onClick={prevOnClick || goBackOrHome}>
+        <ArrowHeadOutlined width={24} height={24} />
+      </button>
+
       <h1 {...stylex.props(Typography.TitleSmallSemiBold)}>{title}</h1>
       {/* 오른쪽 상단에 배치되는 버튼 */}
       {rightBtnInfo && (

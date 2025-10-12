@@ -18,7 +18,7 @@ const Alarm = () => {
   // 컨텍스트로 알림 카테고리 관리하기
   return (
     <MainLayout isScroll>
-      <Header title="알림" prevUrl="/home" rightBtnInfo={readAllBtnProps} />
+      <Header title="알림" rightBtnInfo={readAllBtnProps} />
       <AlarmCategoryProvider>
         {/* 알림 카테고리 */}
         <AlarmCategoryList />

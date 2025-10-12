@@ -32,7 +32,7 @@ const Member = () => {
 
   return (
     <MainLayout>
-      <Header title="멤버" prevUrl="/mypage/workspace" />
+      <Header title="멤버" />
       <div {...{ ...stylex.props(Styles.Container) }}>
         {/* 검색 */}
         <div {...stylex.props(Styles.SearchContainer)}>

@@ -143,7 +143,7 @@ const Booking = () => {
 
   return (
     <MainLayout isScroll>
-      <Header title="예약하기" prevUrl="/calendar" />
+      <Header title="예약하기" />
 
       {/* 예약하기 폼 */}
       <form onSubmit={handleSubmit(onSubmit)}>

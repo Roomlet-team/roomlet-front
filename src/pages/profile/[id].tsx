@@ -18,10 +18,6 @@ const UserProfile = () => {
   const { id } = router.query;
   const { data } = useGetWorkspaceMemberQuery(Number(id));
 
-  const handlePrevOnClick = () => {
-    router.back();
-  };
-
   const dataList = [
     { id: 1, name: data?.member?.teamInfo?.teamName, icon: <DataflowOutlined width={24} height={24} /> },
     { id: 2, name: data?.member?.position || '직책 없음', icon: <UserSquareOutlined width={24} height={24} /> },
@@ -30,7 +26,7 @@ const UserProfile = () => {
 
   return (
     <MainLayout>
-      <Header prevOnClick={handlePrevOnClick} />
+      <Header />
 
       {/* 프로필 이미지 */}
       <div {...stylex.props(Styles.ProfileContainer)}>

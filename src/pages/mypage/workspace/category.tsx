@@ -58,11 +58,7 @@ const Category = () => {
 
   return (
     <MainLayout>
-      <Header
-        title={isEdit ? '수정하기' : '카테고리'}
-        prevUrl="/mypage/workspace"
-        {...(isEditable ? { rightBtnInfo: completeBtnProps } : {})}
-      />
+      <Header title={isEdit ? '수정하기' : '카테고리'} {...(isEditable ? { rightBtnInfo: completeBtnProps } : {})} />
       {/* 검색 */}
 
       <div {...{ ...stylex.props(Styles.Container) }}>

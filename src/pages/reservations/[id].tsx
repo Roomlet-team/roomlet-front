@@ -21,8 +21,8 @@ const ReservationInfo = dynamic(() => import('@src/features/reservation/componen
 const MeetingDetails = () => {
   return (
     <MainLayout isScroll>
-      {/* 직전 페이지로 이동할 수 잇게 구현하기 */}
-      <Header prevUrl="/calendar" />
+      <Header />
+
       <ReservationInfo />
 
       {/* 경계선 */}
