@@ -25,7 +25,7 @@ export default BottomSheet;
 const Styles = stylex.create({
   MaskWrapper: {
     width: '100%',
-    height: '100vh',
+    height: '100dvh',
     position: 'sticky',
     bottom: 0,
     background: 'rgba(0, 0, 0, 0.5)',

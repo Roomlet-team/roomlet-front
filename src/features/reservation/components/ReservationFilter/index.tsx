@@ -196,6 +196,7 @@ const Styles = stylex.create({
   RadioContainer: {
     marginBottom: '24px',
     display: 'flex',
+    flexWrap: 'wrap',
     gap: '8px',
   },
   ButtonContainer: {
