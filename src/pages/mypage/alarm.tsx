@@ -18,7 +18,7 @@ const MyPageAlarmSetting = () => {
 
   return (
     <MainLayout>
-      <Header title="알림 수신 설정" prevUrl="/mypage" />
+      <Header title="알림 수신 설정" />
 
       <section>
         {toggleList.map((item) => (

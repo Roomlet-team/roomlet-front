@@ -70,11 +70,7 @@ const MyPageProfile = () => {
 
   return (
     <GnbNavLayout backgroundColor={colors.white500}>
-      <Header
-        title="프로필 수정"
-        prevUrl="/mypage"
-        rightBtnInfo={isWorkspace ? myInfoCompleteBtnProps : profileCompleteBtnProps}
-      />
+      <Header title="프로필 수정" rightBtnInfo={isWorkspace ? myInfoCompleteBtnProps : profileCompleteBtnProps} />
 
       {/* 이미지 업로드 및 이름 입력 */}
       <div {...stylex.props(Styles.SettingContainer)}>
