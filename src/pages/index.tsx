@@ -44,70 +44,75 @@ const Home = () => {
   ];
 
   return (
-    <MainLayout isScroll>
+    <>
       <SEOHead
         title="룸렛 : 스마트 회의 관리 솔루션"
         description="설치없이 웹에서 바로 시작하는 룸렛! 모바일로 실시간 회의실 예약하고 모든 회의 준비와 팀 협업을 한 곳에서 관리하여 생산성을 극대화하세요."
         url={{ pathname: '/' }}
       />
 
-      <section {...stylex.props(Styles.heroSection)}>
-        <h1 {...stylex.props(Typography.TextXLargeBold, Styles.title)}>
-          룸렛: 모바일에서 바로,
-          <br />
-          스마트 회의실 예약
-        </h1>
+      <MainLayout isScroll>
+        <section {...stylex.props(Styles.heroSection)}>
+          <h1 {...stylex.props(Typography.TextXLargeBold, Styles.title)}>
+            룸렛: 모바일에서 바로,
+            <br />
+            스마트 회의실 예약
+          </h1>
 
-        <p {...stylex.props(Typography.TextSmallRegular, Styles.heroDescription)}>
-          설치 없이 웹에서 즉시 시작!
-          <br />
-          회의실 눈치싸움은 이제 그만.
-        </p>
+          <p {...stylex.props(Typography.TextSmallRegular, Styles.heroDescription)}>
+            설치 없이 웹에서 즉시 시작!
+            <br />
+            회의실 눈치싸움은 이제 그만.
+          </p>
 
-        <Link href="/login" {...stylex.props(Styles.startLink, Styles.isRedButton, Typography.SubTextRegularBold)}>
-          무료로 룸렛 시작하기
-        </Link>
-      </section>
-
-      <section {...stylex.props(Styles.featuresSection)}>
-        {descriptions.map((item) => (
-          <div key={item.id} {...stylex.props(Styles.featureItem)}>
-            <div {...stylex.props(Styles.featureIcon)}>{item.icon}</div>
-            <div {...stylex.props(Styles.featureBody)}>
-              <h3 {...stylex.props(Typography.SubtitleRegularSemiBold)}>{item.title}</h3>
-              <p {...stylex.props(Typography.CaptionLargeRegular)}>{item.content}</p>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      <section {...stylex.props(Styles.ctaSection)}>
-        <div {...stylex.props(Styles.ctaBody)}>
-          <h2 {...stylex.props(Styles.ctaTitle)}>룸렛으로 팀의 회의를 시작하세요!</h2>
-          <p {...stylex.props(Styles.ctaContent)}>지금 바로 로그인 후 무료로 시작해보세요.</p>
-
-          <Link href="/login" {...stylex.props(Styles.startLink, Styles.isWhiteButton, Typography.SubTextRegularBold)}>
+          <Link href="/login" {...stylex.props(Styles.startLink, Styles.isRedButton, Typography.SubTextRegularBold)}>
             무료로 룸렛 시작하기
           </Link>
+        </section>
 
-          <Link href="/login" {...stylex.props(Styles.alreadyHaveAccountLink, Typography.CaptionRegularRegular)}>
-            이미 계정이 있으신가요? 로그인
-          </Link>
-        </div>
-      </section>
-
-      <footer {...stylex.props(Styles.footer)}>
-        <div {...stylex.props(Styles.footerLinks)}>
-          {footerLinks.map((item) => (
-            <Link href={item.href} key={item.id} target="_blank" {...stylex.props(Styles.footerLink)}>
-              {item.title}
-            </Link>
+        <section {...stylex.props(Styles.featuresSection)}>
+          {descriptions.map((item) => (
+            <div key={item.id} {...stylex.props(Styles.featureItem)}>
+              <div {...stylex.props(Styles.featureIcon)}>{item.icon}</div>
+              <div {...stylex.props(Styles.featureBody)}>
+                <h3 {...stylex.props(Typography.SubtitleRegularSemiBold)}>{item.title}</h3>
+                <p {...stylex.props(Typography.CaptionLargeRegular)}>{item.content}</p>
+              </div>
+            </div>
           ))}
-        </div>
+        </section>
 
-        <p {...stylex.props(Typography.CaptionRegularRegular, Styles.footerCopyright)}>Copyright © 2025 룸렛</p>
-      </footer>
-    </MainLayout>
+        <section {...stylex.props(Styles.ctaSection)}>
+          <div {...stylex.props(Styles.ctaBody)}>
+            <h2 {...stylex.props(Styles.ctaTitle)}>룸렛으로 팀의 회의를 시작하세요!</h2>
+            <p {...stylex.props(Styles.ctaContent)}>지금 바로 로그인 후 무료로 시작해보세요.</p>
+
+            <Link
+              href="/login"
+              {...stylex.props(Styles.startLink, Styles.isWhiteButton, Typography.SubTextRegularBold)}
+            >
+              무료로 룸렛 시작하기
+            </Link>
+
+            <Link href="/login" {...stylex.props(Styles.alreadyHaveAccountLink, Typography.CaptionRegularRegular)}>
+              이미 계정이 있으신가요? 로그인
+            </Link>
+          </div>
+        </section>
+
+        <footer {...stylex.props(Styles.footer)}>
+          <div {...stylex.props(Styles.footerLinks)}>
+            {footerLinks.map((item) => (
+              <Link href={item.href} key={item.id} target="_blank" {...stylex.props(Styles.footerLink)}>
+                {item.title}
+              </Link>
+            ))}
+          </div>
+
+          <p {...stylex.props(Typography.CaptionRegularRegular, Styles.footerCopyright)}>Copyright © 2025 룸렛</p>
+        </footer>
+      </MainLayout>
+    </>
   );
 };
 

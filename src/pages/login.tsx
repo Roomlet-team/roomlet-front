@@ -27,47 +27,49 @@ const Login = () => {
   };
 
   return (
-    <MainLayout>
+    <>
       <SEOHead title="로그인 | 룸렛" description="룸렛 로그인 페이지 입니다." url={{ pathname: '/login' }} />
 
-      <div {...stylex.props(LogoStyles.content)}>
-        <RoomletLogo />
-        <RoomletTextLogo />
-      </div>
+      <MainLayout>
+        <div {...stylex.props(LogoStyles.content)}>
+          <RoomletLogo />
+          <RoomletTextLogo />
+        </div>
 
-      <div {...stylex.props(SnsLoginStyles.chromeRecommendContainer)}>
-        <p {...stylex.props(SnsLoginStyles.chromeRecommendText, Typography.SubTextLargeRegular)}>
-          원활한 서비스 이용을 위해
-          <br /> <span {...stylex.props(SnsLoginStyles.chromeBold)}>Chrome 브라우저</span> 사용을 권장해요
+        <div {...stylex.props(SnsLoginStyles.chromeRecommendContainer)}>
+          <p {...stylex.props(SnsLoginStyles.chromeRecommendText, Typography.SubTextLargeRegular)}>
+            원활한 서비스 이용을 위해
+            <br /> <span {...stylex.props(SnsLoginStyles.chromeBold)}>Chrome 브라우저</span> 사용을 권장해요
+          </p>
+        </div>
+
+        <div {...stylex.props(SnsLoginStyles.content)}>
+          {snsLoginList.map((item) => (
+            <button
+              type="button"
+              key={item.id}
+              {...stylex.props(SnsLoginStyles.button)}
+              onClick={() => handleClickSnsLogin(item.url)}
+            >
+              <span>{item.logo}</span>
+              <span>{item.name}&nbsp;계정으로 시작하기</span>
+            </button>
+          ))}
+        </div>
+
+        <p {...stylex.props(TermsStyles.text)}>
+          시작하기를 누르는 것으로 계정 연동에 대한{' '}
+          <a {...stylex.props(TermsStyles.link)} href={TERMS.SERVICE_AGREE}>
+            이용약관
+          </a>
+          과{' '}
+          <a {...stylex.props(TermsStyles.link)} href={TERMS.PRIVACY_AGREE}>
+            개인정보 처리방침
+          </a>
+          에 동의하고 서비스를 이용합니다.
         </p>
-      </div>
-
-      <div {...stylex.props(SnsLoginStyles.content)}>
-        {snsLoginList.map((item) => (
-          <button
-            type="button"
-            key={item.id}
-            {...stylex.props(SnsLoginStyles.button)}
-            onClick={() => handleClickSnsLogin(item.url)}
-          >
-            <span>{item.logo}</span>
-            <span>{item.name}&nbsp;계정으로 시작하기</span>
-          </button>
-        ))}
-      </div>
-
-      <p {...stylex.props(TermsStyles.text)}>
-        시작하기를 누르는 것으로 계정 연동에 대한{' '}
-        <a {...stylex.props(TermsStyles.link)} href={TERMS.SERVICE_AGREE}>
-          이용약관
-        </a>
-        과{' '}
-        <a {...stylex.props(TermsStyles.link)} href={TERMS.PRIVACY_AGREE}>
-          개인정보 처리방침
-        </a>
-        에 동의하고 서비스를 이용합니다.
-      </p>
-    </MainLayout>
+      </MainLayout>
+    </>
   );
 };
 

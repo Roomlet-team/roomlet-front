@@ -36,37 +36,62 @@ const Invite = () => {
   };
 
   return (
-    <MainLayout isScroll>
+    <>
       <SEOHead
         title={`💌 ${data?.inviteInfo?.workspace?.workspaceName}에서 초대장이 도착했어요 | 룸렛`}
         description="룸렛에서 회의를 함께 준비해 보세요"
         url={{ pathname: '/invite', query: `InviteId=${data?.inviteInfo?.InviteId}` }}
       />
 
-      <div {...stylex.props(Styles.Container)}>
-        <div {...stylex.props(Styles.logoAndInfoWrapper)}>
-          <div {...stylex.props(Styles.logoAndInfoContainer)}>
-            {/* 룸렛 텍스트 로고 */}
-            <div className="logo-wrapper" {...stylex.props(Styles.logoWrapper)}>
-              <Link href="/home">
-                <RoomletTextLogo width={164} height={24} />
-              </Link>
-              <p {...stylex.props(Typography.SubtitleRegularBold)}>룸렛에서 회의를 함께 준비해 보세요</p>
-            </div>
+      <MainLayout isScroll>
+        <div {...stylex.props(Styles.Container)}>
+          <div {...stylex.props(Styles.logoAndInfoWrapper)}>
+            <div {...stylex.props(Styles.logoAndInfoContainer)}>
+              {/* 룸렛 텍스트 로고 */}
+              <div className="logo-wrapper" {...stylex.props(Styles.logoWrapper)}>
+                <Link href="/home">
+                  <RoomletTextLogo width={164} height={24} />
+                </Link>
+                <p {...stylex.props(Typography.SubtitleRegularBold)}>룸렛에서 회의를 함께 준비해 보세요</p>
+              </div>
 
-            {/* 초대 내용 */}
-            <div {...stylex.props(Styles.inviteContentContainer)}>
-              <p {...stylex.props(Typography.TextSmallRegular, Styles.workspaceNameContent)}>
-                {data?.inviteInfo?.workspace?.workspaceName}의 회의를 준비하고
-                <br /> 일정을 관리해보세요.
-              </p>
+              {/* 초대 내용 */}
+              <div {...stylex.props(Styles.inviteContentContainer)}>
+                <p {...stylex.props(Typography.TextSmallRegular, Styles.workspaceNameContent)}>
+                  {data?.inviteInfo?.workspace?.workspaceName}의 회의를 준비하고
+                  <br /> 일정을 관리해보세요.
+                </p>
 
-              {/* 멤버 프로필 이미지 리스트 */}
-              <div {...stylex.props(Styles.memberInfoContainer)}>
-                {isMemberCountGreaterThanLimit(5) ? (
-                  <div {...stylex.props(Styles.greaterThanFiveMemberContainer)}>
+                {/* 멤버 프로필 이미지 리스트 */}
+                <div {...stylex.props(Styles.memberInfoContainer)}>
+                  {isMemberCountGreaterThanLimit(5) ? (
+                    <div {...stylex.props(Styles.greaterThanFiveMemberContainer)}>
+                      <div {...stylex.props(Styles.memberProfileImgGroupContainer)}>
+                        {data?.inviteInfo?.workspace?.memberList.slice(0, 2).map((item) => (
+                          <div {...stylex.props(Styles.memberGroupItemWrapper)}>
+                            <ProfileImg
+                              imgKey={item.profileImgKey}
+                              alt={`${item.displayName}의 프로필 사진`}
+                              size={60}
+                              borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+
+                      <EllipsisImg />
+                      <div {...stylex.props(Styles.memberGroupItemWrapper)}>
+                        <ProfileImg
+                          imgKey={data?.inviteInfo?.workspace?.memberList?.slice(-1)[0]?.profileImgKey}
+                          alt="프로필 사진"
+                          size={60}
+                          borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
                     <div {...stylex.props(Styles.memberProfileImgGroupContainer)}>
-                      {data?.inviteInfo?.workspace?.memberList.slice(0, 2).map((item) => (
+                      {data?.inviteInfo?.workspace?.memberList.map((item) => (
                         <div {...stylex.props(Styles.memberGroupItemWrapper)}>
                           <ProfileImg
                             imgKey={item.profileImgKey}
@@ -77,70 +102,47 @@ const Invite = () => {
                         </div>
                       ))}
                     </div>
+                  )}
 
-                    <EllipsisImg />
-                    <div {...stylex.props(Styles.memberGroupItemWrapper)}>
-                      <ProfileImg
-                        imgKey={data?.inviteInfo?.workspace?.memberList?.slice(-1)[0]?.profileImgKey}
-                        alt="프로필 사진"
-                        size={60}
-                        borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div {...stylex.props(Styles.memberProfileImgGroupContainer)}>
-                    {data?.inviteInfo?.workspace?.memberList.map((item) => (
-                      <div {...stylex.props(Styles.memberGroupItemWrapper)}>
-                        <ProfileImg
-                          imgKey={item.profileImgKey}
-                          alt={`${item.displayName}의 프로필 사진`}
-                          size={60}
-                          borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* 멤버 닉네임 */}
-                <p {...stylex.props(Styles.nicknameContent, Typography.SubTextLargeRegular)}>
-                  {displayedMemberNames}
-                  {isMemberCountGreaterThanLimit(3) ? ` 님 외 ${memberCount - 2}명` : ' 님'}이 이미 함께하고 있어요.
-                </p>
+                  {/* 멤버 닉네임 */}
+                  <p {...stylex.props(Styles.nicknameContent, Typography.SubTextLargeRegular)}>
+                    {displayedMemberNames}
+                    {isMemberCountGreaterThanLimit(3) ? ` 님 외 ${memberCount - 2}명` : ' 님'}이 이미 함께하고 있어요.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div {...stylex.props(Styles.loginContainer)}>
-          <div {...stylex.props(Styles.guideTextContainer)}>
-            <p {...stylex.props(Styles.guideText, Typography.SubTextLargeRegular)}>
-              업무에 사용하는 이메일 계정을 사용하는 것이 좋아요
-            </p>
-            <div {...stylex.props(Styles.chromeRecommendContainer)}>
-              <p {...stylex.props(Styles.chromeRecommendText, Typography.SubTextLargeRegular)}>
-                원활한 서비스 이용을 위해 <span {...stylex.props(Styles.chromeBold)}>Chrome 브라우저</span> 사용을
-                권장해요
+          <div {...stylex.props(Styles.loginContainer)}>
+            <div {...stylex.props(Styles.guideTextContainer)}>
+              <p {...stylex.props(Styles.guideText, Typography.SubTextLargeRegular)}>
+                업무에 사용하는 이메일 계정을 사용하는 것이 좋아요
               </p>
+              <div {...stylex.props(Styles.chromeRecommendContainer)}>
+                <p {...stylex.props(Styles.chromeRecommendText, Typography.SubTextLargeRegular)}>
+                  원활한 서비스 이용을 위해 <span {...stylex.props(Styles.chromeBold)}>Chrome 브라우저</span> 사용을
+                  권장해요
+                </p>
+              </div>
             </div>
-          </div>
 
-          {/* SNS 로그인 버튼 */}
-          {snsLoginList.map((item) => (
-            <button
-              type="button"
-              key={item.id}
-              {...stylex.props(SnsLoginStyles.button)}
-              onClick={() => handleClickSnsLogin(item.url)}
-            >
-              <span>{item.logo}</span>
-              <span {...stylex.props(SnsLoginStyles.buttonText)}>{item.name}&nbsp;계정으로 로그인</span>
-            </button>
-          ))}
+            {/* SNS 로그인 버튼 */}
+            {snsLoginList.map((item) => (
+              <button
+                type="button"
+                key={item.id}
+                {...stylex.props(SnsLoginStyles.button)}
+                onClick={() => handleClickSnsLogin(item.url)}
+              >
+                <span>{item.logo}</span>
+                <span {...stylex.props(SnsLoginStyles.buttonText)}>{item.name}&nbsp;계정으로 로그인</span>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
-    </MainLayout>
+      </MainLayout>
+    </>
   );
 };
 

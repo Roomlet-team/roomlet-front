@@ -54,35 +54,60 @@ const Join = () => {
   };
 
   return (
-    <MainLayout isScroll>
+    <>
       <SEOHead
         title={`${data?.inviteInfo?.workspace?.workspaceName}에 가입하기 | 룸렛`}
         description="룸렛에서 회의를 함께 준비해 보세요"
         url={{ pathname: '/invite/join', query: `InviteId=${data?.inviteInfo?.InviteId}` }}
       />
 
-      <div {...stylex.props(Styles.Container)}>
-        <div {...stylex.props(Styles.logoAndInfoWrapper)}>
-          <div {...stylex.props(Styles.logoAndInfoContainer)}>
-            {/* 룸렛 텍스트 로고 */}
-            <div className="logo-wrapper" {...stylex.props(Styles.logoWrapper)}>
-              <Link href="/home">
-                <RoomletTextLogo width={164} height={24} />
-              </Link>
-              <p {...stylex.props(Typography.SubtitleRegularBold)}>룸렛에서 회의를 함께 준비해 보세요</p>
+      <MainLayout isScroll>
+        <div {...stylex.props(Styles.Container)}>
+          <div {...stylex.props(Styles.logoAndInfoWrapper)}>
+            <div {...stylex.props(Styles.logoAndInfoContainer)}>
+              {/* 룸렛 텍스트 로고 */}
+              <div className="logo-wrapper" {...stylex.props(Styles.logoWrapper)}>
+                <Link href="/home">
+                  <RoomletTextLogo width={164} height={24} />
+                </Link>
+                <p {...stylex.props(Typography.SubtitleRegularBold)}>룸렛에서 회의를 함께 준비해 보세요</p>
+              </div>
             </div>
-          </div>
 
-          {/* 초대 내용, 유저 정보, 약관 동의 */}
-          <div>
-            {/* 초대 내용 */}
-            <div {...stylex.props(Styles.inviteContentContainer)}>
-              {/* 멤버 프로필 이미지 리스트 */}
-              <div {...stylex.props(Styles.memberInfoContainer)}>
-                {isMemberCountGreaterThanLimit(5) ? (
-                  <div {...stylex.props(Styles.greaterThanFiveMemberContainer)}>
+            {/* 초대 내용, 유저 정보, 약관 동의 */}
+            <div>
+              {/* 초대 내용 */}
+              <div {...stylex.props(Styles.inviteContentContainer)}>
+                {/* 멤버 프로필 이미지 리스트 */}
+                <div {...stylex.props(Styles.memberInfoContainer)}>
+                  {isMemberCountGreaterThanLimit(5) ? (
+                    <div {...stylex.props(Styles.greaterThanFiveMemberContainer)}>
+                      <div {...stylex.props(Styles.memberProfileImgGroupContainer)}>
+                        {data?.inviteInfo?.workspace?.memberList.slice(0, 2).map((item) => (
+                          <div {...stylex.props(Styles.memberGroupItemWrapper)}>
+                            <ProfileImg
+                              imgKey={item.profileImgKey}
+                              alt={`${item.displayName}의 프로필 사진`}
+                              size={60}
+                              borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+
+                      <EllipsisImg />
+                      <div {...stylex.props(Styles.memberGroupItemWrapper)}>
+                        <ProfileImg
+                          imgKey={data?.inviteInfo?.workspace?.memberList?.slice(-1)[0]?.profileImgKey}
+                          alt="프로필 사진"
+                          size={60}
+                          borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
                     <div {...stylex.props(Styles.memberProfileImgGroupContainer)}>
-                      {data?.inviteInfo?.workspace?.memberList.slice(0, 2).map((item) => (
+                      {data?.inviteInfo?.workspace?.memberList.map((item) => (
                         <div {...stylex.props(Styles.memberGroupItemWrapper)}>
                           <ProfileImg
                             imgKey={item.profileImgKey}
@@ -93,96 +118,73 @@ const Join = () => {
                         </div>
                       ))}
                     </div>
+                  )}
 
-                    <EllipsisImg />
-                    <div {...stylex.props(Styles.memberGroupItemWrapper)}>
-                      <ProfileImg
-                        imgKey={data?.inviteInfo?.workspace?.memberList?.slice(-1)[0]?.profileImgKey}
-                        alt="프로필 사진"
-                        size={60}
-                        borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div {...stylex.props(Styles.memberProfileImgGroupContainer)}>
-                    {data?.inviteInfo?.workspace?.memberList.map((item) => (
-                      <div {...stylex.props(Styles.memberGroupItemWrapper)}>
-                        <ProfileImg
-                          imgKey={item.profileImgKey}
-                          alt={`${item.displayName}의 프로필 사진`}
-                          size={60}
-                          borderProperties={{ radius: '1.6rem', color: colors.gray40, width: '1px' }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* 멤버 닉네임 */}
-                <p {...stylex.props(Styles.nicknameContent, Typography.SubTextLargeRegular)}>
-                  {displayedMemberNames}
-                  {isMemberCountGreaterThanLimit(3) ? ` 님 외 ${memberCount - 2}명` : ' 님'}이 이미 함께하고 있어요.
-                </p>
-              </div>
-            </div>
-
-            {/* 유저 정보 */}
-            <div {...stylex.props(Styles.userInfoContainer)}>
-              <div {...stylex.props(Styles.profileInfoContainer)}>
-                <ProfileImg
-                  imgKey={profileData?.profile.profileImgKey}
-                  size={34}
-                  borderProperties={{ radius: '2px', color: colors.gray40, width: '1px' }}
-                />
-                <div>
-                  <p {...stylex.props(Typography.SubtitleSmallBold)}>{profileData?.profile.displayName}</p>
-                  <p {...stylex.props(Typography.CaptionLargeRegular)}>{profileData?.profile.email}</p>
+                  {/* 멤버 닉네임 */}
+                  <p {...stylex.props(Styles.nicknameContent, Typography.SubTextLargeRegular)}>
+                    {displayedMemberNames}
+                    {isMemberCountGreaterThanLimit(3) ? ` 님 외 ${memberCount - 2}명` : ' 님'}이 이미 함께하고 있어요.
+                  </p>
                 </div>
               </div>
 
-              <GoogleOutlined width={18} height={18} />
-            </div>
+              {/* 유저 정보 */}
+              <div {...stylex.props(Styles.userInfoContainer)}>
+                <div {...stylex.props(Styles.profileInfoContainer)}>
+                  <ProfileImg
+                    imgKey={profileData?.profile.profileImgKey}
+                    size={34}
+                    borderProperties={{ radius: '2px', color: colors.gray40, width: '1px' }}
+                  />
+                  <div>
+                    <p {...stylex.props(Typography.SubtitleSmallBold)}>{profileData?.profile.displayName}</p>
+                    <p {...stylex.props(Typography.CaptionLargeRegular)}>{profileData?.profile.email}</p>
+                  </div>
+                </div>
 
-            {/* 약관 동의 */}
-            <div {...stylex.props(Styles.agreementContainer)}>
-              <p {...stylex.props(Typography.TextSmallMedium)}>계속 진행하면 다음에 동의하게 됩니다.</p>
+                <GoogleOutlined width={18} height={18} />
+              </div>
 
-              <div {...stylex.props(Styles.checkboxContainer)}>
-                <Checkbox variant="circle" checked={isServiceAgree} onChange={handleChangeServiceAgree}>
-                  <p>
-                    [필수]&nbsp;
-                    <Link href={TERMS.SERVICE_AGREE} target="_blank" {...stylex.props(Styles.link)}>
-                      고객 서비스 약관
-                    </Link>
-                    에 동의합니다.
-                  </p>
-                </Checkbox>
-                <Checkbox variant="circle" checked={isPrivacyAgree} onChange={handleChangePrivacyAgree}>
-                  <p>
-                    [필수] 본인은{' '}
-                    <Link href={TERMS.PRIVACY_AGREE} target="_blank" {...stylex.props(Styles.link)}>
-                      개인정보의 수집 및 이용
-                    </Link>
-                    에 동의합니다.
-                  </p>
-                </Checkbox>
+              {/* 약관 동의 */}
+              <div {...stylex.props(Styles.agreementContainer)}>
+                <p {...stylex.props(Typography.TextSmallMedium)}>계속 진행하면 다음에 동의하게 됩니다.</p>
+
+                <div {...stylex.props(Styles.checkboxContainer)}>
+                  <Checkbox variant="circle" checked={isServiceAgree} onChange={handleChangeServiceAgree}>
+                    <p>
+                      [필수]&nbsp;
+                      <Link href={TERMS.SERVICE_AGREE} target="_blank" {...stylex.props(Styles.link)}>
+                        고객 서비스 약관
+                      </Link>
+                      에 동의합니다.
+                    </p>
+                  </Checkbox>
+                  <Checkbox variant="circle" checked={isPrivacyAgree} onChange={handleChangePrivacyAgree}>
+                    <p>
+                      [필수] 본인은{' '}
+                      <Link href={TERMS.PRIVACY_AGREE} target="_blank" {...stylex.props(Styles.link)}>
+                        개인정보의 수집 및 이용
+                      </Link>
+                      에 동의합니다.
+                    </p>
+                  </Checkbox>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* 시작하기 */}
-        <div>
-          <div {...stylex.props(Styles.startButtonContainer)}>
-            <p {...stylex.props(Styles.guideText, Typography.SubTextLargeRegular)}>
-              업무에 사용하는 이메일 계정을 사용하는 것이 좋아요
-            </p>
-            <Button onClick={handleClickStartBtn}>시작하기</Button>
+          {/* 시작하기 */}
+          <div>
+            <div {...stylex.props(Styles.startButtonContainer)}>
+              <p {...stylex.props(Styles.guideText, Typography.SubTextLargeRegular)}>
+                업무에 사용하는 이메일 계정을 사용하는 것이 좋아요
+              </p>
+              <Button onClick={handleClickStartBtn}>시작하기</Button>
+            </div>
           </div>
         </div>
-      </div>
-    </MainLayout>
+      </MainLayout>
+    </>
   );
 };
 
