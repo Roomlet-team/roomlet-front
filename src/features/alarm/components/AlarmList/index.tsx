@@ -128,8 +128,10 @@ const AlarmList = () => {
                 </div>
 
                 <div {...stylex.props(AlarmStyles.CongressInfoContainer)}>
-                  <p {...stylex.props(Typography.TextSmallRegular)}>회의 : {item.congress.congressTitle}</p>
-                  <p {...stylex.props(Typography.TextSmallRegular)}>
+                  <p {...stylex.props(Typography.TextSmallRegular, AlarmStyles.CongressInfoText)}>
+                    회의 : {item.congress.congressTitle}
+                  </p>
+                  <p {...stylex.props(Typography.TextSmallRegular, AlarmStyles.CongressInfoText)}>
                     일시 : {dayjs(item.congress.startDt).format('YYYY.MM.DD HH:mm')}
                   </p>
                 </div>
@@ -256,5 +258,11 @@ const AlarmStyles = stylex.create({
     textAlign: 'center',
     padding: '16px',
     color: colors.gray60,
+  },
+  CongressInfoText: {
+    flex: 1,
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
   },
 });
