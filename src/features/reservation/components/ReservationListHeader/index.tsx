@@ -18,7 +18,7 @@ const ReservationListHeader: FC<ReservationListHeaderProps> = ({ totalCount }) =
   return (
     <div {...stylex.props(Styles.countAndFilterContent)}>
       <p {...stylex.props(Styles.totalCountText)}>
-        총 <span {...stylex.props(Styles.totalCountTextEmphasis)}>{totalCount}</span>건의 회의가 있어요
+        총 <span {...stylex.props(Styles.totalCountTextEmphasis)}>{totalCount || 0}</span>건의 회의가 있어요
       </p>
       <button type="button" onClick={handleClickFilter}>
         <FilterOutlined width={48} height={48} />
