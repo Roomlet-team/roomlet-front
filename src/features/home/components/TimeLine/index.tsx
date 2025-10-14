@@ -91,8 +91,8 @@ const Styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '16px',
-    padding: '2px 16px',
+    padding: '2px 16px 16px',
+    borderBottom: '1px solid #F2F2F2',
   },
   timeLineSectionToggle: {
     display: 'flex',
@@ -112,7 +112,6 @@ const Styles = stylex.create({
     backgroundColor: '#FAFAFA',
     paddingTop: '30px',
     position: 'relative',
-    borderTop: '1px solid #F2F2F2',
   },
   scrollContainer: {
     display: 'flex',
@@ -192,16 +191,10 @@ const Styles = stylex.create({
   }),
   NoScheduleContainer: {
     width: '100%',
-    height: 'calc(100vh - 374px)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '24px',
+    paddingTop: '72px',
     color: colors.gray900,
     backgroundColor: '#FAFAFA',
     position: 'relative',
-    borderTop: '1px solid #F2F2F2',
-    borderBottom: '1px solid #F2F2F2',
     textAlign: 'center',
   },
   meetingLink: {
