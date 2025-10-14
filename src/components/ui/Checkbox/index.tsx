@@ -9,14 +9,20 @@ interface CHeckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const CHeckbox: FC<CHeckboxProps> = (props) => {
   const { id, children, variant = 'default', ...anotherProps } = props;
 
-  const labelClass =
-    variant === 'circle' ? `${styles['common-checkbox-label']} ${styles['circle']}` : styles['common-checkbox-label'];
+  const checkboxClass =
+    variant === 'circle' ? `${styles['common-checkbox']} ${styles['circle']}` : styles['common-checkbox'];
 
   return (
     <>
-      <label className={labelClass} htmlFor={id}>
+      <label className={styles['common-checkbox-label']} htmlFor={id}>
+        {/* 체크박스 */}
+        <div className={checkboxClass}>
+          <span className={styles['common-checkbox-checkmark']} />
+        </div>
         <input className={styles['common-checkbox-input']} type="checkbox" id={id} {...anotherProps} />
-        {children}
+
+        {/* 체크박스 텍스트 */}
+        <div className={styles['common-checkbox-text']}>{children}</div>
       </label>
     </>
   );
