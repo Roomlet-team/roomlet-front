@@ -121,8 +121,8 @@ const Invite = () => {
               </p>
               <div {...stylex.props(Styles.chromeRecommendContainer)}>
                 <p {...stylex.props(Styles.chromeRecommendText, Typography.SubTextLargeRegular)}>
-                  원활한 서비스 이용을 위해 <span {...stylex.props(Styles.chromeBold)}>Chrome 브라우저</span> 사용을
-                  권장해요
+                  원활한 서비스 이용을 위해 <br />
+                  <span {...stylex.props(Styles.chromeBold)}>Chrome 브라우저</span> 사용을 권장해요
                 </p>
               </div>
             </div>
@@ -245,6 +245,7 @@ const Styles = stylex.create({
     textAlign: 'center',
   },
   guideText: {
+    marginBottom: '8px',
     textAlign: 'center',
     color: colors.black500,
   },
