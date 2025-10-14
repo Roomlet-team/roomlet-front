@@ -3,7 +3,6 @@ import stylex from '@stylexjs/stylex';
 import { useRouter } from 'next/router';
 import DataflowOutlined from '@src/components/icons/DataflowOutlined';
 import MailOutlined from '@src/components/icons/MailOutlined';
-import UserSquareOutlined from '@src/components/icons/UserSquareOutlined';
 import BoundaryArea from '@src/components/ui/BoundaryArea';
 import Header from '@src/components/ui/Header';
 import ProfileImg from '@src/components/ui/ProfileImg';
@@ -20,7 +19,6 @@ const UserProfile = () => {
 
   const dataList = [
     { id: 1, name: data?.member?.teamInfo?.teamName, icon: <DataflowOutlined width={24} height={24} /> },
-    { id: 2, name: data?.member?.position || '직책 없음', icon: <UserSquareOutlined width={24} height={24} /> },
     { id: 3, name: data?.member?.email, icon: <MailOutlined width={24} height={24} /> },
   ];
 
