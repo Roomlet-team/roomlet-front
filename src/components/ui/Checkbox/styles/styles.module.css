@@ -7,23 +7,21 @@
 .common-checkbox-label {
   position: relative;
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   cursor: pointer;
   font-size: 16px;
   line-height: 1.5;
-  padding-left: 30px; /* 체크박스 영역 공간 확보 */
   color: #333;
+  gap: 6px;
 }
 
 /* 체크박스 디자인 */
-.common-checkbox-label::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.common-checkbox {
+  position: relative;
   width: 20px;
   height: 20px;
+  margin: 4px;
+  flex-shrink: 0;
   border: 1px solid #a7abad;
   border-radius: 4px; /* 둥근 모서리 */
   background-color: #fff;
@@ -33,22 +31,23 @@
 }
 
 /* 원형 체크박스 디자인 */
-.common-checkbox-label.circle::before {
+.common-checkbox.circle {
   border-radius: 50%; /* 원형으로 변경 */
 }
 
 /* 체크된 상태 스타일 */
-.common-checkbox-label:has(.common-checkbox-input[type='checkbox']:checked)::before {
+.common-checkbox-label:has(.common-checkbox-input[type='checkbox']:checked) .common-checkbox {
   background-color: #b5312c; /* 체크박스 배경색 */
   border-color: #b5312c;
 }
 
 /* 체크 표시를 이미지로 설정 */
-.common-checkbox-label:has(.common-checkbox-input[type='checkbox']:checked)::after {
+.common-checkbox-label:has(.common-checkbox-input[type='checkbox']:checked) .common-checkbox-checkmark {
   content: '';
   position: absolute;
-  left: 4px;
-  top: 6px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 12px;
   height: 12px;
   background-image: url('https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/common/checkmark.png'); /* 체크 표시 이미지 경로 */
@@ -58,15 +57,21 @@
 }
 
 /* 원형 체크박스의 체크 표시 위치 조정 */
-.common-checkbox-label.circle:has(.common-checkbox-input[type='checkbox']:checked)::after {
-  left: 5px;
-  top: 8px;
+.common-checkbox-label:has(.common-checkbox-input[type='checkbox']:checked)
+  .common-checkbox.circle.common-checkbox-checkmark {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 10px;
   height: 8px;
   background-image: url('https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/common/checkmark_v2.png'); /* 체크 표시 이미지 경로 */
 }
 
 /* 호버 효과 */
-.common-checkbox-label:hover::before {
+.common-checkbox:hover {
   border-color: #666;
+}
+
+.common-checkbox-text {
+  align-self: center;
 }
