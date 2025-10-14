@@ -2,6 +2,7 @@ import { confirm } from '@src/components/ui/Modal/confirm';
 import useCustomMutation from '@src/hooks/react-query/useCustomMutation';
 import { hideModal } from '@src/slices/modal';
 import clientInstance from '@src/utils/api/clientInstance';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 
@@ -39,6 +40,7 @@ const postWorkspaceJoinApi = async (data: JoinInfo): Promise<WorkspaceInfo> => {
  *   - `isSuccess`: mutation이 성공했고, mutation data를 사용할 수 있는지에 대한 여부
  */
 const usePostWorkspaceJoinQuery = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const dispatch = useDispatch();
   const asPath = router.asPath;
@@ -46,7 +48,8 @@ const usePostWorkspaceJoinQuery = () => {
   const mutation = useCustomMutation({
     mutationFn: (data: JoinInfo) => postWorkspaceJoinApi(data),
     onSuccess: () => {
-      // 가입 성공 시 홈 화면으로 이동
+      // 가입 성공 시 모든 쿼리 무효화 후 홈 화면으로 이동 (새로 가입한 워크스페이스에 맞게 데이터를 다시 로드하기 위해 모든 쿼리 무효화)
+      queryClient.invalidateQueries();
       router.push('/home');
     },
     onError: (error, variables, context) => {
