@@ -11,6 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const { refresh_token, access_token } = req.cookies;
   const refreshTokenExp = refresh_token ? jwtDecode(refresh_token).exp : 0;
   const accessTokenExp = access_token ? jwtDecode(access_token).exp : 0;
+  const refreshTokenUuid = refresh_token ? jwtDecode<{ uuid?: string }>(refresh_token).uuid : 0;
+  const accessTokenUuid = access_token ? jwtDecode<{ uuid?: string }>(access_token).uuid : 0;
 
   // refresh Token 만료
   if (dayjs().isAfter(refreshTokenExp * 1000)) {
@@ -23,8 +25,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   } else {
     // refresh token 유효한 경우
 
-    // access Token 만료
-    if (dayjs().isAfter(accessTokenExp * 1000)) {
+    // 로그아웃하지않고 구글 계정을 변경한 경우 or access Token 만료
+    if (refreshTokenUuid !== accessTokenUuid || dayjs().isAfter(accessTokenExp * 1000)) {
       try {
         // 재발급
         const result = await axiosInstance.get('/v1/auth/refresh', {
