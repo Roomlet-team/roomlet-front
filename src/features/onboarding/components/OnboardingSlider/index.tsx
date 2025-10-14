@@ -86,8 +86,6 @@ const OnboardingSlider = () => {
     dispatch(changeHiddenStatus());
 
     postMypageOnboardingComplete();
-
-    router.reload();
   };
 
   return (

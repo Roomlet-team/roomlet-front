@@ -1,6 +1,7 @@
 import { confirm } from '@src/components/ui/Modal/confirm';
 import useCustomMutation from '@src/hooks/react-query/useCustomMutation';
 import clientInstance from '@src/utils/api/clientInstance';
+import { useRouter } from 'next/router';
 
 const postMypageOnboardingCompleteApi = async (): Promise<void> => {
   const response = await clientInstance.post(`/v1/mypage/onboarding/complete`);
@@ -18,8 +19,13 @@ const postMypageOnboardingCompleteApi = async (): Promise<void> => {
  *   - `refetch`: 데이터를 수동으로 다시 가져오는 함수
  */
 const usePostMypageOnboardingCompleteQuery = () => {
+  const router = useRouter();
+
   const result = useCustomMutation({
     mutationFn: () => postMypageOnboardingCompleteApi(),
+    onSuccess: () => {
+      router.reload();
+    },
     onError: (error, variables, context) => {
       const errorCode = error?.status;
       confirm({
