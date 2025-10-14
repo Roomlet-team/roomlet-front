@@ -72,6 +72,7 @@ const Booking = () => {
   const { data: congressRoomData } = useGetCongressRoomListQuery();
   const { data: categoryData } = useGetCategoryListQuery();
   const { data: congressData } = useGetWorkspaceCongressQuery({ cgsid: Number(id) || null });
+  const isEditable = ['owner', 'admin'].includes(myInfoData?.myInfo.role);
   const mutation = usePostWorkspaceCongressQuery();
   // 시간 선택시 roomId, date, startDt 값이 필요해서 해당 값들은 실시간 추적이 가능하도록 함.
   const RoomId = useWatch({ control, name: 'RoomId' });
@@ -190,7 +191,7 @@ const Booking = () => {
                   />
                 ))
               )}
-              {myInfoData?.myInfo.isAdmin && (
+              {isEditable && (
                 <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddMeetingRoom}>
                   + 추가하기
                 </button>
@@ -223,7 +224,7 @@ const Booking = () => {
                   />
                 ))
               )}
-              {myInfoData?.myInfo.isAdmin && (
+              {isEditable && (
                 <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddCategory}>
                   + 추가하기
                 </button>
