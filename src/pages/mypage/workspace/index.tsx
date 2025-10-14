@@ -23,7 +23,7 @@ const WorkspaceHome = () => {
   const mutation = usePatchWorkspaceInfoQuery();
   const [workspaceName, handleChangeWorkspaceName] = useInput<string>(data?.workspace.workspaceName);
   const [workspaceImgFile, setWorkspaceImgFile] = useState<Blob | null>(null);
-  const isAdmin = myInfoData?.myInfo.isAdmin;
+  const isEditable = ['admin'].includes(myInfoData?.myInfo.role);
   const workspaceImgUrl = data?.workspace.workspaceImgKey;
   const commonUrl = 'mypage/workspace';
   const menuList = [
@@ -50,7 +50,7 @@ const WorkspaceHome = () => {
     <MainLayout>
       <Header
         title="워크스페이스 정보"
-        {...(isAdmin
+        {...(isEditable
           ? {
               rightBtnInfo: {
                 name: '완료',
@@ -77,7 +77,7 @@ const WorkspaceHome = () => {
       />
 
       {/* 이미지 업로드 및 이름 입력 */}
-      {isAdmin ? (
+      {isEditable ? (
         <div {...stylex.props(Styles.ProfileContainer)}>
           <MyPageImgUpload onSelect={handleSelectWorkspaceImg} initialImgUrl={workspaceImgUrl} />
           <MyPageInput label="워크스페이스 이름" value={workspaceName} onChange={handleChangeWorkspaceName} />

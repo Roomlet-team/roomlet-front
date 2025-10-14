@@ -25,6 +25,7 @@ const ProfilePersonalDataList: FC<ProfilePersonalDataListProps> = (props) => {
   const dispatch = useDispatch();
   const { data } = useGetMypageInfoQuery();
   const mutation = useDeleteWorkspaceMemberQuery();
+  const isEditable = ['admin'].includes(data?.myInfo.role);
 
   const handleClickRemoveUser = () => {
     if (isMyProfile) {
@@ -57,7 +58,7 @@ const ProfilePersonalDataList: FC<ProfilePersonalDataListProps> = (props) => {
         ))}
 
         {/* 내보내기 - 자기 자신에게는 안보임 */}
-        {isPublicProfile && data?.myInfo.isAdmin && !isMyProfile && (
+        {isPublicProfile && isEditable && !isMyProfile && (
           <li {...stylex.props(Styles.Item)}>
             <span>
               <RemoveUserOutlined width={24} height={24} />
