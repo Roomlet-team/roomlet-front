@@ -120,12 +120,12 @@ const MyPageHome = () => {
           icon: <AddOutlined width={24} height={24} />,
           href: `/mypage/create-workspace`,
         },
-        {
-          id: 2,
-          name: '워크스페이스 입장하기',
-          icon: <EntranceOutlined width={24} height={24} />,
-          href: `/${commonUrl}/workspace`,
-        },
+        // {
+        //   id: 2,
+        //   name: '워크스페이스 입장하기',
+        //   icon: <EntranceOutlined width={24} height={24} />,
+        //   href: `/${commonUrl}/workspace`,
+        // }, // 추후에 룸렛 기능 확장 개발 때 추가할 기능으로 한단하여, 현재는 사용하지 않는 기능. 입장하기는 숨김처리로 진행함
         ...termsMenuList,
         {
           id: 6,
