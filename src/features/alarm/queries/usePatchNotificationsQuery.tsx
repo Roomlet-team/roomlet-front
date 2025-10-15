@@ -52,8 +52,8 @@ const usePatchNotificationsQuery = () => {
     },
     onSuccess: (data, variables) => {
       const { CongressId } = data;
-      // 업데이트 후 알람 설정 데이터 재요청 (쿼리 무효화)
-      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      // 업데이트 후 알림 리스트 및 워크스페이스 내 정보 데이터 재요청 (쿼리 무효화)
+      queryClient.invalidateQueries({ queryKey: ['notifications', 'mypageInfo'] });
 
       // CongressId가 있는 경우, 회의 페이지 이동 (모두 읽음 처리를 하는 경우에는 회의 페이지로 이동하지 않음)
       if (CongressId) {

@@ -39,8 +39,8 @@ const useDeleteNotificationsQuery = () => {
       return deleteNotificationsApi(workspaceId, data);
     },
     onSuccess: (data, variables) => {
-      // 업데이트 후 알림 리스트 데이터 재요청 (쿼리 무효화)
-      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      // 업데이트 후 알림 리스트 및 워크스페이스 내 정보 데이터 재요청 (쿼리 무효화)
+      queryClient.invalidateQueries({ queryKey: ['notifications', 'mypageInfo'] });
     },
     onError: (error, variables, context) => {
       // 에러가 발생한 경우, 에러 내용이 담긴 confirm 모달 띄우기
