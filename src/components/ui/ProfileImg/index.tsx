@@ -26,6 +26,20 @@ interface ProfileImgProps extends React.ImgHTMLAttributes<Omit<HTMLImageElement,
 const ProfileImg: FC<ProfileImgProps> = (props) => {
   const { imgKey, size, borderProperties, role } = props;
 
+  const getImageSource = (): string => {
+    const isDataImageUrl = /^data:image\/(png|jpe?g|gif|webp|svg\+xml);base64,/.test(imgKey);
+
+    if (!imgKey) {
+      return s3ImgUrlConfig.defaultProfile;
+    }
+
+    if (isDataImageUrl) {
+      return imgKey;
+    }
+
+    return `${process.env.NEXT_PUBLIC_S3_URL}/${imgKey}`;
+  };
+
   const roleIcon = {
     member: null,
     admin: <CircleAdminFilled width={20} height={20} />,
@@ -34,10 +48,7 @@ const ProfileImg: FC<ProfileImgProps> = (props) => {
 
   return (
     <div {...stylex.props(Styles.imgContainer)}>
-      <img
-        {...stylex.props(Styles.img(size, borderProperties))}
-        src={imgKey ? `${process.env.NEXT_PUBLIC_S3_URL}/${imgKey}` : s3ImgUrlConfig.defaultProfile}
-      />
+      <img {...stylex.props(Styles.img(size, borderProperties))} src={getImageSource()} alt="프로필 이미지" />
       <div {...stylex.props(Styles.roleIconWrapper, borderProperties?.radius ? Styles.offsetPosition : null)}>
         {roleIcon[role]}
       </div>
