@@ -117,7 +117,7 @@ const AlarmList = () => {
                   {alarmCategoryInfo[item?.notificationType].isDisplayNameInTitle ? (
                     <div {...stylex.props(AlarmStyles.DisplayNameContainer)}>
                       <span {...stylex.props(AlarmStyles.Quotes)}>{"'"}</span>
-                      <span {...stylex.props(AlarmStyles.DisplayName)}>{item.congress.organizer.displayName}</span>
+                      <span {...stylex.props(AlarmStyles.DisplayName)}>{item?.congress?.organizer?.displayName}</span>
                       <span {...stylex.props(AlarmStyles.Quotes)}>{"'"}</span>
                     </div>
                   ) : (
