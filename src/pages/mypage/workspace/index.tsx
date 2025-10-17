@@ -23,7 +23,7 @@ const WorkspaceHome = () => {
   const mutation = usePatchWorkspaceInfoQuery();
   const [workspaceName, handleChangeWorkspaceName] = useInput<string>(data?.workspace.workspaceName);
   const [workspaceImgFile, setWorkspaceImgFile] = useState<Blob | null>(null);
-  const isEditable = ['admin'].includes(myInfoData?.myInfo.role);
+  const isEditable = ['owner'].includes(myInfoData?.myInfo.role);
   const workspaceImgUrl = data?.workspace.workspaceImgKey;
   const commonUrl = 'mypage/workspace';
   const menuList = [

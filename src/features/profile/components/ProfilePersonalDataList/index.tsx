@@ -25,7 +25,7 @@ const ProfilePersonalDataList: FC<ProfilePersonalDataListProps> = (props) => {
   const dispatch = useDispatch();
   const { data } = useGetMypageInfoQuery();
   const mutation = useDeleteWorkspaceMemberQuery();
-  const isEditable = ['admin'].includes(data?.myInfo.role);
+  const isEditable = ['owner'].includes(data?.myInfo.role);
 
   const handleClickRemoveUser = () => {
     if (isMyProfile) {
