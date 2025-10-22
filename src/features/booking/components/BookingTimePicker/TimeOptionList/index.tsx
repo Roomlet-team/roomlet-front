@@ -49,7 +49,9 @@ const TimeOptionList: FC<TimeOptionListProps> = (props) => {
         ) : (
           <li {...stylex.props(Styles.TimeItem, Styles.NoTime, Typography.SubTextLargeMedium)}>
             {!isDate && `날짜를\n선택해주세요.`}
-            {!optionList && isDate && `예약 가능한\n시간이 없어요. \n(장소, 카테고리, 날짜를 다시 확인해주세요.)`}
+            {!optionList?.length &&
+              isDate &&
+              `예약 가능한\n시간이 없어요. \n(장소, 카테고리, 날짜를 다시 확인해주세요.)`}
           </li>
         )}
       </ul>
