@@ -6,8 +6,9 @@ import TimeOptionList from './TimeOptionList';
 import type { TimeItemType } from '../../types';
 import useGetWorkspaceCongressRoomTimQuery from '../../queries/useGetMemberListQuery copy';
 import dayjs from 'dayjs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@src/store';
+import { resetIsUpdatedBookingDate } from '../../slices/booking';
 
 type BookingTimePickerProps = {
   placeholder: string;
@@ -15,11 +16,14 @@ type BookingTimePickerProps = {
   startDt?: TimeItemType;
   onSelect: (value: TimeItemType) => void;
   defaultValue: TimeItemType | null;
+  isUpdatedRoomId: boolean;
+  setIsUpdatedRoomId: (value: boolean) => void;
 };
 
 const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
-  const { selectBookingDate } = useSelector((state: RootState) => state.booking);
-  const { placeholder, onSelect, roomId, startDt, defaultValue } = props;
+  const { selectBookingDate, isUpdatedBookingDate } = useSelector((state: RootState) => state.booking);
+  const dispatch = useDispatch();
+  const { placeholder, onSelect, roomId, startDt, defaultValue, isUpdatedRoomId, setIsUpdatedRoomId } = props;
   const [isTimeOptionOpen, setIsTimeOptionOpen] = useState<boolean>(false);
   const [selectTime, setSelectTime] = useState<TimeItemType>(null);
   const timeRef = useRef<HTMLDivElement>(null);
@@ -60,10 +64,18 @@ const BookingTimePicker: FC<BookingTimePickerProps> = (props) => {
 
   // 예약 날짜가 변경되면 선택된 시간 초기화
   useEffect(() => {
-    if (selectBookingDate) {
+    if (isUpdatedBookingDate) {
       setSelectTime(null);
+      dispatch(resetIsUpdatedBookingDate());
     }
-  }, [selectBookingDate]);
+  }, [isUpdatedBookingDate]);
+
+  useEffect(() => {
+    if (isUpdatedRoomId) {
+      setSelectTime(null);
+      setIsUpdatedRoomId(false);
+    }
+  }, [isUpdatedRoomId]);
 
   return (
     <div {...stylex.props(BookingStyles.formItemInputWrapper, Styles.Wrapper)} ref={timeRef}>

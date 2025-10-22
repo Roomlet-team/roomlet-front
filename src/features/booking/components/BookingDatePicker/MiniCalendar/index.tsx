@@ -8,7 +8,7 @@ import { Shadows, Typography, colors } from '../../../../../../public/styles/var
 import ArrowHeadOutlinedV2 from '@src/components/icons/ArrowHeadOutlinedV2';
 import TriangleFilled from '@src/components/icons/TriangleFilled';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveSelectBookingDate } from '@src/features/booking/slices/booking';
+import { saveSelectBookingDate, setIsUpdatedBookingDate } from '@src/features/booking/slices/booking';
 import { RootState } from '@src/store';
 import DateWheelPicker from '@src/features/calendar/components/DateWheelPicker';
 import { BookingForm } from '@src/pages/booking';
@@ -87,6 +87,7 @@ const MiniCalendar: FC<MiniCalendarProps> = (props) => {
     setValue('startDt', null);
     setValue('endDt', null);
     dispatch(saveSelectBookingDate(dayjs(`${year}-${month}-${day}`).format('YYYY-MM-DD')));
+    dispatch(setIsUpdatedBookingDate());
   };
 
   useEffect(() => {

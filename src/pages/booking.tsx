@@ -87,6 +87,7 @@ const Booking = ({ updateData }: BookingProps) => {
   const RoomId = useWatch({ control, name: 'RoomId' });
   const startDt = useWatch({ control, name: 'startDt' });
   const endDt = useWatch({ control, name: 'endDt' });
+  const [isUpdatedRoomId, setIsUpdatedRoomId] = useState<boolean>(false);
 
   // 모든 필드의 값을 감시
   const values = watch();
@@ -202,7 +203,12 @@ const Booking = ({ updateData }: BookingProps) => {
                         id={item.roomName}
                         label={item.roomName}
                         value={item.RoomId}
-                        onChange={field.onChange}
+                        onChange={(e) => {
+                          setIsUpdatedRoomId(true);
+                          setValue('startDt', null);
+                          setValue('endDt', null);
+                          field.onChange(e);
+                        }}
                         {...(mode === 'edit' && {
                           defaultChecked: item.RoomId === updateData?.congressRoom.RoomId,
                         })}
@@ -277,6 +283,8 @@ const Booking = ({ updateData }: BookingProps) => {
                     onSelect={field.onChange}
                     roomId={RoomId}
                     defaultValue={startDt}
+                    isUpdatedRoomId={isUpdatedRoomId}
+                    setIsUpdatedRoomId={setIsUpdatedRoomId}
                   />
                 )}
               />
@@ -293,6 +301,8 @@ const Booking = ({ updateData }: BookingProps) => {
                     roomId={RoomId}
                     startDt={startDt}
                     defaultValue={endDt}
+                    isUpdatedRoomId={isUpdatedRoomId}
+                    setIsUpdatedRoomId={setIsUpdatedRoomId}
                   />
                 )}
               />
