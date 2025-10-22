@@ -10,19 +10,7 @@ interface BottomSheetProps extends React.HTMLAttributes<HTMLDivElement> {
  * Bottom Sheet 공통 컴포넌트
  */
 const BottomSheet: FC<BottomSheetProps> = (props) => {
-  const { children, id, onClick, ...anotherProps } = props;
-
-  const handleClickMask = (func) => async (e) => {
-    const mainLayoutElement = document.getElementById('main-layout');
-
-    /* onClick 함수가 실행된 후에 main-layout의 overflow를 auto로 변경 */
-    const isClick = await new Promise((resolve) => {
-      onClick(e);
-      resolve(true);
-    });
-
-    if (isClick) mainLayoutElement.style.overflow = 'auto';
-  };
+  const { children, id, ...anotherProps } = props;
 
   useEffect(() => {
     const mainLayoutElement = document.getElementById('main-layout');
@@ -30,11 +18,17 @@ const BottomSheet: FC<BottomSheetProps> = (props) => {
     if (mainLayoutElement) {
       mainLayoutElement.style.overflow = 'hidden';
     }
+
+    return () => {
+      if (mainLayoutElement) {
+        mainLayoutElement.style.overflow = 'auto';
+      }
+    };
   }, []);
 
   return (
     <div id={id}>
-      <div {...anotherProps} {...stylex.props(Styles.MaskWrapper)} onClick={handleClickMask(onClick)} />
+      <div {...anotherProps} {...stylex.props(Styles.MaskWrapper)} />
       <div {...stylex.props(Styles.ContentWrapper)}>{children}</div>
     </div>
   );
