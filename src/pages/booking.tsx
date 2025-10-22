@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import stylex from '@stylexjs/stylex';
@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 import usePostWorkspaceCongressQuery from '@src/features/booking/queries/usePostWorkspaceCongressQuery';
 import { TimeItemType } from '@src/features/booking/types';
-import useGetWorkspaceCongressQuery from '@src/features/reservation/queries/useGetWorkspaceCongressQuery';
+import { CongressInfo } from '@src/features/reservation/queries/useGetWorkspaceCongressQuery';
 import { useRouter } from 'next/router';
 import { saveSelectBookingDate, saveSelectBookingMemberObj } from '@src/features/booking/slices/booking';
 import dayjs from 'dayjs';
@@ -26,6 +26,10 @@ import AddCongressRoomBottomSheet from '@src/features/mypage/workspace/congress-
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import AddCategoryBottomSheet from '@src/features/mypage/workspace/category/components/AddCategoryBottomSheet';
 import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
+import usePatchWorkspaceCongressQuery from '@src/features/booking/queries/usePatchWorkspaceCongressQuery';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import clientInstance from '@src/utils/api/clientInstance';
+import axios from 'axios';
 
 const BookingMemberSelect = dynamic(() => import('@src/features/booking/components/BookingMemberSelect'), {
   ssr: false,
@@ -44,6 +48,7 @@ const BookingDatePicker = dynamic(() => import('@src/features/booking/components
 });
 
 export type BookingForm = {
+  cgsid: number;
   date: string;
   RoomId: number | null;
   startDt: TimeItemType;
@@ -54,7 +59,11 @@ export type BookingForm = {
   congressDescription: string;
 };
 
-const Booking = () => {
+interface BookingProps {
+  updateData: CongressInfo | null;
+}
+
+const Booking = ({ updateData }: BookingProps) => {
   const { selectBookingDate } = useSelector((state: RootState) => state.booking);
   const {
     watch,
@@ -71,13 +80,12 @@ const Booking = () => {
   const { data: myInfoData } = useGetMypageInfoQuery();
   const { data: congressRoomData } = useGetCongressRoomListQuery();
   const { data: categoryData } = useGetCategoryListQuery();
-  const { data: congressData } = useGetWorkspaceCongressQuery({ cgsid: Number(id) || null });
   const isEditable = ['owner', 'admin'].includes(myInfoData?.myInfo.role);
-  const mutation = usePostWorkspaceCongressQuery();
+  const createMutation = usePostWorkspaceCongressQuery();
+  const updateMutation = usePatchWorkspaceCongressQuery();
   // 시간 선택시 roomId, date, startDt 값이 필요해서 해당 값들은 실시간 추적이 가능하도록 함.
   const RoomId = useWatch({ control, name: 'RoomId' });
   const startDt = useWatch({ control, name: 'startDt' });
-  // selectBookingDate 설정시 값이 초기화 되는 문제가 있어서 제목, 카테고리, 종료 시간, 참석자, 상세 내용도 추적이 가능하게 함
   const endDt = useWatch({ control, name: 'endDt' });
 
   // 모든 필드의 값을 감시
@@ -95,14 +103,26 @@ const Booking = () => {
   const onSubmit = (data) => {
     const mappedAttendMemberList = data.attendMemberList.map((memberId) => ({ MemberId: memberId }));
 
-    mutation.mutate({
-      ...data,
-      attendMemberList: mappedAttendMemberList,
-      CongressCategoryId: Number(data.CongressCategoryId),
-      RoomId: Number(data.RoomId),
-      startDt: data.startDt.value,
-      endDt: data.endDt.value,
-    });
+    if (mode === 'edit') {
+      updateMutation.mutate({
+        cgsid: Number(id),
+        ...data,
+        attendMemberList: mappedAttendMemberList,
+        CongressCategoryId: Number(data.CongressCategoryId),
+        RoomId: Number(data.RoomId),
+        startDt: data.startDt.value,
+        endDt: data.endDt.value,
+      });
+    } else {
+      createMutation.mutate({
+        ...data,
+        attendMemberList: mappedAttendMemberList,
+        CongressCategoryId: Number(data.CongressCategoryId),
+        RoomId: Number(data.RoomId),
+        startDt: data.startDt.value,
+        endDt: data.endDt.value,
+      });
+    }
   };
 
   const handleClickAddMeetingRoom = () => {
@@ -115,32 +135,32 @@ const Booking = () => {
 
   useEffect(() => {
     // 회의 수정하는 경우, 기존 회의 정보를 가져와서 저장
-    if (congressData?.congress && mode === 'edit') {
-      const mappedAttendMemberObj = congressData?.congress?.attendTeamList.reduce((acc, val) => {
+    if (updateData && mode === 'edit') {
+      const mappedAttendMemberObj = updateData?.attendTeamList.reduce((acc, val) => {
         acc[val.teamName] = val.memberList;
         return acc;
       }, {});
 
       reset({
-        congressTitle: congressData?.congress?.congressTitle,
-        CongressCategoryId: congressData?.congress?.congressCategory.CongressCategoryId,
-        RoomId: congressData?.congress?.congressRoom.RoomId,
-        date: congressData?.congress?.date,
+        congressTitle: updateData?.congressTitle,
+        CongressCategoryId: updateData?.congressCategory.CongressCategoryId,
+        RoomId: updateData?.congressRoom.RoomId,
+        date: updateData?.date,
         startDt: {
-          name: dayjs(congressData.congress.startDt).format('A HH:mm'),
-          value: congressData.congress.startDt,
+          name: dayjs(updateData.startDt).format('A HH:mm'),
+          value: updateData.startDt,
         },
         endDt: {
-          name: dayjs(congressData.congress.endDt).format('A HH:mm'),
-          value: congressData.congress.endDt,
+          name: dayjs(updateData.endDt).format('A HH:mm'),
+          value: updateData.endDt,
         },
-        congressDescription: congressData?.congress?.congressDescription,
+        congressDescription: updateData?.congressDescription,
       });
 
       dispatch(saveSelectBookingMemberObj(mappedAttendMemberObj));
-      dispatch(saveSelectBookingDate(congressData?.congress?.date));
+      dispatch(saveSelectBookingDate(updateData?.date));
     }
-  }, [congressRoomData?.congressRoomList, categoryData?.congressCategoryList, congressData?.congress]);
+  }, [updateData]);
 
   return (
     <MainLayout isScroll>
@@ -184,7 +204,7 @@ const Booking = () => {
                         value={item.RoomId}
                         onChange={field.onChange}
                         {...(mode === 'edit' && {
-                          checked: field.value === congressData?.congress.congressRoom.RoomId,
+                          defaultChecked: item.RoomId === updateData?.congressRoom.RoomId,
                         })}
                       />
                     )}
@@ -217,7 +237,7 @@ const Booking = () => {
                         value={item.CongressCategoryId}
                         onChange={field.onChange}
                         {...(mode === 'edit' && {
-                          checked: field.value === congressData?.congress.congressCategory.CongressCategoryId,
+                          defaultChecked: item.CongressCategoryId === updateData?.congressCategory.CongressCategoryId,
                         })}
                       />
                     )}
@@ -320,6 +340,36 @@ const Booking = () => {
 };
 
 export default Booking;
+
+export const getServerSideProps = (async (context: GetServerSidePropsContext) => {
+  // Fetch data from external API
+  const { id, mode } = context.query;
+  const cookie = context.req ? context.req.headers.cookie : '';
+
+  axios.defaults.headers.common.cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.common.cookie = cookie;
+  }
+
+  if (mode === 'edit') {
+    try {
+      const workspaceListResponse = await clientInstance.get(`/v1/workspace/list`);
+      const workspaceId = workspaceListResponse?.data.workspaceList[0]?.WorkspaceId;
+      const workspaceCongressResponse = await clientInstance.get(`/v1/workspace/@${workspaceId}/congress`, {
+        params: {
+          cgsid: id,
+        },
+      });
+
+      return { props: { updateData: workspaceCongressResponse.data.congress } };
+    } catch (error) {
+      console.error(error);
+      return { props: { updateData: null } };
+    }
+  }
+
+  return { props: { updateData: null } };
+}) satisfies GetServerSideProps<{ updateData: CongressInfo | null }>;
 
 const Styles = stylex.create({
   container: {
