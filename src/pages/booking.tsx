@@ -187,6 +187,39 @@ const Booking = ({ updateData }: BookingProps) => {
             />
           </BookingFormItem>
 
+          {/* 카테고리 */}
+          <BookingFormItem label="카테고리" required>
+            <div {...stylex.props(Styles.RadioBtnContainer)}>
+              {React.Children.toArray(
+                categoryData?.congressCategoryList.map((item) => (
+                  <Controller
+                    name="CongressCategoryId"
+                    control={control}
+                    defaultValue={null}
+                    rules={{ required: '카테고리를 선택해주세요' }}
+                    render={({ field }) => (
+                      <Radio
+                        name="CongressCategoryId"
+                        id={item.categoryName}
+                        label={item.categoryName}
+                        value={item.CongressCategoryId}
+                        onChange={field.onChange}
+                        {...(mode === 'edit' && {
+                          defaultChecked: item.CongressCategoryId === updateData?.congressCategory.CongressCategoryId,
+                        })}
+                      />
+                    )}
+                  />
+                ))
+              )}
+              {isEditable && (
+                <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddCategory}>
+                  + 추가하기
+                </button>
+              )}
+            </div>
+          </BookingFormItem>
+
           {/* 장소 */}
           <BookingFormItem label="장소" required>
             <div {...stylex.props(Styles.RadioBtnContainer)}>
@@ -219,39 +252,6 @@ const Booking = ({ updateData }: BookingProps) => {
               )}
               {isEditable && (
                 <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddMeetingRoom}>
-                  + 추가하기
-                </button>
-              )}
-            </div>
-          </BookingFormItem>
-
-          {/* 카테고리 */}
-          <BookingFormItem label="카테고리" required>
-            <div {...stylex.props(Styles.RadioBtnContainer)}>
-              {React.Children.toArray(
-                categoryData?.congressCategoryList.map((item) => (
-                  <Controller
-                    name="CongressCategoryId"
-                    control={control}
-                    defaultValue={null}
-                    rules={{ required: '카테고리를 선택해주세요' }}
-                    render={({ field }) => (
-                      <Radio
-                        name="CongressCategoryId"
-                        id={item.categoryName}
-                        label={item.categoryName}
-                        value={item.CongressCategoryId}
-                        onChange={field.onChange}
-                        {...(mode === 'edit' && {
-                          defaultChecked: item.CongressCategoryId === updateData?.congressCategory.CongressCategoryId,
-                        })}
-                      />
-                    )}
-                  />
-                ))
-              )}
-              {isEditable && (
-                <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddCategory}>
                   + 추가하기
                 </button>
               )}
