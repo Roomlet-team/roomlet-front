@@ -13,15 +13,6 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const prevUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}${request.nextUrl.pathname}${request.nextUrl.search}`; // 로그인 페이지 이전에 있었던 url
 
-  if (referer) {
-    response.cookies.set('page_referer', referer, {
-      httpOnly: false, // 클라이언트에서 접근 가능하게 함.
-      sameSite: 'lax',
-    });
-  } else {
-    response.cookies.delete('page_referer');
-  }
-
   if (isRefreshToken) {
     if (['/login', '/'].includes(path)) {
       // 이미 로그인을 한 경우, 로그인 혹은 랜딩 페이지에 접근했을 때 홈 화면으로 이동
