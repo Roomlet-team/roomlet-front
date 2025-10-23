@@ -7,20 +7,10 @@ export async function middleware(request: NextRequest) {
   let refreshToken = request.cookies.get('refresh_token');
   let isRefreshToken = request.cookies.has('refresh_token');
   let isAccessToken = request.cookies.has('access_token');
-  const referer = request.headers.get('referer');
   const response = NextResponse.next();
 
   const path = request.nextUrl.pathname;
   const prevUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}${request.nextUrl.pathname}${request.nextUrl.search}`; // 로그인 페이지 이전에 있었던 url
-
-  if (referer) {
-    response.cookies.set('page_referer', referer, {
-      httpOnly: false, // 클라이언트에서 접근 가능하게 함.
-      sameSite: 'lax',
-    });
-  } else {
-    response.cookies.delete('page_referer');
-  }
 
   if (isRefreshToken) {
     if (['/login', '/'].includes(path)) {
