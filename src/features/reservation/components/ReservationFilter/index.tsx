@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 import { useDispatch } from 'react-redux';
 import BottomSheet from '@src/components/ui/BottomSheet';
 import { hideModal } from '@src/slices/modal';
@@ -25,7 +25,7 @@ const MEETING_TYPE: { id: string; label: string; value: 0 | 1 }[] = [
 let bottomSheetId = 'reservation-filter-bottom-sheet';
 
 const ReservationFilter = () => {
-  const router = useRouter();
+  const router = useGlobalRouter();
   const { my: queryMy, roomIds: queryRoomIds, cc: queryCc } = router.query;
   const dispatch = useDispatch();
   const { data: congressRoomData } = useGetCongressRoomListQuery();

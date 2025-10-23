@@ -4,8 +4,7 @@ import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceList
 import { hideModal } from '@src/slices/modal';
 import clientInstance from '@src/utils/api/clientInstance';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 
 interface ResponseData {}
 
@@ -44,7 +43,7 @@ const usePatchNotificationsQuery = () => {
   const { data } = useGetWorkspaceListQuery();
   const queryClient = useQueryClient();
   const workspaceId = data?.workspaceList[0]?.WorkspaceId;
-  const router = useRouter();
+  const router = useGlobalRouter();
 
   const mutation = useCustomMutation({
     mutationFn: (data: MutationFnData) => {

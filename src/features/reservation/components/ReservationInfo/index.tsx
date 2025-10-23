@@ -4,7 +4,7 @@ import { colors, Typography } from '../../../../../public/styles/vars.stylex';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import useGetWorkspaceCongressQuery from '../../queries/useGetWorkspaceCongressQuery';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 import Link from 'next/link';
 import Dropdown from '@src/components/ui/Dropdown';
 import PencilOutlined from '@src/components/icons/PencilOutlined';
@@ -13,7 +13,7 @@ import { confirm } from '@src/components/ui/Modal/confirm';
 import useDeleteCongressQuery from '../../queries/useDeleteCongressQuery';
 
 const ReservationInfo = () => {
-  const router = useRouter();
+  const router = useGlobalRouter();
   const { id } = router.query;
   const { data } = useGetWorkspaceCongressQuery({ cgsid: Number(id) });
   const mutation = useDeleteCongressQuery();

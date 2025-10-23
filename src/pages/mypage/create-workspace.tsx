@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 import stylex from '@stylexjs/stylex';
 import MainLayout from '@src/layouts/MainLayout';
 import RoomletTextLogo from '@src/components/logos/text';
@@ -12,7 +12,7 @@ import usePostWorkspaceQuery from '@src/features/workspace/queries/usePostWorksp
 const CreateWorkspace = () => {
   const [workspaceName, handleChangeWorkspaceName] = useInput('');
   const mutation = usePostWorkspaceQuery();
-  const router = useRouter();
+  const router = useGlobalRouter();
   const letterImgUrl = 'https://roomlet.s3.ap-northeast-2.amazonaws.com/public/images/mypage/create-workspace.png';
 
   const handleClickCreate = () => {

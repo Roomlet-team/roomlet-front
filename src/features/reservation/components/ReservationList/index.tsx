@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import { CongressListResponse } from '@src/queries/workspace/useGetWorkspaceCongressListQuery';
-import { useRouter } from 'next/router';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 import MarkerPinFilled from '@src/components/icons/MarkerPinFilled';
 import ClockFilled from '@src/components/icons/ClockFilled';
 import CircleAlertFilled from '@src/components/icons/CircleAlertFilled';
@@ -15,7 +15,7 @@ interface ReservationListProps {
 
 const ReservationList: FC<ReservationListProps> = (props) => {
   const { data } = props;
-  const router = useRouter();
+  const router = useGlobalRouter();
 
   return (
     <section {...stylex.props(Styles.wrapper)}>

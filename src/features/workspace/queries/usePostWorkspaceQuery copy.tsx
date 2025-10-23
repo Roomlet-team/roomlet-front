@@ -1,7 +1,7 @@
 import { confirm } from '@src/components/ui/Modal/confirm';
 import useCustomMutation from '@src/hooks/react-query/useCustomMutation';
 import clientInstance from '@src/utils/api/clientInstance';
-import { useRouter } from 'next/router';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 
 interface WorkspaceInfo {
   code: number;
@@ -31,7 +31,7 @@ const postWorkspaceApi = async (data: CreateWorkspaceInfo): Promise<WorkspaceInf
  *   - `isSuccess`: mutation이 성공했고, mutation data를 사용할 수 있는지에 대한 여부
  */
 const usePostWorkspaceQuery = () => {
-  const router = useRouter();
+  const router = useGlobalRouter();
 
   const mutation = useCustomMutation({
     mutationFn: (data: CreateWorkspaceInfo) => postWorkspaceApi(data),

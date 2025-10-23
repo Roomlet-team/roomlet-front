@@ -3,7 +3,7 @@ import { confirm } from '@src/components/ui/Modal/confirm';
 import useCustomMutation from '@src/hooks/react-query/useCustomMutation';
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
 import clientInstance from '@src/utils/api/clientInstance';
-import { useRouter } from 'next/router';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 import { saveSelectBookingDate } from '../slices/booking';
 import { saveSelectBookingMemberObj } from '../slices/booking';
 
@@ -43,7 +43,7 @@ const postCongressApi = async (WorkspaceId: number | undefined, data: RequestBod
  */
 const usePostWorkspaceCongressQuery = () => {
   const { data } = useGetWorkspaceListQuery();
-  const router = useRouter();
+  const router = useGlobalRouter();
   const dispatch = useDispatch();
   const workspaceId = data?.workspaceList[0]?.WorkspaceId;
 

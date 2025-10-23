@@ -4,7 +4,7 @@ import MainLayout from '@src/layouts/MainLayout';
 import RoomletTextLogo from '@src/components/logos/text';
 import { colors, Typography } from '../../../public/styles/vars.stylex';
 import useGetInviteInfoQuery, { getInviteInfoApi } from '@src/features/invite/queries/useGetInviteInfoQuery';
-import { useRouter } from 'next/router';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import EllipsisImg from '@public/img/ellipsis.svg';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ import GoogleOutlined from '@src/components/icons/GoogleOutlined';
 
 const Invite = () => {
   const { data } = useGetInviteInfoQuery();
-  const router = useRouter();
+  const router = useGlobalRouter();
   const memberCount = data?.inviteInfo?.workspace?.memberCount;
   const isMemberCountGreaterThanLimit = (limit: number) => memberCount > limit;
   const displayedMemberNames = data?.inviteInfo?.workspace?.memberList

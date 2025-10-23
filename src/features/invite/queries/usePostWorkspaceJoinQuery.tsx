@@ -3,7 +3,7 @@ import useCustomMutation from '@src/hooks/react-query/useCustomMutation';
 import { hideModal } from '@src/slices/modal';
 import clientInstance from '@src/utils/api/clientInstance';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 import { useDispatch } from 'react-redux';
 
 interface WorkspaceInfo {
@@ -41,7 +41,7 @@ const postWorkspaceJoinApi = async (data: JoinInfo): Promise<WorkspaceInfo> => {
  */
 const usePostWorkspaceJoinQuery = () => {
   const queryClient = useQueryClient();
-  const router = useRouter();
+  const router = useGlobalRouter();
   const dispatch = useDispatch();
   const asPath = router.asPath;
 

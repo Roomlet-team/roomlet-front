@@ -2,10 +2,12 @@ import React, { FC } from 'react';
 import stylex from '@stylexjs/stylex';
 import useGetWorkspaceCongressListQuery from '@src/queries/workspace/useGetWorkspaceCongressListQuery';
 import dayjs from 'dayjs';
-import router from 'next/router';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 import { colors } from 'public/styles/vars.stylex';
 
 const MeetingSchedule: FC<{ selectDate: string }> = ({ selectDate }) => {
+  const router = useGlobalRouter();
+
   const { data } = useGetWorkspaceCongressListQuery({
     date: selectDate,
   });

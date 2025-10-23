@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+import useGlobalRouter from '@src/hooks/useGlobalRouter';
 import stylex from '@stylexjs/stylex';
 import RoomletLogo from '@assets/logo_roomlet.svg';
 import RoomletTextLogo from '@assets/logo_text_roomlet.svg';
@@ -10,7 +10,7 @@ import { Typography, colors } from '../../public/styles/vars.stylex';
 import { TERMS } from '@src/constant/terms';
 
 const Login = () => {
-  const router = useRouter();
+  const router = useGlobalRouter();
   const { prev_url } = router.query;
   const defaultPrevUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/home`;
   const snsLoginList = [
