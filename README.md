@@ -1,17 +1,17 @@
-# 👏 Roomlet
-
-## 🎯개발 목표
-- 직장인들이 편리하게 회의실을 예약하고, 회의 일정을 관리할 수 있게 하는 모바일 웹 사이트 개발
+<h1 align="center">👏 Roomlet</h1>
+<div align="center" >
+  Roomlet은 모바일 웹 기반 회의실 예약 및 일정 관리 솔루션 입니다.<br />
+</div>
 
 ## 📆개발 기간
-2024.01.16 ~ 진행중
+2024.01.16 ~ 2025.10
 
 ---
 
 ## 📚개발 스택
 
 **Language:** Javascript, Typescript  
-**Library:** React.js, Redux-toolkit, dayjs   
+**Library:** React.js, Redux-toolkit, React Query, dayjs
 **CSS-in-JS**: StyleX   
 **Framework:** Next.js  
 **Ect.:** ESLint, Prettier
@@ -28,31 +28,7 @@
  ┃ ┃ ┗ 📂types : 아이콘 컴포넌트에서 사용되는 타입  
  ┃ ┗ 📂ui : 공통 UI  
  ┣ 📂config : 환경 변수    
- ┣ 📂features : 특정 기능과 관련된 모든 파일을 한 곳에!  
- ┃ ┣ 📂alarm : 알림  
- ┃ ┃ ┗ 📂components  
- ┃ ┣ 📂authentication : 인증  
- ┃ ┃ ┣ 📂assets  
- ┃ ┃ ┗ 📂utils  
- ┃ ┣ 📂booking : 예약하기  
- ┃ ┃ ┣ 📂assets  
- ┃ ┃ ┣ 📂components  
- ┃ ┃ ┣ 📂slices  
- ┃ ┃ ┣ 📂styles  
- ┃ ┃ ┗ 📂types  
- ┃ ┣ 📂calendar : 캘린더  
- ┃ ┃ ┗ 📂components  
- ┃ ┣ 📂comment : 댓글  
- ┃ ┃ ┗ 📂components  
- ┃ ┣ 📂home : 홈  
- ┃ ┃ ┗ 📂components  
- ┃ ┣ 📂mypage : 마이페이지  
- ┃ ┃ ┗ 📂compontents  
- ┃ ┣ 📂onboarding : 온보딩  
- ┃ ┃ ┣ 📂components  
- ┃ ┃ ┗ 📂slices  
- ┃ ┗ 📂reservation : 예약 상세보기 (폴더 이름 변경 예정)  
- ┃ ┃ ┗ 📂components  
+ ┣ 📂features : 기능별 함수 및 컴포넌트를 정리한 폴더
  ┣ 📂hooks : hook 모음  
  ┣ 📂layouts : 룸렛에서 공통적으로 사용되는 레이아웃 모음  
  ┣ 📂pages : 페이지 라우팅 폴더  
@@ -62,6 +38,7 @@
  
 ---
 
-## 📝버전 출시
+## 📝 링크
+[룸렛 이용하러 가기
+](http://roomlet.store/)
 
-개발 진행 중
