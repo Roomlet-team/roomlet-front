@@ -2,6 +2,7 @@ import React, { FC, useRef, useState } from 'react';
 import stylex from '@stylexjs/stylex';
 import ProfileImg from '@src/components/ui/ProfileImg';
 import PhotoFilled from '@src/components/icons/PhotoFilled';
+import imageCompression from 'browser-image-compression';
 
 type MyPageImgUploadProps = {
   onSelect: (file: Blob) => void;
@@ -15,7 +16,6 @@ type MyPageImgUploadProps = {
 const MyPageImgUpload: FC<MyPageImgUploadProps> = (props) => {
   const { onSelect, initialImgUrl } = props;
 
-  const [profileImg, setProfileImg] = useState<string>('');
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const imageUploadRef = useRef(null);
 
@@ -23,11 +23,16 @@ const MyPageImgUpload: FC<MyPageImgUploadProps> = (props) => {
     imageUploadRef.current.click();
   };
 
-  const handleLoadFile = (e) => {
+  const handleLoadFile = async (e) => {
+    let compressionFile = null;
     const file = e.target.files;
     const fileType = file['0']?.type;
     const fileSize = file['0']?.size && file['0'].size;
     const limitSize = 5 * 1024 ** 2; // 파일 용량 제한은 5MB
+    const options = {
+      maxSizeMB: 1, // 서버에서 이미지 업로드시 최대 용량으로 1MB 제한
+      initialQuality: 0.7,
+    };
 
     if (!file['0']) {
       return false;
@@ -40,8 +45,8 @@ const MyPageImgUpload: FC<MyPageImgUploadProps> = (props) => {
 
         reader.onload = () => setImgUrl(reader.result as string); // string 타입의 base64 형식
         reader.readAsDataURL(file['0']);
-        setProfileImg(file);
-        onSelect(file['0']);
+        compressionFile = await imageCompression(file['0'], options);
+        onSelect(compressionFile);
       }
     } else {
       alert('이미지 파일만 등록이 가능합니다.');
