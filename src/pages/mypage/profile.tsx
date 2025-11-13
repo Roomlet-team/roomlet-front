@@ -52,7 +52,7 @@ const MyPageProfile = () => {
         formData.append('image', imageFile);
       }
 
-      myPageInfoMutation.mutate(formData);
+      myPageInfoMutation.mutateWithToast(formData);
     },
   };
   const profileCompleteBtnProps = {
@@ -62,9 +62,12 @@ const MyPageProfile = () => {
       const formData = new FormData();
 
       formData.append('displayName', displayName);
-      formData.append('image', imageFile);
 
-      myPageProfileMutation.mutate(formData);
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
+
+      myPageProfileMutation.mutateWithToast(formData);
     },
   };
 

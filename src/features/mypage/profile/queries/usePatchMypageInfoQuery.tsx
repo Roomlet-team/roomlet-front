@@ -1,6 +1,7 @@
 import { confirm } from '@src/components/ui/Modal/confirm';
 import Toast from '@src/components/ui/Toast';
 import useCustomMutation from '@src/hooks/react-query/useCustomMutation';
+import useMutationWithToast from '@src/hooks/react-query/useMutationWithToast';
 import useGetWorkspaceListQuery from '@src/queries/workspace/useGetWorkspaceListQuery';
 import clientInstance from '@src/utils/api/clientInstance';
 
@@ -28,21 +29,18 @@ const usePatchMypageInfoQuery = () => {
 
   const mutation = useCustomMutation({
     mutationFn: (data: FormData) => patchMypageInfoApi(workspaceId, data),
-    onSuccess: () => {
-      Toast({ message: '프로필 수정이 완료되었습니다.' });
-    },
-    onError: (error, variables, context) => {
-      const errorCode = error?.status;
+  });
 
-      // 에러가 발생한 경우, 에러 내용이 담긴 confirm 모달 띄우기
-      confirm({
-        content:
-          error?.response.data.message.errMsg || `프로필 수정에 실패했습니다.\n(server error code: ${errorCode})`,
-      });
+  const { mutateWithToast } = useMutationWithToast({
+    mutation,
+    message: {
+      pending: '프로필 수정중입니다',
+      success: '프로필 수정이 완료되었습니다.',
+      error: '프로필 수정에 실패했습니다.',
     },
   });
 
-  return mutation;
+  return { ...mutation, mutateWithToast };
 };
 
 export default usePatchMypageInfoQuery;
