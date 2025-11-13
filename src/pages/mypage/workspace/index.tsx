@@ -67,7 +67,7 @@ const WorkspaceHome = () => {
                           formData.append('image', workspaceImgFile);
                         }
 
-                        mutation.mutate(formData);
+                        mutation.mutateWithToast(formData);
                       },
                     }
                   : { isActive: false, onClick: null }),
