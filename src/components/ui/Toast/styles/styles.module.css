@@ -1,5 +1,6 @@
 .toast-container {
-  width: fit-content;
+  width: 100%;
+  max-width: 328px;
   margin: 16px;
   padding: 1.6rem;
   border-radius: 1.2rem;
