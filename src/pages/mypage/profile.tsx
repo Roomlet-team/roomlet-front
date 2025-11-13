@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '@src/components/ui/Header';
-import GnbNavLayout from '@src/layouts/GnbNavLayout';
 import stylex from '@stylexjs/stylex';
 import { colors } from '../../../public/styles/vars.stylex';
 import BoundaryArea from '@src/components/ui/BoundaryArea';
@@ -16,6 +15,7 @@ import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfo
 import { RootState } from '@src/store';
 import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGetMyPageProfileQuery';
 import usePatchMypageProfileQuery from '@src/features/mypage/profile/queries/usePatchMypageProfileQuery';
+import MainLayout from '@src/layouts/MainLayout';
 
 const MyPageProfile = () => {
   const { isWorkspace } = useSelector((state: RootState) => state.workspace);
@@ -72,7 +72,7 @@ const MyPageProfile = () => {
   };
 
   return (
-    <GnbNavLayout backgroundColor={colors.white500}>
+    <MainLayout backgroundColor={colors.white500}>
       <Header title="프로필 수정" rightBtnInfo={isWorkspace ? myInfoCompleteBtnProps : profileCompleteBtnProps} />
 
       {/* 이미지 업로드 및 이름 입력 */}
@@ -89,7 +89,7 @@ const MyPageProfile = () => {
 
       {/* 개인 정보 리스트 */}
       <ProfilePersonalDataList dataList={dataList} title="기타 설정" />
-    </GnbNavLayout>
+    </MainLayout>
   );
 };
 
