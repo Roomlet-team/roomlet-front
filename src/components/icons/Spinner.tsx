@@ -11,11 +11,18 @@ const Spinner: FC<IconProps & SpinnerProps> = (props) => {
 
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="none" {...props}>
-      <path
-        {...stylex.props(spin && Styles.SpinnerIcon)}
-        fill="#E3E3E3"
-        d="M19.333 11.997A7.333 7.333 0 1 1 12 4.664v1.333a6 6 0 1 0 6 6z"
-      />
+      <g clipPath="url(#a)">
+        <path
+          {...stylex.props(spin && Styles.SpinnerIcon)}
+          fill="#fff"
+          d="M18.364 5.636 16.95 7.05A7 7 0 1 0 19 12h2a9 9 0 1 1-2.636-6.364"
+        />
+      </g>
+      <defs>
+        <clipPath id="a">
+          <path fill="#fff" d="M0 0h24v24H0z" />
+        </clipPath>
+      </defs>
     </svg>
   );
 };
