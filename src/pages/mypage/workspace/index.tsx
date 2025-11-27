@@ -16,6 +16,7 @@ import ProfileImg from '@src/components/ui/ProfileImg';
 import { Typography } from '../../../../public/styles/vars.stylex';
 import usePatchWorkspaceInfoQuery from '@src/features/workspace/queries/usePatchWorkspaceInfoQuery';
 import Toast from '@src/components/ui/Toast';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const WorkspaceHome = () => {
   const { data: myInfoData } = useGetMypageInfoQuery();
@@ -47,54 +48,62 @@ const WorkspaceHome = () => {
   };
 
   return (
-    <MainLayout>
-      <Header
-        title="워크스페이스 정보"
-        {...(isEditable
-          ? {
-              rightBtnInfo: {
-                name: '완료',
-                // 이미지 파일이 있거나 워크스페이스 이름이 변경되었을 때 버튼 활성화
-                ...(!!workspaceImgFile || data?.workspace?.workspaceName !== workspaceName
-                  ? {
-                      isActive: true,
-                      onClick: () => {
-                        const formData = new FormData();
-
-                        formData.append('workspaceName', workspaceName);
-
-                        if (workspaceImgFile) {
-                          formData.append('image', workspaceImgFile);
-                        }
-
-                        mutation.mutateWithToast(formData);
-                      },
-                    }
-                  : { isActive: false, onClick: null }),
-              },
-            }
-          : {})}
+    <>
+      <SEOHead
+        title="워크스페이스 정보 | 룸렛"
+        description="룸렛의 워크스페이스 정보 페이지입니다."
+        url={{ pathname: '/mypage/workspace' }}
       />
 
-      {/* 이미지 업로드 및 이름 입력 */}
-      {isEditable ? (
-        <div {...stylex.props(Styles.ProfileContainer)}>
-          <MyPageImgUpload onSelect={handleSelectWorkspaceImg} initialImgUrl={workspaceImgUrl} />
-          <MyPageInput label="워크스페이스 이름" value={workspaceName} onChange={handleChangeWorkspaceName} />
-        </div>
-      ) : (
-        <div {...stylex.props(Styles.ProfileContainer)}>
-          <ProfileImg imgKey={workspaceImgUrl} size={68} />
-          <p {...stylex.props(Typography.TitleRegularBold)}>{data.workspace.workspaceName}</p>
-        </div>
-      )}
+      <MainLayout>
+        <Header
+          title="워크스페이스 정보"
+          {...(isEditable
+            ? {
+                rightBtnInfo: {
+                  name: '완료',
+                  // 이미지 파일이 있거나 워크스페이스 이름이 변경되었을 때 버튼 활성화
+                  ...(!!workspaceImgFile || data?.workspace?.workspaceName !== workspaceName
+                    ? {
+                        isActive: true,
+                        onClick: () => {
+                          const formData = new FormData();
 
-      {/* 경계선 */}
-      <BoundaryArea />
+                          formData.append('workspaceName', workspaceName);
 
-      {/* 메뉴 리스트 */}
-      <MypageMenu menuList={menuList} title="기타 설정" />
-    </MainLayout>
+                          if (workspaceImgFile) {
+                            formData.append('image', workspaceImgFile);
+                          }
+
+                          mutation.mutateWithToast(formData);
+                        },
+                      }
+                    : { isActive: false, onClick: null }),
+                },
+              }
+            : {})}
+        />
+
+        {/* 이미지 업로드 및 이름 입력 */}
+        {isEditable ? (
+          <div {...stylex.props(Styles.ProfileContainer)}>
+            <MyPageImgUpload onSelect={handleSelectWorkspaceImg} initialImgUrl={workspaceImgUrl} />
+            <MyPageInput label="워크스페이스 이름" value={workspaceName} onChange={handleChangeWorkspaceName} />
+          </div>
+        ) : (
+          <div {...stylex.props(Styles.ProfileContainer)}>
+            <ProfileImg imgKey={workspaceImgUrl} size={68} />
+            <p {...stylex.props(Typography.TitleRegularBold)}>{data.workspace.workspaceName}</p>
+          </div>
+        )}
+
+        {/* 경계선 */}
+        <BoundaryArea />
+
+        {/* 메뉴 리스트 */}
+        <MypageMenu menuList={menuList} title="기타 설정" />
+      </MainLayout>
+    </>
   );
 };
 

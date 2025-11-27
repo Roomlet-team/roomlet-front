@@ -9,6 +9,7 @@ import Link from 'next/link';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const MonthlyCalendar = dynamic(() => import('@src/features/calendar/components/MonthlyCalendar'), {
   ssr: false,
@@ -26,21 +27,25 @@ const Calendar = () => {
   };
 
   return (
-    <GnbNavLayout>
-      {/* 월간 캘린더 */}
-      <MonthlyCalendar onSelectDate={handleSelectDate} />
-      {/* 캘린더에서 선택한 날짜에 대한 회의 리스트 보는 영역 */}
-      <MeetingSchedule selectDate={selectDate} />
+    <>
+      <SEOHead title="캘린더 | 룸렛" description="룸렛의 캘린더 페이지입니다." url={{ pathname: '/calendar' }} />
 
-      {/* 예약하기 링크 (플로팅) */}
-      {isWorkspace && (
-        <div {...stylex.props(Styles.CreateReservationWrapper)}>
-          <a href="/booking">
-            <CirclePlusFilled width={56} height={56} />
-          </a>
-        </div>
-      )}
-    </GnbNavLayout>
+      <GnbNavLayout>
+        {/* 월간 캘린더 */}
+        <MonthlyCalendar onSelectDate={handleSelectDate} />
+        {/* 캘린더에서 선택한 날짜에 대한 회의 리스트 보는 영역 */}
+        <MeetingSchedule selectDate={selectDate} />
+
+        {/* 예약하기 링크 (플로팅) */}
+        {isWorkspace && (
+          <div {...stylex.props(Styles.CreateReservationWrapper)}>
+            <a href="/booking">
+              <CirclePlusFilled width={56} height={56} />
+            </a>
+          </div>
+        )}
+      </GnbNavLayout>
+    </>
   );
 };
 

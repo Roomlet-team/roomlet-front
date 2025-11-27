@@ -30,6 +30,7 @@ import usePatchWorkspaceCongressQuery from '@src/features/booking/queries/usePat
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import clientInstance from '@src/utils/api/clientInstance';
 import axios from 'axios';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const BookingMemberSelect = dynamic(() => import('@src/features/booking/components/BookingMemberSelect'), {
   ssr: false,
@@ -164,188 +165,192 @@ const Booking = ({ updateData }: BookingProps) => {
   }, [updateData]);
 
   return (
-    <MainLayout isScroll>
-      <Header title="예약하기" />
+    <>
+      <SEOHead title="예약하기 | 룸렛" description="룸렛의 예약하기 페이지입니다." url={{ pathname: '/booking' }} />
 
-      {/* 예약하기 폼 */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div {...stylex.props(Styles.container)}>
-          {/* 회의 타이틀 */}
-          <BookingFormItem label="회의 타이틀" required>
-            <Controller
-              name="congressTitle"
-              control={control}
-              defaultValue=""
-              rules={{ required: '회의 타이틀을 입력해주세요' }}
-              render={({ field }) => (
-                <BookingTextInput
-                  placeholder="회의 타이틀을 입력해주세요."
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-              )}
-            />
-          </BookingFormItem>
+      <MainLayout isScroll>
+        <Header title="예약하기" />
 
-          {/* 카테고리 */}
-          <BookingFormItem label="카테고리" required>
-            <div {...stylex.props(Styles.RadioBtnContainer)}>
-              {React.Children.toArray(
-                categoryData?.congressCategoryList.map((item) => (
-                  <Controller
-                    name="CongressCategoryId"
-                    control={control}
-                    defaultValue={null}
-                    rules={{ required: '카테고리를 선택해주세요' }}
-                    render={({ field }) => (
-                      <Radio
-                        name="CongressCategoryId"
-                        id={item.categoryName}
-                        label={item.categoryName}
-                        value={item.CongressCategoryId}
-                        onChange={field.onChange}
-                        {...(mode === 'edit' && {
-                          defaultChecked: item.CongressCategoryId === updateData?.congressCategory.CongressCategoryId,
-                        })}
-                      />
-                    )}
-                  />
-                ))
-              )}
-              {isEditable && (
-                <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddCategory}>
-                  + 추가하기
-                </button>
-              )}
-            </div>
-          </BookingFormItem>
-
-          {/* 장소 */}
-          <BookingFormItem label="장소" required>
-            <div {...stylex.props(Styles.RadioBtnContainer)}>
-              {React.Children.toArray(
-                congressRoomData?.congressRoomList.map((item) => (
-                  <Controller
-                    name="RoomId"
-                    control={control}
-                    defaultValue={null}
-                    rules={{ required: '장소를 선택해주세요' }}
-                    render={({ field }) => (
-                      <Radio
-                        name="RoomId"
-                        id={item.roomName}
-                        label={item.roomName}
-                        value={item.RoomId}
-                        onChange={(e) => {
-                          setIsUpdatedRoomId(true);
-                          setValue('startDt', null);
-                          setValue('endDt', null);
-                          field.onChange(e);
-                        }}
-                        {...(mode === 'edit' && {
-                          defaultChecked: item.RoomId === updateData?.congressRoom.RoomId,
-                        })}
-                      />
-                    )}
-                  />
-                ))
-              )}
-              {isEditable && (
-                <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddMeetingRoom}>
-                  + 추가하기
-                </button>
-              )}
-            </div>
-          </BookingFormItem>
-
-          {/* 날짜 선택 */}
-          <BookingFormItem label="날짜 선택" required>
-            <Controller
-              name="date"
-              control={control}
-              defaultValue={selectBookingDate}
-              render={({ field }) => <BookingDatePicker setValue={setValue} />}
-              rules={{ required: '날짜를 선택해주세요' }}
-            />
-          </BookingFormItem>
-
-          {/* 시간 선택 */}
-          <BookingFormItem label="시간 선택" required>
-            <div {...stylex.props(Styles.TimePickerContainer)}>
+        {/* 예약하기 폼 */}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div {...stylex.props(Styles.container)}>
+            {/* 회의 타이틀 */}
+            <BookingFormItem label="회의 타이틀" required>
               <Controller
-                name="startDt"
+                name="congressTitle"
                 control={control}
-                defaultValue={null}
-                rules={{ required: '시작 시간을 선택해주세요' }}
+                defaultValue=""
+                rules={{ required: '회의 타이틀을 입력해주세요' }}
                 render={({ field }) => (
-                  <BookingTimePicker
-                    placeholder="시작 시간"
-                    onSelect={field.onChange}
-                    roomId={RoomId}
-                    defaultValue={startDt}
-                    isUpdatedRoomId={isUpdatedRoomId}
-                    setIsUpdatedRoomId={setIsUpdatedRoomId}
+                  <BookingTextInput
+                    placeholder="회의 타이틀을 입력해주세요."
+                    value={field.value}
+                    onChange={field.onChange}
                   />
                 )}
               />
-              <span {...stylex.props(Styles.Hyphen)} />
+            </BookingFormItem>
+
+            {/* 카테고리 */}
+            <BookingFormItem label="카테고리" required>
+              <div {...stylex.props(Styles.RadioBtnContainer)}>
+                {React.Children.toArray(
+                  categoryData?.congressCategoryList.map((item) => (
+                    <Controller
+                      name="CongressCategoryId"
+                      control={control}
+                      defaultValue={null}
+                      rules={{ required: '카테고리를 선택해주세요' }}
+                      render={({ field }) => (
+                        <Radio
+                          name="CongressCategoryId"
+                          id={item.categoryName}
+                          label={item.categoryName}
+                          value={item.CongressCategoryId}
+                          onChange={field.onChange}
+                          {...(mode === 'edit' && {
+                            defaultChecked: item.CongressCategoryId === updateData?.congressCategory.CongressCategoryId,
+                          })}
+                        />
+                      )}
+                    />
+                  ))
+                )}
+                {isEditable && (
+                  <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddCategory}>
+                    + 추가하기
+                  </button>
+                )}
+              </div>
+            </BookingFormItem>
+
+            {/* 장소 */}
+            <BookingFormItem label="장소" required>
+              <div {...stylex.props(Styles.RadioBtnContainer)}>
+                {React.Children.toArray(
+                  congressRoomData?.congressRoomList.map((item) => (
+                    <Controller
+                      name="RoomId"
+                      control={control}
+                      defaultValue={null}
+                      rules={{ required: '장소를 선택해주세요' }}
+                      render={({ field }) => (
+                        <Radio
+                          name="RoomId"
+                          id={item.roomName}
+                          label={item.roomName}
+                          value={item.RoomId}
+                          onChange={(e) => {
+                            setIsUpdatedRoomId(true);
+                            setValue('startDt', null);
+                            setValue('endDt', null);
+                            field.onChange(e);
+                          }}
+                          {...(mode === 'edit' && {
+                            defaultChecked: item.RoomId === updateData?.congressRoom.RoomId,
+                          })}
+                        />
+                      )}
+                    />
+                  ))
+                )}
+                {isEditable && (
+                  <button type="button" {...stylex.props(Styles.addBtn)} onClick={handleClickAddMeetingRoom}>
+                    + 추가하기
+                  </button>
+                )}
+              </div>
+            </BookingFormItem>
+
+            {/* 날짜 선택 */}
+            <BookingFormItem label="날짜 선택" required>
               <Controller
-                name="endDt"
+                name="date"
+                control={control}
+                defaultValue={selectBookingDate}
+                render={({ field }) => <BookingDatePicker setValue={setValue} />}
+                rules={{ required: '날짜를 선택해주세요' }}
+              />
+            </BookingFormItem>
+
+            {/* 시간 선택 */}
+            <BookingFormItem label="시간 선택" required>
+              <div {...stylex.props(Styles.TimePickerContainer)}>
+                <Controller
+                  name="startDt"
+                  control={control}
+                  defaultValue={null}
+                  rules={{ required: '시작 시간을 선택해주세요' }}
+                  render={({ field }) => (
+                    <BookingTimePicker
+                      placeholder="시작 시간"
+                      onSelect={field.onChange}
+                      roomId={RoomId}
+                      defaultValue={startDt}
+                      isUpdatedRoomId={isUpdatedRoomId}
+                      setIsUpdatedRoomId={setIsUpdatedRoomId}
+                    />
+                  )}
+                />
+                <span {...stylex.props(Styles.Hyphen)} />
+                <Controller
+                  name="endDt"
+                  control={control}
+                  defaultValue={null}
+                  rules={{ required: '종료 시간을 선택해주세요' }}
+                  render={({ field }) => (
+                    <BookingTimePicker
+                      placeholder="종료 시간"
+                      onSelect={field.onChange}
+                      roomId={RoomId}
+                      startDt={startDt}
+                      defaultValue={endDt}
+                      isUpdatedRoomId={isUpdatedRoomId}
+                      setIsUpdatedRoomId={setIsUpdatedRoomId}
+                    />
+                  )}
+                />
+              </div>
+            </BookingFormItem>
+
+            {/* 참석자 */}
+            <BookingFormItem label="참석자" required>
+              <Controller
+                name="attendMemberList"
                 control={control}
                 defaultValue={null}
-                rules={{ required: '종료 시간을 선택해주세요' }}
+                rules={{ required: '참석자를 선택해주세요' }}
+                render={({ field }) => <BookingMemberSelect onSelect={field.onChange} />}
+              />
+            </BookingFormItem>
+
+            {/* 상세 내용 */}
+            <BookingFormItem label="상세 내용" required>
+              <Controller
+                name="congressDescription"
+                control={control}
+                defaultValue=""
+                rules={{ required: '상세 내용을 입력해주세요' }}
                 render={({ field }) => (
-                  <BookingTimePicker
-                    placeholder="종료 시간"
-                    onSelect={field.onChange}
-                    roomId={RoomId}
-                    startDt={startDt}
-                    defaultValue={endDt}
-                    isUpdatedRoomId={isUpdatedRoomId}
-                    setIsUpdatedRoomId={setIsUpdatedRoomId}
+                  <BookingTextarea
+                    placeholder="업무에 필요한 정보를 작성해주세요"
+                    value={field.value}
+                    onChange={field.onChange}
                   />
                 )}
               />
-            </div>
-          </BookingFormItem>
+            </BookingFormItem>
+          </div>
 
-          {/* 참석자 */}
-          <BookingFormItem label="참석자" required>
-            <Controller
-              name="attendMemberList"
-              control={control}
-              defaultValue={null}
-              rules={{ required: '참석자를 선택해주세요' }}
-              render={({ field }) => <BookingMemberSelect onSelect={field.onChange} />}
-            />
-          </BookingFormItem>
-
-          {/* 상세 내용 */}
-          <BookingFormItem label="상세 내용" required>
-            <Controller
-              name="congressDescription"
-              control={control}
-              defaultValue=""
-              rules={{ required: '상세 내용을 입력해주세요' }}
-              render={({ field }) => (
-                <BookingTextarea
-                  placeholder="업무에 필요한 정보를 작성해주세요"
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-              )}
-            />
-          </BookingFormItem>
-        </div>
-
-        {/* 작성 완료 버튼 */}
-        <div {...stylex.props(Styles.submitBtnWrapper)}>
-          <button type="submit" {...stylex.props(Styles.submitBtn(isAllFieldsFilled), Typography.TextSmallMedium)}>
-            작성 완료
-          </button>
-        </div>
-      </form>
-    </MainLayout>
+          {/* 작성 완료 버튼 */}
+          <div {...stylex.props(Styles.submitBtnWrapper)}>
+            <button type="submit" {...stylex.props(Styles.submitBtn(isAllFieldsFilled), Typography.TextSmallMedium)}>
+              작성 완료
+            </button>
+          </div>
+        </form>
+      </MainLayout>
+    </>
   );
 };
 
