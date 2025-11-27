@@ -9,6 +9,7 @@ import Header from '@src/components/ui/Header';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useGetWorkspaceCongressQuery from '@src/features/reservation/queries/useGetWorkspaceCongressQuery';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const CommentList = dynamic(() => import('@src/features/comment/components/CommentList'), {
   ssr: false,
@@ -26,23 +27,31 @@ const MeetingDetails = () => {
   const { data } = useGetWorkspaceCongressQuery({ cgsid: Number(id) });
 
   return (
-    <MainLayout isScroll>
-      <Header />
+    <>
+      <SEOHead
+        title={`${data?.congress.congressTitle} | 룸렛`}
+        description={`${data?.congress.congressTitle}의 회의 상세 페이지입니다.`}
+        url={{ pathname: `/reservations/${id}` }}
+      />
 
-      <ReservationInfo data={data} />
+      <MainLayout isScroll>
+        <Header />
 
-      {/* 경계선 */}
-      <div {...stylex.props(Styles.borderLine)} />
+        <ReservationInfo data={data} />
 
-      {/* 댓글 */}
-      <div>
-        {/* 댓글 리스트 */}
-        <CommentList />
-      </div>
+        {/* 경계선 */}
+        <div {...stylex.props(Styles.borderLine)} />
 
-      {/* 댓글 작성 */}
-      <CommentTextarea />
-    </MainLayout>
+        {/* 댓글 */}
+        <div>
+          {/* 댓글 리스트 */}
+          <CommentList />
+        </div>
+
+        {/* 댓글 작성 */}
+        <CommentTextarea />
+      </MainLayout>
+    </>
   );
 };
 
