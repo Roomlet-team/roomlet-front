@@ -8,6 +8,7 @@ import ArrowHeadOutlinedV2 from '@src/components/icons/ArrowHeadOutlinedV2';
 import dayjs from 'dayjs';
 import useGetWorkspaceCongressListQuery from '@src/queries/workspace/useGetWorkspaceCongressListQuery';
 import { useRouter } from 'next/router';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const Reservations = () => {
   const router = useRouter();
@@ -35,6 +36,12 @@ const Reservations = () => {
 
   return (
     <>
+      <SEOHead
+        title="예약리스트 | 룸렛"
+        description="룸렛의 예약리스트 페이지입니다."
+        url={{ pathname: '/reservations' }}
+      />
+
       <GnbNavLayout backgroundColor="#FAFAFA">
         {/*  날짜 선택 버튼 */}
         <h1 {...stylex.props(Styles.dateTitle)} onClick={handleClickDateWheel}>

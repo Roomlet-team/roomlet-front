@@ -14,6 +14,7 @@ import useRenderModal from '@src/hooks/ui/useRenderModal';
 import AddCongressRoomBottomSheet from '@src/features/mypage/workspace/congress-room/components/AddCongressRoomBottomSheet';
 import usePutCongressRoomQuery from '@src/features/mypage/workspace/congress-room/queries/usePutCongressRoomQuery';
 import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const MeetingRoom = () => {
   const { data: myInfoData } = useGetMypageInfoQuery();
@@ -56,38 +57,48 @@ const MeetingRoom = () => {
   }, [isEdit]);
 
   return (
-    <MainLayout backgroundColor="#FAFAFA">
-      <Header title="회의실" {...(isEditable ? { rightBtnInfo: completeBtnProps } : {})} />
+    <>
+      <SEOHead
+        title="워크스페이스 회의실 정보 | 룸렛"
+        description="룸렛의 워크스페이스 회의실 정보 페이지입니다."
+        url={{ pathname: '/mypage/workspace/congress-room' }}
+      />
 
-      <div {...stylex.props(Styles.Container)}>
-        {/* 회의실 개수 */}
-        <div {...stylex.props(Styles.TotalCountWrapper, Typography.TextSmallMedium)}>
-          전체 회의실{' '}
-          <span {...stylex.props(Styles.Count)}>{isEdit ? editCongressRoomList?.length : data?.congressRoomCount}</span>
+      <MainLayout backgroundColor="#FAFAFA">
+        <Header title="회의실" {...(isEditable ? { rightBtnInfo: completeBtnProps } : {})} />
+
+        <div {...stylex.props(Styles.Container)}>
+          {/* 회의실 개수 */}
+          <div {...stylex.props(Styles.TotalCountWrapper, Typography.TextSmallMedium)}>
+            전체 회의실{' '}
+            <span {...stylex.props(Styles.Count)}>
+              {isEdit ? editCongressRoomList?.length : data?.congressRoomCount}
+            </span>
+          </div>
+
+          {/* 회의실 목록 */}
+          <div {...stylex.props(Styles.RoomListWrapper)}>
+            {isEdit
+              ? // 수정 상태 일 때
+                editCongressRoomList?.map((item) => <CongressRoomCard data={item} isEdit={isEdit} />)
+              : // 수정 상태가 아닐 때
+                data?.congressRoomList?.map((item) => <CongressRoomCard data={item} />)}
+          </div>
+
+          {/* 회의실 추가 */}
+          {isEdit && (
+            <button
+              type="button"
+              {...stylex.props(Styles.AddCongressRoomBtn, Typography.TextSmallMedium)}
+              onClick={handleClickAddCongressRoom}
+            >
+              <PlusOutlined width={24} height={24} />
+              <span>회의실 추가</span>
+            </button>
+          )}
         </div>
-
-        {/* 회의실 목록 */}
-        <div {...stylex.props(Styles.RoomListWrapper)}>
-          {isEdit
-            ? // 수정 상태 일 때
-              editCongressRoomList?.map((item) => <CongressRoomCard data={item} isEdit={isEdit} />)
-            : // 수정 상태가 아닐 때
-              data?.congressRoomList?.map((item) => <CongressRoomCard data={item} />)}
-        </div>
-
-        {/* 회의실 추가 */}
-        {isEdit && (
-          <button
-            type="button"
-            {...stylex.props(Styles.AddCongressRoomBtn, Typography.TextSmallMedium)}
-            onClick={handleClickAddCongressRoom}
-          >
-            <PlusOutlined width={24} height={24} />
-            <span>회의실 추가</span>
-          </button>
-        )}
-      </div>
-    </MainLayout>
+      </MainLayout>
+    </>
   );
 };
 

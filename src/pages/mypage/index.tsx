@@ -28,6 +28,7 @@ import { hideModal } from '@src/slices/modal';
 import useRenderModal from '@src/hooks/ui/useRenderModal';
 import LockOutlined from '@src/components/icons/LockOutlined';
 import { TERMS } from '@src/constant/terms';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const MyPageInviteModal = dynamic(() => import('@src/features/mypage/compontents/MyPageInviteModal'), {
   ssr: false,
@@ -137,6 +138,8 @@ const MyPageHome = () => {
 
   return (
     <>
+      <SEOHead title="마이페이지 | 룸렛" description="룸렛의 마이페이지입니다." url={{ pathname: '/mypage' }} />
+
       <GnbNavLayout backgroundColor={colors.white500}>
         <Header title="마이페이지" />
         {/* 프로필 페이지로 이동 */}

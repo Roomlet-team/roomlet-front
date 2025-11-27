@@ -12,6 +12,7 @@ import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfo
 import useInput from '@src/hooks/useInput';
 import SearchOutlinedV2 from '@src/components/icons/SearchOutlinedV2';
 import useDebounce from '@src/hooks/useDebounce';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const Member = () => {
   const { data: myInfoData } = useGetMypageInfoQuery();
@@ -31,46 +32,54 @@ const Member = () => {
   };
 
   return (
-    <MainLayout>
-      <Header title="멤버" />
-      <div {...{ ...stylex.props(Styles.Container) }}>
-        {/* 검색 */}
-        <div {...stylex.props(Styles.SearchContainer)}>
-          <SearchOutlinedV2 width={24} height={24} />
-          <input
-            type="text"
-            placeholder="검색어를 입력해주세요"
-            value={searchKeyword}
-            onChange={handleChangeSearchKeyword}
-            {...stylex.props(Typography.SubTextLargeRegular, Styles.SearchInput)}
-          />
-        </div>
+    <>
+      <SEOHead
+        title="워크스페이스 멤버 정보 | 룸렛"
+        description="룸렛의 워크스페이스 멤버 정보 페이지입니다."
+        url={{ pathname: '/mypage/workspace/member' }}
+      />
 
-        {/* 전체 멤버수 */}
-        <div {...stylex.props(Styles.TotalCountWrapper, Typography.TextSmallMedium)}>
-          전체 멤버 ({totalMemberCount})
-        </div>
-
-        {/* 팀 목록 */}
-        <div {...stylex.props(Styles.TeamListContainer)}>
-          {data?.teamList?.map((item, idx) => <TeamToggle key={item.TeamId} data={item} teamIdx={idx} />)}
-        </div>
-
-        {/* 팀 추가 */}
-        {isEditable && (
-          <div {...stylex.props(Styles.AddTeamBtnContainer)}>
-            <button
-              type="button"
-              {...stylex.props(Styles.AddTeamBtn, Typography.TextSmallMedium)}
-              onClick={handleClickAddTeam}
-            >
-              <PlusOutlined width={24} height={24} />
-              <span>팀 추가</span>
-            </button>
+      <MainLayout>
+        <Header title="멤버" />
+        <div {...{ ...stylex.props(Styles.Container) }}>
+          {/* 검색 */}
+          <div {...stylex.props(Styles.SearchContainer)}>
+            <SearchOutlinedV2 width={24} height={24} />
+            <input
+              type="text"
+              placeholder="검색어를 입력해주세요"
+              value={searchKeyword}
+              onChange={handleChangeSearchKeyword}
+              {...stylex.props(Typography.SubTextLargeRegular, Styles.SearchInput)}
+            />
           </div>
-        )}
-      </div>
-    </MainLayout>
+
+          {/* 전체 멤버수 */}
+          <div {...stylex.props(Styles.TotalCountWrapper, Typography.TextSmallMedium)}>
+            전체 멤버 ({totalMemberCount})
+          </div>
+
+          {/* 팀 목록 */}
+          <div {...stylex.props(Styles.TeamListContainer)}>
+            {data?.teamList?.map((item, idx) => <TeamToggle key={item.TeamId} data={item} teamIdx={idx} />)}
+          </div>
+
+          {/* 팀 추가 */}
+          {isEditable && (
+            <div {...stylex.props(Styles.AddTeamBtnContainer)}>
+              <button
+                type="button"
+                {...stylex.props(Styles.AddTeamBtn, Typography.TextSmallMedium)}
+                onClick={handleClickAddTeam}
+              >
+                <PlusOutlined width={24} height={24} />
+                <span>팀 추가</span>
+              </button>
+            </div>
+          )}
+        </div>
+      </MainLayout>
+    </>
   );
 };
 

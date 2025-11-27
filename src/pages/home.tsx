@@ -10,40 +10,45 @@ import PlusOutlined from '@src/components/icons/PlusOutlined';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const Home = () => {
   const { isWorkspace } = useSelector((state: RootState) => state.workspace);
 
   return (
-    <GnbNavLayout backgroundColor="#FAFAFA">
-      {/* 프로필 섹션 */}
-      <section {...stylex.props(Styles.userGreetingSection)}>
-        {isWorkspace ? <WorkspaceUserGreeting /> : <NonWorkspaceUserGreeting />}
-      </section>
-      {/* 회의 현황 섹션 */}
-      <section {...stylex.props(Styles.meetingStatusSection)}>
-        <h2 {...stylex.props(Styles.sectionTitle)}>회의 현황</h2>
-        <MeetingStatus />
-      </section>
-      {/* 타임 라인 섹션 */}
-      <section {...stylex.props(Styles.timeLineSection)}>
-        <TimeLine />
-      </section>
+    <>
+      <SEOHead title="홈 | 룸렛" description="룸렛의 홈 페이지입니다." url={{ pathname: '/home' }} />
 
-      {/* 워크스페이스가 없는 경우 */}
-      {!isWorkspace && (
-        <div {...stylex.props(Styles.CreateWorkspaceBtnWrapper)}>
-          {/* 워크스페이스 등록하기 버튼 */}
-          <Link
-            href="/mypage/create-workspace"
-            {...stylex.props(Typography.SubtitleSmallBold, Styles.CreateWorkspaceBtn)}
-          >
-            <PlusOutlined width={24} height={24} />
-            워크스페이스 등록하기
-          </Link>
-        </div>
-      )}
-    </GnbNavLayout>
+      <GnbNavLayout backgroundColor="#FAFAFA">
+        {/* 프로필 섹션 */}
+        <section {...stylex.props(Styles.userGreetingSection)}>
+          {isWorkspace ? <WorkspaceUserGreeting /> : <NonWorkspaceUserGreeting />}
+        </section>
+        {/* 회의 현황 섹션 */}
+        <section {...stylex.props(Styles.meetingStatusSection)}>
+          <h2 {...stylex.props(Styles.sectionTitle)}>회의 현황</h2>
+          <MeetingStatus />
+        </section>
+        {/* 타임 라인 섹션 */}
+        <section {...stylex.props(Styles.timeLineSection)}>
+          <TimeLine />
+        </section>
+
+        {/* 워크스페이스가 없는 경우 */}
+        {!isWorkspace && (
+          <div {...stylex.props(Styles.CreateWorkspaceBtnWrapper)}>
+            {/* 워크스페이스 등록하기 버튼 */}
+            <Link
+              href="/mypage/create-workspace"
+              {...stylex.props(Typography.SubtitleSmallBold, Styles.CreateWorkspaceBtn)}
+            >
+              <PlusOutlined width={24} height={24} />
+              워크스페이스 등록하기
+            </Link>
+          </div>
+        )}
+      </GnbNavLayout>
+    </>
   );
 };
 

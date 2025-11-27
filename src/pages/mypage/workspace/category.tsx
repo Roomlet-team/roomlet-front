@@ -13,6 +13,7 @@ import useRenderModal from '@src/hooks/ui/useRenderModal';
 import AddCategoryBottomSheet from '@src/features/mypage/workspace/category/components/AddCategoryBottomSheet';
 import usePutCongressCategory from '@src/features/mypage/workspace/category/queries/usePutCongressCategory';
 import useGetMypageInfoQuery from '@src/features/mypage/queries/useGetMypageInfoQuery';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const Category = () => {
   const { data: myInfoData } = useGetMypageInfoQuery();
@@ -57,36 +58,44 @@ const Category = () => {
   }, [isEdit]);
 
   return (
-    <MainLayout>
-      <Header title={isEdit ? '수정하기' : '카테고리'} {...(isEditable ? { rightBtnInfo: completeBtnProps } : {})} />
-      {/* 검색 */}
+    <>
+      <SEOHead
+        title="워크스페이스 카테고리 정보 | 룸렛"
+        description="룸렛의 워크스페이스 카테고리 정보 페이지입니다."
+        url={{ pathname: '/mypage/workspace/category' }}
+      />
 
-      <div {...{ ...stylex.props(Styles.Container) }}>
-        {/* 전체 카테고리 수 */}
-        <div {...stylex.props(Styles.TotalCountWrapper, Typography.TextSmallMedium)}>
-          전체 카테고리 ({data?.congressCategoryCount})
+      <MainLayout>
+        <Header title={isEdit ? '수정하기' : '카테고리'} {...(isEditable ? { rightBtnInfo: completeBtnProps } : {})} />
+        {/* 검색 */}
+
+        <div {...{ ...stylex.props(Styles.Container) }}>
+          {/* 전체 카테고리 수 */}
+          <div {...stylex.props(Styles.TotalCountWrapper, Typography.TextSmallMedium)}>
+            전체 카테고리 ({data?.congressCategoryCount})
+          </div>
+
+          {/* 카테고리 목록 */}
+          <div {...stylex.props(Styles.CategoryListContainer)}>
+            {isEdit
+              ? editCongressCategoryList?.map((item, idx) => <CategoryItem data={item} isEdit />)
+              : data?.congressCategoryList?.map((item, idx) => <CategoryItem data={item} />)}
+          </div>
+
+          {/* 카테고리 추가 */}
+          {isEdit && (
+            <button
+              type="button"
+              {...stylex.props(Styles.AddCategoryBtn, Typography.TextSmallMedium)}
+              onClick={handleClickAddCategory}
+            >
+              <PlusOutlined width={24} height={24} />
+              <span>카테고리 추가</span>
+            </button>
+          )}
         </div>
-
-        {/* 카테고리 목록 */}
-        <div {...stylex.props(Styles.CategoryListContainer)}>
-          {isEdit
-            ? editCongressCategoryList?.map((item, idx) => <CategoryItem data={item} isEdit />)
-            : data?.congressCategoryList?.map((item, idx) => <CategoryItem data={item} />)}
-        </div>
-
-        {/* 카테고리 추가 */}
-        {isEdit && (
-          <button
-            type="button"
-            {...stylex.props(Styles.AddCategoryBtn, Typography.TextSmallMedium)}
-            onClick={handleClickAddCategory}
-          >
-            <PlusOutlined width={24} height={24} />
-            <span>카테고리 추가</span>
-          </button>
-        )}
-      </div>
-    </MainLayout>
+      </MainLayout>
+    </>
   );
 };
 

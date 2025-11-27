@@ -8,6 +8,7 @@ import Input from '@src/components/ui/Input';
 import useInput from '@src/hooks/useInput';
 import Button from '@src/components/ui/Button';
 import usePostWorkspaceQuery from '@src/features/workspace/queries/usePostWorkspaceQuery copy';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const CreateWorkspace = () => {
   const [workspaceName, handleChangeWorkspaceName] = useInput('');
@@ -26,48 +27,56 @@ const CreateWorkspace = () => {
   };
 
   return (
-    <MainLayout isScroll>
-      <div {...stylex.props(Styles.Container)}>
-        <div {...stylex.props(Styles.logoAndInfoWrapper)}>
-          <div {...stylex.props(Styles.logoAndInfoContainer)}>
-            {/* 룸렛 텍스트 로고 */}
-            <div className="logo-wrapper" {...stylex.props(Styles.logoWrapper)}>
-              <RoomletTextLogo width={164} height={24} />
-            </div>
+    <>
+      <SEOHead
+        title="워크스페이스 생성 | 룸렛"
+        description="룸렛의 워크스페이스 생성 페이지입니다."
+        url={{ pathname: '/mypage/create-workspace' }}
+      />
 
-            {/* 초대 내용 */}
-            <div {...stylex.props(Typography.M3BodyLarge)}>
-              <img src={letterImgUrl} alt="메세지 이미지" {...stylex.props(Styles.letterImg)} />
-              <div {...stylex.props(Styles.contentWrapper, Typography.M3BodyLarge)}>
-                룸렛에서 워크스페이스를 만들어 <br />
-                함께 회의를 준비해보세요.
+      <MainLayout isScroll>
+        <div {...stylex.props(Styles.Container)}>
+          <div {...stylex.props(Styles.logoAndInfoWrapper)}>
+            <div {...stylex.props(Styles.logoAndInfoContainer)}>
+              {/* 룸렛 텍스트 로고 */}
+              <div className="logo-wrapper" {...stylex.props(Styles.logoWrapper)}>
+                <RoomletTextLogo width={164} height={24} />
+              </div>
+
+              {/* 초대 내용 */}
+              <div {...stylex.props(Typography.M3BodyLarge)}>
+                <img src={letterImgUrl} alt="메세지 이미지" {...stylex.props(Styles.letterImg)} />
+                <div {...stylex.props(Styles.contentWrapper, Typography.M3BodyLarge)}>
+                  룸렛에서 워크스페이스를 만들어 <br />
+                  함께 회의를 준비해보세요.
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="" {...stylex.props(Styles.formContainer)}>
-          {/* 닉네임 */}
-          <Input
-            onChange={handleChangeWorkspaceName}
-            value={workspaceName}
-            placeholder="사용하실 워크스페이스 명을 입력 해 주세요."
-          />
+          <div className="" {...stylex.props(Styles.formContainer)}>
+            {/* 닉네임 */}
+            <Input
+              onChange={handleChangeWorkspaceName}
+              value={workspaceName}
+              placeholder="사용하실 워크스페이스 명을 입력 해 주세요."
+            />
 
-          {/* 생성하기 및 생성하지 않기 버튼 */}
-          <Button type="button" onClick={handleClickCreate}>
-            생성하기
-          </Button>
-          <button
-            type="button"
-            onClick={handleClickDenyCreate}
-            {...stylex.props(Styles.dontParticipateButton, Typography.M3BodyLarge)}
-          >
-            생성하지 않기
-          </button>
+            {/* 생성하기 및 생성하지 않기 버튼 */}
+            <Button type="button" onClick={handleClickCreate}>
+              생성하기
+            </Button>
+            <button
+              type="button"
+              onClick={handleClickDenyCreate}
+              {...stylex.props(Styles.dontParticipateButton, Typography.M3BodyLarge)}
+            >
+              생성하지 않기
+            </button>
+          </div>
         </div>
-      </div>
-    </MainLayout>
+      </MainLayout>
+    </>
   );
 };
 

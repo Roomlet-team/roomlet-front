@@ -16,6 +16,7 @@ import { RootState } from '@src/store';
 import useGetMyPageProfileQuery from '@src/features/mypage/profile/queries/useGetMyPageProfileQuery';
 import usePatchMypageProfileQuery from '@src/features/mypage/profile/queries/usePatchMypageProfileQuery';
 import MainLayout from '@src/layouts/MainLayout';
+import SEOHead from '@src/components/ui/SEOHead';
 
 const MyPageProfile = () => {
   const { isWorkspace } = useSelector((state: RootState) => state.workspace);
@@ -72,24 +73,32 @@ const MyPageProfile = () => {
   };
 
   return (
-    <MainLayout backgroundColor={colors.white500}>
-      <Header title="프로필 수정" rightBtnInfo={isWorkspace ? myInfoCompleteBtnProps : profileCompleteBtnProps} />
+    <>
+      <SEOHead
+        title="프로필 수정 | 룸렛"
+        description="룸렛의 프로필 수정 페이지입니다."
+        url={{ pathname: '/mypage/profile' }}
+      />
 
-      {/* 이미지 업로드 및 이름 입력 */}
-      <div {...stylex.props(Styles.SettingContainer)}>
-        <MyPageImgUpload
-          onSelect={handleSelectImg}
-          initialImgUrl={isWorkspace ? `${data?.myInfo?.profileImgKey}` : `${profileData?.profile.profileImgKey}`}
-        />
-        <MyPageInput label="닉네임" value={displayName} onChange={handleChangeDisplayName} />
-      </div>
+      <MainLayout backgroundColor={colors.white500}>
+        <Header title="프로필 수정" rightBtnInfo={isWorkspace ? myInfoCompleteBtnProps : profileCompleteBtnProps} />
 
-      {/* 경계선 */}
-      <BoundaryArea />
+        {/* 이미지 업로드 및 이름 입력 */}
+        <div {...stylex.props(Styles.SettingContainer)}>
+          <MyPageImgUpload
+            onSelect={handleSelectImg}
+            initialImgUrl={isWorkspace ? `${data?.myInfo?.profileImgKey}` : `${profileData?.profile.profileImgKey}`}
+          />
+          <MyPageInput label="닉네임" value={displayName} onChange={handleChangeDisplayName} />
+        </div>
 
-      {/* 개인 정보 리스트 */}
-      <ProfilePersonalDataList dataList={dataList} title="기타 설정" />
-    </MainLayout>
+        {/* 경계선 */}
+        <BoundaryArea />
+
+        {/* 개인 정보 리스트 */}
+        <ProfilePersonalDataList dataList={dataList} title="기타 설정" />
+      </MainLayout>
+    </>
   );
 };
 
