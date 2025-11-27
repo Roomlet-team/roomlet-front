@@ -2,7 +2,6 @@ import React from 'react';
 import stylex from '@stylexjs/stylex';
 import { colors, Typography } from '../../../../../public/styles/vars.stylex';
 import ProfileImg from '@src/components/ui/ProfileImg';
-import useGetWorkspaceCongressQuery from '../../queries/useGetWorkspaceCongressQuery';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -11,11 +10,11 @@ import PencilOutlined from '@src/components/icons/PencilOutlined';
 import TrashcanOutlined from '@src/components/icons/TrashcanOutlined';
 import { confirm } from '@src/components/ui/Modal/confirm';
 import useDeleteCongressQuery from '../../queries/useDeleteCongressQuery';
+import { CongressInfo } from '../../queries/useGetWorkspaceCongressQuery';
 
-const ReservationInfo = () => {
+const ReservationInfo = ({ data }: { data: { congress: CongressInfo } }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { data } = useGetWorkspaceCongressQuery({ cgsid: Number(id) });
   const mutation = useDeleteCongressQuery();
 
   const dropdownMenuList = [
