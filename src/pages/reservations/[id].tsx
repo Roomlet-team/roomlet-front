@@ -7,6 +7,8 @@ import MainLayout from '@src/layouts/MainLayout';
 // import ReservationInfo from '@src/features/reservation/components/ReservationInfo';
 import Header from '@src/components/ui/Header';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import useGetWorkspaceCongressQuery from '@src/features/reservation/queries/useGetWorkspaceCongressQuery';
 
 const CommentList = dynamic(() => import('@src/features/comment/components/CommentList'), {
   ssr: false,
@@ -19,11 +21,15 @@ const ReservationInfo = dynamic(() => import('@src/features/reservation/componen
 });
 
 const MeetingDetails = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const { data } = useGetWorkspaceCongressQuery({ cgsid: Number(id) });
+
   return (
     <MainLayout isScroll>
       <Header />
 
-      <ReservationInfo />
+      <ReservationInfo data={data} />
 
       {/* 경계선 */}
       <div {...stylex.props(Styles.borderLine)} />
